@@ -1,0 +1,95 @@
+
+.resetPasswordContainer {
+  max-width: 400px;
+  margin: 50px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  text-align: center;
+  font-family: Arial, sans-serif;
+}
+
+.resetPasswordContainer h2 {
+  margin-bottom: 20px;
+  font-size: 24px;
+  color: #333;
+}
+
+.errorMessage {
+  color: #e63946;
+  margin-bottom: 15px;
+  font-size: 14px;
+}
+
+.successMessage {
+  color: #2a9d8f;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.formGroup {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.formGroup label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: bold;
+  font-size: 14px;
+  color: #555;
+}
+
+.formGroup input {
+  width: 100%;
+  padding: 10px;
+  font-size: 14px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.formGroup input:focus {
+  border-color: #007bff;
+  box-shadow: 0 0 5px rgba(0, 123, 255, 0.5);
+  outline: none;
+}
+
+.resetButton {
+  padding: 10px 15px;
+  font-size: 16px;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+.resetButton:hover {
+  background-color: #0056b3;
+  transition: 0.3s;
+}
+
+.button {
+  padding: 10px 15px;
+  font-size: 12px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  text-align: center;
+  transition: background-color 0.3s ease;
+}
+
+.button:hover {
+  background-color: #0056b3;
+}
+
+.button:disabled {
+  background-color: #cccccc;
+  cursor: not-allowed;
+}
+

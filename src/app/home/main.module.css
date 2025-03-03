@@ -1,0 +1,121 @@
+
+/* Container - Fullscreen layout */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    background-color: #f0f2f5;
+    padding: 20px;
+  }
+  
+  /* Title */
+  .title {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #075e54;
+  }
+
+  .header {
+    display: flex;
+    width: 100%;
+    max-width: 400px;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  
+  /* Chat List */
+
+  .chatList {
+    width: 100%;
+    max-width: 400px;
+    background: white;
+    border-radius: 10px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+  }
+  
+  /* Chat Item */
+  .chatItem {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    border-bottom: 1px solid #ddd;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .chatItem:hover {
+    background: #f5f5f5;
+  }
+  
+  /* Profile Picture */
+  .profilePic {
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background-color: #4a90e2;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    font-weight: bold;
+    margin-right: 15px;
+  }
+  
+  /* User Name */
+  .userName {
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+  }
+  
+  /* No Users Message */
+  .noUsers {
+    text-align: center;
+    color: #888;
+    padding: 20px;
+  }
+  
+  /* Logout Button */
+  .logoutButton {
+    background-color: #ff4d4d;
+    color: white;
+    padding: 10px 20px;
+    font-size: 0.8rem;
+    font-weight: bold;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+  }
+  
+  .logoutButton:hover {
+    background-color: #cc0000;
+  }
+
+  .online {
+    color: green;
+    font-weight: bold;
+  }
+  
+  .offline {
+    color: gray;
+    font-weight: bold;
+  }
+  
+
+
+  @media (max-width: 668px) {
+    .container{
+    height: auto;
+    background-color: white;
+    }
+    .chatList{
+      background: #fcfcfc;
+    }
+  }
