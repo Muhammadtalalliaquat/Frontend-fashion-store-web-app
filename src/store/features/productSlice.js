@@ -5,7 +5,7 @@ import { fetchProducts, addProduct, editProduct, deleteProduct } from "../../ser
 
 export const getAllProducts = createAsyncThunk("products/fetch", async () => {
     const response = await fetchProducts();
-    console.log("API Response:", response); // ✅ Check if this logs data
+    console.log("API Response:", response);
     return response;
 });
 
