@@ -6,9 +6,10 @@ const nextConfig: NextConfig = {
     remotePatterns: [
       {
         protocol: "https",
-        hostname: "images.unsplash.com", // Use direct image URLs from Unsplash
-      },
+        hostname: "images.unsplash.com",
+      }
     ],
+    domains: ["https://back-end-fashion-web-app-server-production.up.railway.app"], 
   },
 };
 
