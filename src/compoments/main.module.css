@@ -128,3 +128,140 @@
   .error {
     color: #e74c3c;
   }
+
+
+
+  /* Navbar styling */
+
+  .navbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+  color: #fff;
+
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+
+  backdrop-filter: blur(12px);
+  transition: all 0.3s ease-in-out;
+    background-color: #f0f2f0;
+
+}
+
+.navbar.scrolled {
+
+  /* background: rgba(0, 0, 0, 0.85); */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.menu {
+  display: flex;
+  list-style: none;
+  gap: 2.5rem;
+  
+}
+
+.menu li {
+  cursor: pointer;
+  font-weight: bold;
+  color: grey;
+  transition: color 0.3s ease, transform 0.2s ease;
+
+}
+
+.menu li:hover {
+  color: #0066ff;
+  transform: translateY(-2px);
+}
+
+.menu li::after {
+  content: "";
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background-color: #0066ff;
+  transition: width 0.3s ease, left 0.3s ease;
+}
+
+.menu li:hover::after {
+  width: 100%;
+  left: 0;
+}
+
+.navbar .login {
+  font-weight: bold;
+  cursor: pointer;
+  padding: 6px 14px;
+  border-radius: 6px;
+  border: 2px solid gray;
+  color: grey;
+  transition: 0.3s ease-in-out;
+}
+
+.navbar .login:hover {
+  border-color: #0066ff;
+  color: #0066ff;
+}
+
+.btn {
+  font-size: 1.5em;
+  font-weight: bold;
+  letter-spacing: 0.1em;
+  background: linear-gradient(90deg, #00ccff, #0066ff);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.hamburger {
+  display: none;
+  font-size: 1.5rem;
+  background: none;
+  border: none;
+  color: #fff;
+  cursor: pointer;
+}
+
+@media (max-width: 768px) {
+  .menu {
+    opacity: 0;
+    transform: translateX(100%);
+    transition: opacity 0.4s ease, transform 0.4s ease-in-out;
+    position: absolute;
+    top: 60px;
+    right: 0;
+    /* background: rgba(0, 102, 255, 0.3); */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+    width: 100%;
+    border-radius: 8px;
+    padding: 1rem;
+    pointer-events: none;
+    display: flex;
+    flex-direction: column;
+    /* color: #fff; */
+  }
+
+  .menu_open {
+    opacity: 1;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+
+  .hamburger {
+    display: block;
+    width: 30px;
+    height: 24px;
+    transition: transform 0.3s ease;
+  }
+
+  .hamburger.open {
+    transform: rotate(90deg);
+  }
+}
+
+  

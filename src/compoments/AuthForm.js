@@ -29,7 +29,12 @@ export default function AuthForm() {
         const result = await dispatch(loginUser({ email, password }));
         console.log(result.user, "datat revicced");
         if (result.success) {
-          router.push("/home");
+          if (result.user?.isAdmin === true) {
+            router.push("/admin-add-product");
+          } else {
+            router.push("/fashion-store");
+          }
+          // router.push("/adminDashboard");
         } else {
           console.log("Please verify your email before proceeding.");
         }

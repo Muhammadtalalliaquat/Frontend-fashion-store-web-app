@@ -32,7 +32,7 @@ export default function ProductList() {
 //   };
 
   return (
-    <div className="p-6">
+    <div className="p-6 mt-16">
       <h2 className="text-3xl font-bold mb-6">Products</h2>
       {status === "loading" && <p>Loading products...</p>}
       {status === "failed" && <p className="text-red-500">Error: {error}</p>}

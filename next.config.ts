@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
       }
     ],
-    domains: ["https://back-end-fashion-web-app-server-production.up.railway.app"], 
+    domains: ["i.postimg.cc"],
   },
 };
 

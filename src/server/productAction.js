@@ -2,7 +2,6 @@
 import axios from "axios";
 import { ApiRoutes } from "../constant/constant";
 
-// Fetch all products
 export const fetchProducts = async () => {
     try {
         const response = await axios.get(ApiRoutes.getProduct);
@@ -13,11 +12,21 @@ export const fetchProducts = async () => {
     }
 };
 
-// Add a new product
 export const addProduct = async (productData) => {
     try {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            console.error("Token is missing!");
+            return;
+        }
+
+        console.log("Token before sending request:", token);
+
         const response = await axios.post(ApiRoutes.addProduct, productData, {
-            headers: { "Content-Type": "multipart/form-data" },
+            headers: { 
+                Authorization: `Bearer ${token}`
+            },
         });
         console.log("Product added:", response.data);
         return response.data;
@@ -26,7 +35,6 @@ export const addProduct = async (productData) => {
     }
 };
 
-// Edit a product
 export const editProduct = async (id, productData) => {
     try {
         const response = await axios.put(`${ApiRoutes.editProduct}/${id}`, productData);
@@ -37,7 +45,6 @@ export const editProduct = async (id, productData) => {
     }
 };
 
-// Delete a product
 export const deleteProduct = async (id) => {
     try {
         const response = await axios.delete(`${ApiRoutes.deleteProduct}/${id}`);
