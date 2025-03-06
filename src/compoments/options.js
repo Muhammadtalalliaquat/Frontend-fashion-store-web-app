@@ -1,7 +1,21 @@
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react'
 import { ChevronDownIcon } from '@heroicons/react/20/solid'
+import { useDispatch } from "react-redux";
+import { clearUser } from "@/store/features/userSlice";
+import { useRouter } from "next/navigation";
+import Link from "next/link";
 
 export default function OptionsMenu() {
+
+  const dispatch = useDispatch();
+  const router = useRouter();
+
+  const logOut = () => {
+    dispatch(clearUser())
+    localStorage.removeItem("token");
+    localStorage.removeItem("user");
+    router.push("/");
+  }
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -17,33 +31,33 @@ export default function OptionsMenu() {
       >
         <div className="py-1">
           <MenuItem>
-            <a
+            <Link
               href="#"
               className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
             >
               Acount settings
-            </a>
+            </Link>
           </MenuItem>
           
         </div>
         <div className="py-1">
           <MenuItem>
-            <a
-              href="#"
+            <Link
+              href="/login"
               className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
             >
               Log in
-            </a>
+            </Link>
           </MenuItem>
         </div>
         <div className="py-1">
           <MenuItem>
-            <a
-              href="#"
+            <Link onClick={logOut}
+              href="/"
               className="block px-4 py-2 text-sm text-gray-700 data-focus:bg-gray-100 data-focus:text-gray-900 data-focus:outline-hidden"
             >
               Sign out
-            </a>
+            </Link>
           </MenuItem>
         </div>
       </MenuItems>

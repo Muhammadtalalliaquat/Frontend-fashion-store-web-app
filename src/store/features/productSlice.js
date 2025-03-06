@@ -39,10 +39,17 @@ const productSlice = createSlice({
                 state.error = action.payload;
             })
             .addCase(createProduct.fulfilled, (state, action) => {
-                state.products.push(action.payload);
+                if (Array.isArray(state.products)) {
+                    state.products.push(action.payload);
+                } else {
+                    state.products = [action.payload];
+                }
             })
             .addCase(removeProduct.fulfilled, (state, action) => {
-                state.products = state.products.filter(product => product._id !== action.payload);
+                // state.products = state.products.filter(product => product._id !== action.payload);
+                if (Array.isArray(state.products)) {
+                    state.products = state.products.filter(product => product._id !== action.payload);
+                }
             });
     }
 });
