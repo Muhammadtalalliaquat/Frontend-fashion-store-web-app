@@ -1,8 +1,10 @@
+"use client";
 
 import Navbar from "../../compoments/navbar";
-import ProductList from "../../compoments/ProductList"
+import ProductList from "../../compoments/ProductList";
+import withAdminCheck from "../../HOC/withAuth";
 
-export default function AdminDashboard() {
+function AdminDashboard() {
   return (
     <div>
       <Navbar />
@@ -11,3 +13,5 @@ export default function AdminDashboard() {
     </div>
   );
 }
+
+export default withAdminCheck(AdminDashboard);

@@ -1,10 +1,11 @@
+import Navbar from "../../compoments/navbar";
 
+export default function fashionStore() {
+  return (
+    <>
+      <Navbar />
 
-
-export default function fashionStore(){
-    return(
-        <>
-            <h1>Welcome To our site!</h1>
-        </>
-    )
+      <h1>Welcome To our site!</h1>
+    </>
+  );
 }

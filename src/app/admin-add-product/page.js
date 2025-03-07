@@ -1,11 +1,12 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createProduct } from "../../store/features/productSlice";
 import { useRouter } from "next/navigation";
+import withAdminCheck from "../../HOC/withAuth"
 
-export default function ProductPage() {
+ function ProductPage() {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -15,40 +16,37 @@ export default function ProductPage() {
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
   const [stock, setStock] = useState(0);
-  const [isAdmin , settIsAdmin] = useState(false);
-
-
-  useEffect(() => {
-    const userData = JSON.parse(localStorage.getItem("user"));
-    
-    if (!userData || userData.isAdmin !== true) { 
-      alert("Access denied! Only admins can add products.");
-      router.push("/"); 
-    } else {
-      settIsAdmin(true);
-    }
-}, [router]);
-
+  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     const productData = {
       name,
       price,
       category,
       description,
       stock,
+      image,
     };
-  
-    console.log("Product Data:", productData); // Debugging
-  
-    dispatch(createProduct(productData));
-  
+
+    console.log("Product Data:", productData);
+
+    const result = await dispatch(createProduct(productData));
+
+    if (result?.payload?.success) {
+      router.push("/adminDashboard");
+    } else {
+      console.error(
+        "Failed to add product:",
+        result?.payload?.message || "Unknown error"
+      );
+    }
+
     router.push("/adminDashboard");
   };
-  
-  if (!isAdmin) return null;
+
+  // if (!isAdmin) return null;
 
   return (
     <>
@@ -101,12 +99,12 @@ export default function ProductPage() {
             required
           />
 
-          {/* <input
+          <input
             type="file"
             onChange={(e) => setImage(e.target.files[0])}
             className="w-full p-2 border rounded bg-gray-50"
             required
-          /> */}
+          />
 
           <button
             type="submit"
@@ -119,3 +117,6 @@ export default function ProductPage() {
     </>
   );
 }
+
+
+export default withAdminCheck(ProductPage);

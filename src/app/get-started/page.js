@@ -32,6 +32,7 @@ export default function GetStarted() {
               width={500}
               height={500}
               className="relative w-full h-auto rounded-2xl"
+              priority
             />
           </div>
         </div>
