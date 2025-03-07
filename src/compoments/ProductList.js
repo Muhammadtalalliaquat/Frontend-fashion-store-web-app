@@ -3,7 +3,7 @@
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getAllProducts } from "../store/features/productSlice";
-// import Image from "next/image";
+import Image from "next/image";
 
 export default function ProductList() {
   const dispatch = useDispatch();
@@ -26,10 +26,10 @@ export default function ProductList() {
       });
   }, [dispatch]);
 
-//   const handleDelete = (id) => {
-//     dispatch(removeProduct(id));
-//     setProducts((prev) => prev.filter((product) => product._id !== id));
-//   };
+  //   const handleDelete = (id) => {
+  //     dispatch(removeProduct(id));
+  //     setProducts((prev) => prev.filter((product) => product._id !== id));
+  //   };
 
   return (
     <div className="p-6 mt-16">
@@ -44,14 +44,15 @@ export default function ProductList() {
               className="bg-white shadow-lg rounded-lg p-4 flex flex-col items-center text-center"
             >
               <div className="relative w-40 h-40 mb-4">
-                {/* <Image
-                  src={`https://back-end-fashion-web-app-server-production.up.railway.app/${product.image}`}
-                  alt={product.name} 
-                  layout="fill"
-                  objectFit="cover"
-                  className="rounded-md"
-                  priority
-                /> */}
+                  <Image
+                    src={product.image}
+                    alt="Product"
+                    width={160}
+                    height={160}
+                    style={{ objectFit: "cover" }}
+                    className="rounded-md"
+                    priority
+                  />
               </div>
               <h3 className="text-lg font-semibold">{product.name}</h3>
               <p className="text-gray-600">${product.price}</p>

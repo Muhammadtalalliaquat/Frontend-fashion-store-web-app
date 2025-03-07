@@ -160,17 +160,19 @@
 
 .menu {
   display: flex;
+  align-items: center;
   list-style: none;
   gap: 2.5rem;
-  
 }
 
 .menu li {
+  position: relative;
   cursor: pointer;
   font-weight: bold;
   color: grey;
   transition: color 0.3s ease, transform 0.2s ease;
-
+  padding-bottom: 5px;
+  margin-top: 8px;
 }
 
 .menu li:hover {
@@ -181,18 +183,21 @@
 .menu li::after {
   content: "";
   position: absolute;
-  bottom: -5px;
-  left: 50%;
-  width: 0;
-  height: 2px;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
   background-color: #73679c;
-  transition: width 0.3s ease, left 0.3s ease;
+  transform: scaleX(0.5); 
+  transition: transform 0.3s ease;
 }
 
 .menu li:hover::after {
-  width: 100%;
-  left: 0;
+  transform: scaleX(1);
+  height: 2%;
+  border-bottom: 2px solid #73679c;
 }
+
 
 .navbar .login {
   font-weight: bold;
@@ -231,6 +236,8 @@
 
 @media (max-width: 768px) {
   .menu {
+    display: flex;
+    align-items: flex-start;
     background-color: white;
     opacity: 0;
     transform: translateX(100%);
@@ -254,6 +261,7 @@
     opacity: 1;
     transform: translateX(0);
     pointer-events: auto;
+    
   }
 
   .hamburger {

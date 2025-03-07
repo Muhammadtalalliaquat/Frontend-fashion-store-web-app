@@ -4,7 +4,7 @@ import styles from "../compoments/main.module.css";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import OptionsMenu from "./options";
-
+import ProductOptions from "./productOptions";
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -32,7 +32,8 @@ function Navbar() {
 
       <ul className={`${styles.menu} ${isMenuOpen ? styles.menu_open : ""}`}>
         <li>
-          <select
+          Products
+          {/* <select
             className={styles.dropdownSelect}
             onChange={(e) => {
               const selectedValue = e.target.value;
@@ -45,21 +46,12 @@ function Navbar() {
             <option value="/items/mens-watches">Men's Watches</option>
             <option value="/items/womens-watches">Women's Watches</option>
             <option value="/items/jewelry">Jewelry</option>
-          </select>
+          </select> */}
+          {/* <ProductOptions /> */}
         </li>
         <li>Shop</li>
         <li>Contact</li>
       </ul>
-
-      {/* Right: Login Button */}
-      {/* {!isMenuOpen && (
-        <div
-          className={styles.login}
-          onClick={() => onScroll(sections.contact)}
-        >
-          Login
-        </div>
-      )} */}
 
       <OptionsMenu />
 

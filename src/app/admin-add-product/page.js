@@ -4,9 +4,9 @@ import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { createProduct } from "../../store/features/productSlice";
 import { useRouter } from "next/navigation";
-import withAdminCheck from "../../HOC/withAuth"
+import withAdminCheck from "../../HOC/withAuth";
 
- function ProductPage() {
+function ProductPage() {
   const dispatch = useDispatch();
   const router = useRouter();
 
@@ -16,37 +16,35 @@ import withAdminCheck from "../../HOC/withAuth"
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
   const [stock, setStock] = useState(0);
-  
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const productData = {
-      name,
-      price,
-      category,
-      description,
-      stock,
-      image,
-    };
+    const formData = new FormData();
 
-    console.log("Product Data:", productData);
+    formData.append("name", name);
+    formData.append("price", price);
+    formData.append("category", category);
+    formData.append("description", description);
+    formData.append("stock", stock);
+    formData.append("image", image);
 
-    const result = await dispatch(createProduct(productData));
+    console.log("Product Data:", formData);
 
-    if (result?.payload?.success) {
-      router.push("/adminDashboard");
-    } else {
-      console.error(
-        "Failed to add product:",
-        result?.payload?.message || "Unknown error"
-      );
-    }
+    dispatch(createProduct(formData));
+
+    // if (result?.payload?.success) {
+    //   router.push("/adminDashboard");
+    // } else {
+    //   console.error(
+    //     "Failed to add product:",
+    //     result?.payload?.message || "Unknown error"
+    //   );
+    // }
 
     router.push("/adminDashboard");
   };
 
-  // if (!isAdmin) return null;
 
   return (
     <>
@@ -117,6 +115,5 @@ import withAdminCheck from "../../HOC/withAuth"
     </>
   );
 }
-
 
 export default withAdminCheck(ProductPage);

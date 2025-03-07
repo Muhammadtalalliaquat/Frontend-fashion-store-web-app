@@ -5,7 +5,7 @@ import { ApiRoutes } from "../constant/constant";
 export const fetchProducts = async () => {
     try {
         const response = await axios.get(ApiRoutes.getProduct);
-        console.log("Products fetched:", response.data);
+        // console.log("Products fetched:", response.data);
         return response.data;
     } catch (error) {
         console.error("Failed to fetch products:", error.response?.data || error.message);
@@ -28,7 +28,7 @@ export const addProduct = async (productData) => {
                 Authorization: `Bearer ${token}`
             },
         });
-        console.log("Product added:", response.data);
+        // console.log("API Response: Product added:", response.data);
         return response.data;
     } catch (error) {
         console.error("Failed to add product:", error.response?.data || error.message);

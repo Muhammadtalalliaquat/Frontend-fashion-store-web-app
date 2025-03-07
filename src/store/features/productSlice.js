@@ -10,7 +10,9 @@ export const getAllProducts = createAsyncThunk("products/fetch", async () => {
 });
 
 export const createProduct = createAsyncThunk("products/add", async (productData) => {
-    return await addProduct(productData);
+    const response = await addProduct(productData);
+    console.log("API Response: Product added:", response);
+    return response;
 });
 
 export const updateProduct = createAsyncThunk("products/edit", async ({ id, productData }) => {

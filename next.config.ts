@@ -9,7 +9,7 @@ const nextConfig: NextConfig = {
         hostname: "images.unsplash.com",
       }
     ],
-    domains: ["i.postimg.cc"],
+    domains: ["i.postimg.cc" , "res.cloudinary.com"],
   },
 };
 
