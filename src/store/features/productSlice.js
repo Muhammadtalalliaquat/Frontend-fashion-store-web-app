@@ -20,7 +20,13 @@ export const updateProduct = createAsyncThunk("products/edit", async ({ id, prod
 });
 
 export const removeProduct = createAsyncThunk("products/delete", async (id) => {
-    return await deleteProduct(id);
+    const response = await deleteProduct(id);
+    console.log("API Response: Product deleted:", response);
+
+    if (!response) {
+        throw new Error("No response from API");
+    }
+    return id;
 });
 
 const productSlice = createSlice({
@@ -48,7 +54,7 @@ const productSlice = createSlice({
                 }
             })
             .addCase(removeProduct.fulfilled, (state, action) => {
-                // state.products = state.products.filter(product => product._id !== action.payload);
+                // state.products = state.products.filter((product) => product._id !== action.payload);
                 if (Array.isArray(state.products)) {
                     state.products = state.products.filter(product => product._id !== action.payload);
                 }

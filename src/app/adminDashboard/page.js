@@ -31,11 +31,6 @@ function AdminDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  // const handleDelete = (id) => {
-  //   //     dispatch(removeProduct(id));
-  //   //     setProducts((prev) => prev.filter((product) => product._id !== id));
-  //   //   };
-
   return (
     <div>
       <Navbar />

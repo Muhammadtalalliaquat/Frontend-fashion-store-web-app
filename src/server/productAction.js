@@ -47,10 +47,21 @@ export const editProduct = async (id, productData) => {
 
 export const deleteProduct = async (id) => {
     try {
-        const response = await axios.delete(`${ApiRoutes.deleteProduct}/${id}`);
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            console.error("Token is missing!");
+            return;
+        }
+        const response = await axios.delete(`${ApiRoutes.deleteProduct}/${id}` , {
+            headers: { 
+                Authorization: `Bearer ${token}`
+            },
+        });
         console.log("Product deleted:", response.data);
         return response.data;
     } catch (error) {
         console.error("Failed to delete product:", error.response?.data || error.message);
+        throw error;
     }
 };
