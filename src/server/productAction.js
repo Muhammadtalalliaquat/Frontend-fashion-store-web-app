@@ -4,7 +4,7 @@ import { ApiRoutes } from "../constant/constant";
 
 export const fetchProducts = async () => {
     try {
-        const response = await axios.get(ApiRoutes.getProduct);
+        const response = await axios.get(`${ApiRoutes.getProduct}`);
         // console.log("Products fetched:", response.data);
         return response.data;
     } catch (error) {
@@ -37,7 +37,18 @@ export const addProduct = async (productData) => {
 
 export const editProduct = async (id, productData) => {
     try {
-        const response = await axios.put(`${ApiRoutes.editProduct}/${id}`, productData);
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+          console.error("Token is missing!");
+          return;
+        }
+
+        const response = await axios.put(`${ApiRoutes.editProduct}/${id}`, productData ,{
+            headers: {
+                Authorization: `Bearer ${token}`
+            }
+        });
         console.log("Product updated:", response.data);
         return response.data;
     } catch (error) {

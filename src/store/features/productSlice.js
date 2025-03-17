@@ -16,7 +16,12 @@ export const createProduct = createAsyncThunk("products/add", async (productData
 });
 
 export const updateProduct = createAsyncThunk("products/edit", async ({ id, productData }) => {
-    return await editProduct(id, productData);
+    const response = await editProduct(id, productData);
+     console.log("API Response: Product updated successfully:", response);
+     if (!response) {
+       throw new Error("No response from API");
+     }
+     return response;
 });
 
 export const removeProduct = createAsyncThunk("products/delete", async (id) => {

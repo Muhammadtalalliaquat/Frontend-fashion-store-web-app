@@ -95,18 +95,25 @@ export default function AdminDashboard() {
                     priority
                   />
                 </div>
-
-                <p className="text-gray-700 text-sm mt-3 font-semibold">
-                  ${product.price}
-                </p>
+                    
 
                 <h3 className="text-lg font-semibold text-gray-800 mt-1">
                   {product.name}
                 </h3>
+                
+                <p className="text-gray-700 text-sm mt-3 font-semibold">
+                  ${product.price}
+                </p>
 
                 <button
-                  className="mt-4 text-blue-100 font-semibold opacity-0 group-hover:opacity-20 transition-opacity duration-300 
-                    bg-black bg-opacity-20 px-4 py-2 rounded-md w-full"
+                  className="absolute bottom-2 right-2 text-white font-semibold opacity-40 sm:opacity-0 sm:group-hover:opacity-40 transition-all duration-300 
+             ease-in-out bg-blue-500 bg-opacity-30 backdrop-blur-lg px-4 py-2 rounded-md w-36 
+             transform translate-x-0 sm:translate-x-4 sm:group-hover:translate-x-0"
+                  //     className="absolute bottom-2 right-2 text-white font-semibold opacity-0 group-hover:opacity-40 transition-all duration-300
+                  //  ease-in-out bg-blue-500 bg-opacity-30 backdrop-blur-lg px-4 py-2 rounded-md w-35
+                  //  transform translate-x-4 group-hover:translate-x-0"
+                  // className="mt-4 text-blue-100 font-semibold opacity-0 group-hover:opacity-20 transition-opacity duration-300
+                  //   bg-black bg-opacity-20 px-4 py-2 rounded-md w-full"
                   onClick={() => {
                     const queryString = new URLSearchParams({
                       productId: product._id,

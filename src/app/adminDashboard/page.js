@@ -35,7 +35,7 @@ function AdminDashboard() {
     <div>
       <Navbar />
 
-      <div className="flex items-center justify-between w-full bg-gradient-to-b from-blue-900 to-blue-700 p-10 mt-18 shadow-lg flex-col sm:flex-row">
+      <div className="flex items-center justify-between w-full bg-gradient-to-b from-blue-900 to-blue-700 p-10 mt-17 shadow-lg flex-col sm:flex-row">
         <div className="w-full sm:w-1/2 text-left text-white p-10">
           <h1 className="text-4xl sm:text-5xl font-bold">
             Discover and Find Your Own Fashion
@@ -69,14 +69,13 @@ function AdminDashboard() {
             <FaSpinner className="animate-spin text-5xl text-blue-500" />
           </div>
         ) : products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-8">
             {products.map((product) => (
               <div
                 key={product._id}
                 className="bg-white shadow-lg rounded-lg p-5 flex flex-col items-center text-center 
           transition-transform duration-300 hover:scale-105 hover:shadow-xl border border-gray-200 group relative"
               >
-                {/* Stock Badge on Top */}
                 <span
                   className={`absolute top-3 left-3 text-xs font-bold px-3 py-1 rounded-full text-white z-10 shadow-md
                   ${product.stock > 0 ? "bg-green-500" : "bg-red-500"}
@@ -87,7 +86,6 @@ function AdminDashboard() {
                     : "Out of Stock"}
                 </span>
 
-                {/* Product Image with Gray Overlay */}
                 <div className="relative opacity-100 group-hover:opacity-60 w-44 h-44 overflow-hidden rounded-lg border-b-2 border-gray-300 pb-2">
                   {/* <div className="absolute inset-0 bg-gray-500 opacity-50 transition-opacity duration-300 group-hover:opacity-0"></div> */}
                   <Image
@@ -100,7 +98,6 @@ function AdminDashboard() {
                   />
                 </div>
 
-                {/* Price & Ratings */}
                 <p className="text-gray-700 text-sm mt-3 font-semibold">
                   ${product.price}
                 </p>
@@ -117,12 +114,12 @@ function AdminDashboard() {
                   {product.name}
                 </h3>
 
-                {/* Hidden View Details Button - Appears on Hover */}
                 <button
-                  className="mt-4 text-blue-100 font-semibold opacity-0 group-hover:opacity-20 transition-opacity duration-300 
-                    bg-black bg-opacity-20 px-4 py-2 rounded-md w-full"
-                  // className="mt-4 text-blue-600 font-semibold opacity-0 group-hover:opacity-100 transition-opacity duration-300"
+                  // className="mt-4 text-blue-100 font-semibold opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300
+                  //           `bg-black bg-opacity-20 px-4 py-2 rounded-md w-full"
 
+                  className="mt-4 text-blue-100 font-semibold opacity-20 sm:opacity-0 group-hover:opacity-20 transition-opacity duration-300 
+                    bg-black bg-opacity-20 px-4 py-2 rounded-md w-full"
                   onClick={() => {
                     const queryString = new URLSearchParams({
                       productId: product._id,

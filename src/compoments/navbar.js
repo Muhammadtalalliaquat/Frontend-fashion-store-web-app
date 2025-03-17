@@ -4,7 +4,7 @@ import styles from "../compoments/main.module.css";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import OptionsMenu from "./options";
-import ProductOptions from "./productOptions";
+// import ProductOptions from "./productOptions";
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -26,12 +26,18 @@ function Navbar() {
 
   return (
     <div className={`${styles.navbar} ${isScrolled ? styles.scrolled : ""}`}>
-      <div className={styles.logo}>
-        <span className={styles.btn}>Fashion Store</span>
+      <div className={`${styles.logo} ${isScrolled ? styles.scrolled : ""}`}>
+        <span className={`${styles.btn} ${isScrolled ? styles.scrolled : ""}`}>
+          Fashion Store
+        </span>
       </div>
 
-      <ul className={`${styles.menu} ${isMenuOpen ? styles.menu_open : ""}`}>
-        <li>
+      <ul
+        className={`${styles.menu} ${isMenuOpen ? styles.menu_open : ""} ${
+          isScrolled ? styles.scrolled : ""
+        }`}
+      >
+        <li className={isScrolled ? "scrolled" : ""}>
           Products
           {/* <select
             className={styles.dropdownSelect}
@@ -49,8 +55,8 @@ function Navbar() {
           </select> */}
           {/* <ProductOptions /> */}
         </li>
-        <li>Shop</li>
-        <li>Contact</li>
+        <li className={isScrolled ? "scrolled" : ""}>Shop</li>
+        <li className={isScrolled ? "scrolled" : ""}>Contact</li>
       </ul>
 
       <OptionsMenu />

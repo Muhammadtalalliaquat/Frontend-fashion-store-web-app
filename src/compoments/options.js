@@ -6,10 +6,14 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { IoIosSettings } from "react-icons/io";
 import { LuLogIn } from "react-icons/lu";
+import { GrUserAdmin } from "react-icons/gr";
+import { useEffect, useState } from "react";
+
 
 export default function OptionsMenu() {
   const dispatch = useDispatch();
   const router = useRouter();
+  const [user, setUser] = useState(null);
 
   const logOut = () => {
     dispatch(clearUser());
@@ -17,6 +21,12 @@ export default function OptionsMenu() {
     localStorage.removeItem("user");
     router.push("/");
   };
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
+  }, []);
+
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -36,7 +46,7 @@ export default function OptionsMenu() {
         <div className="py-1">
           <MenuItem>
             <Link
-              href="#"
+              href="/account-details"
               className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
             >
               <IoIosSettings size={18} className="text-gray-500" />
@@ -69,6 +79,19 @@ export default function OptionsMenu() {
             </Link>
           </MenuItem>
         </div>
+        {user?.isAdmin === true && (
+          <div className="py-1">
+            <MenuItem>
+              <Link
+                href="/adminDashboard"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              >
+                <GrUserAdmin />
+                Admin Dashboard
+              </Link>
+            </MenuItem>
+          </div>
+        )}
       </MenuItems>
     </Menu>
   );

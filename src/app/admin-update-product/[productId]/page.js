@@ -1,13 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { createProduct } from "../../store/features/productSlice";
+import {
+  createProduct,
+  updateProduct,
+  getAllProducts,
+} from "../../../store/features/productSlice";
 import { useRouter } from "next/navigation";
-import withAdminCheck from "../../HOC/withAuth";
-import Navbar from "../../compoments/navbar";
+import withAdminCheck from "../../../HOC/withAuth";
+import { useParams } from "next/navigation";
+import Navbar from "../../../compoments/navbar";
 
 function ProductPage() {
+  const params = useParams();
+  const productId = params?.productId;
+
   const dispatch = useDispatch();
   const router = useRouter();
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -18,10 +26,37 @@ function ProductPage() {
   const [description, setDescription] = useState("");
   const [stock, setStock] = useState(0);
 
+  useEffect(() => {
+    console.log(productId);
+    if (productId) {
+      dispatch(getAllProducts(productId))
+        .then((response) => {
+          const data = response.payload;
+          console.log("Product data:", data);
+
+          if (data) {
+            setName(data.name || "");
+            setPrice(data.price || "");
+            setCategory(data.category || "");
+            setDescription(data.description || "");
+            setStock(data.stock || 0);
+            setImage(data.image || null);
+          }
+        })
+        .catch((err) => console.error("Error fetching product:", err));
+    }
+  }, [productId, dispatch]);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    if (!productId) {
+      console.error("Product ID is missing!");
+      return;
+    }
+
     const formData = new FormData();
+
     formData.append("name", name);
     formData.append("price", price);
     formData.append("category", category);
@@ -32,9 +67,16 @@ function ProductPage() {
     console.log("Product Data:", formData);
     setIsSubmitting(true);
 
-    await dispatch(createProduct(formData));
-
-    router.push("/fashion-store");
+    try {
+      if (productId) {
+        await dispatch(updateProduct({ id: productId, productData: formData }));
+      } else {
+        await dispatch(createProduct(formData));
+      }
+      router.push("/fashion-store");
+    } catch (error) {
+      console.error("Error submitting product:", error);
+    }
   };
 
   return (
