@@ -7,6 +7,8 @@ import { setErrorUpdate } from "../../store/features/AccountUpdateSlice";
 import Navbar from "../../compoments/navbar";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import { FaUserCircle } from "react-icons/fa";
+
 
 export default function AcountDetails() {
   const dispatch = useDispatch();
@@ -58,8 +60,11 @@ export default function AcountDetails() {
       <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <div className="w-full max-w-lg bg-white shadow-lg rounded-2xl overflow-hidden">
           <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-6 text-white text-center">
-            <h2 className="text-3xl font-bold mb-2">User Profile</h2>
-            <p className="text-lg">Manage your account details</p>
+            <div className="flex items-center justify-center gap-4">
+              <FaUserCircle className="text-5xl bg-white text-gray-600 rounded-full p-2 shadow-md" />
+              <h2 className="text-3xl font-bold mb-2">Your Profile</h2>
+            </div>
+            <p className="text-lg mt-4">Manage your account details</p>
           </div>
 
           <div className="p-6">

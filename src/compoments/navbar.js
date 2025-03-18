@@ -4,12 +4,16 @@ import styles from "../compoments/main.module.css";
 import { useState, useEffect } from "react";
 import Image from "next/image";
 import OptionsMenu from "./options";
+import { useRouter, usePathname } from "next/navigation";
+
 // import ProductOptions from "./productOptions";
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const pathname = usePathname();
+  const router = useRouter();
 
   useEffect(() => {
     const handleScroll = () => {
@@ -24,6 +28,30 @@ function Navbar() {
     setIsMenuOpen((prev) => !prev);
   };
 
+  const handleNavigate = () => {
+    if (
+      pathname === "/admin-add-product" ||
+      pathname === "/account-details" ||
+      pathname === "/productDetails" ||
+      pathname.startsWith("/admin-update-product")
+    ) {
+      router.push("/fashion-store");
+    }
+    // console.log("Current Path:", pathname);
+  };
+
+  // const handleNavigate = () => {
+  //   if (pathname === "/fashion-store") {
+  //     router.push("/shop");
+  //   } else if (pathname === "/admin-add-product") {
+  //     router.push("/fashion-store");
+  //   } else if (pathname === "/account-details") {
+  //     router.push("/fashion-store");
+  //   } else if (pathname.startsWith("/admin-update-product[productId]")) {
+  //     router.push("/fashion-store");
+  //   }
+  // };
+
   return (
     <div className={`${styles.navbar} ${isScrolled ? styles.scrolled : ""}`}>
       <div className={`${styles.logo} ${isScrolled ? styles.scrolled : ""}`}>
@@ -37,7 +65,14 @@ function Navbar() {
           isScrolled ? styles.scrolled : ""
         }`}
       >
-        <li className={isScrolled ? "scrolled" : ""}>
+        <li onClick={handleNavigate}>
+          {pathname !== "/fashion-store" &&
+            pathname !== "/adminDashboard" &&
+            // !pathname.includes("/admin-update-product") &&
+            "Home"}
+        </li>
+
+        <li>
           Products
           {/* <select
             className={styles.dropdownSelect}
@@ -55,8 +90,8 @@ function Navbar() {
           </select> */}
           {/* <ProductOptions /> */}
         </li>
-        <li className={isScrolled ? "scrolled" : ""}>Shop</li>
-        <li className={isScrolled ? "scrolled" : ""}>Contact</li>
+        <li>Shop</li>
+        <li>Contact</li>
       </ul>
 
       <OptionsMenu />
