@@ -12,6 +12,8 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
 import { removeProduct } from "../../store/features/productSlice";
+import { addCartItem } from "../../store/features/productCartSlice";
+
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -33,13 +35,11 @@ export default function ProductDetails() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const dispatch = useDispatch();
 
-  // const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
 
-    // setLoading(false);
 
     console.log(
       "Product data here",
@@ -50,7 +50,7 @@ export default function ProductDetails() {
       description,
       image
     );
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleDelete = async () => {
@@ -68,6 +68,26 @@ export default function ProductDetails() {
     } catch (error) {
       console.error("Error deleting product:", error);
     }
+  };
+
+  const handleAddToCart = () => {
+    const productCartData = {
+      productId,
+      name,
+      price,
+      category,
+      description,
+      image,
+      quantity,
+    };
+
+    dispatch(addCartItem(productCartData)).then((result) => {
+      if (addCartItem.fulfilled.match(result)) {
+        router.push("/productCart");
+      } else {
+        console.log("Failed to add item to cart. Please try again.");
+      }
+    });
   };
 
   // const updateProductHandler = async () => {
@@ -191,7 +211,7 @@ export default function ProductDetails() {
               <span className="ml-2 text-sm text-gray-600">(120 Reviews)</span>
             </div>
 
-            <div className="flex items-center gap-3">
+            {/* <div className="flex items-center gap-3">
               <label className="text-gray-700 font-medium">Quantity:</label>
               <button
                 onClick={() => setQuantity(Math.max(1, quantity - 1))}
@@ -206,12 +226,38 @@ export default function ProductDetails() {
               >
                 +
               </button>
+            </div> */}
+
+            <div className="flex items-center gap-3">
+              <label className="text-gray-700 font-medium">Quantity:</label>
+              <button
+                onClick={() => setQuantity((prev) => Math.max(1, prev - 1))}
+                className="px-3 py-1 text-lg bg-gray-200 rounded-md hover:bg-gray-300"
+              >
+                -
+              </button>
+              <span className="text-lg font-semibold">{quantity}</span>
+              <button
+                onClick={() => setQuantity((prev) => prev + 1)}
+                className="px-3 py-1 text-lg bg-gray-200 rounded-md hover:bg-gray-300"
+              >
+                +
+              </button>
             </div>
 
-            <button className="mt-4 flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition">
-              <ShoppingCartIcon className="w-5 h-5" />
-              Add to Cart
-            </button>
+            {user ? (
+              <button
+                onClick={handleAddToCart}
+                className="mt-4 flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition"
+              >
+                <ShoppingCartIcon className="w-5 h-5" />
+                Add to Cart
+              </button>
+            ) : (
+              <p className="text-gray-600 font-semibold">
+                Sign up to add items to your cart.
+              </p>
+            )}
           </div>
         </div>
 

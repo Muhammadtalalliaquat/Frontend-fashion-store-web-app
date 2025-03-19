@@ -8,7 +8,7 @@ import { IoIosSettings } from "react-icons/io";
 import { LuLogIn } from "react-icons/lu";
 import { GrUserAdmin } from "react-icons/gr";
 import { useEffect, useState } from "react";
-
+import { AiFillProduct } from "react-icons/ai";
 
 export default function OptionsMenu() {
   const dispatch = useDispatch();
@@ -79,6 +79,20 @@ export default function OptionsMenu() {
             </Link>
           </MenuItem>
         </div>
+        {user && (
+          <div className="py-1">
+            <MenuItem>
+              <Link
+                href="/productCart"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              >
+                <AiFillProduct color="blue" />
+                Cart items
+              </Link>
+            </MenuItem>
+          </div>
+        )}
+
         {user?.isAdmin === true && (
           <div className="py-1">
             <MenuItem>

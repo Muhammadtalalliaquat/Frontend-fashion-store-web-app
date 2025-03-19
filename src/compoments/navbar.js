@@ -33,24 +33,13 @@ function Navbar() {
       pathname === "/admin-add-product" ||
       pathname === "/account-details" ||
       pathname === "/productDetails" ||
+      pathname === "/productCart" ||
       pathname.startsWith("/admin-update-product")
     ) {
       router.push("/fashion-store");
     }
     // console.log("Current Path:", pathname);
   };
-
-  // const handleNavigate = () => {
-  //   if (pathname === "/fashion-store") {
-  //     router.push("/shop");
-  //   } else if (pathname === "/admin-add-product") {
-  //     router.push("/fashion-store");
-  //   } else if (pathname === "/account-details") {
-  //     router.push("/fashion-store");
-  //   } else if (pathname.startsWith("/admin-update-product[productId]")) {
-  //     router.push("/fashion-store");
-  //   }
-  // };
 
   return (
     <div className={`${styles.navbar} ${isScrolled ? styles.scrolled : ""}`}>
