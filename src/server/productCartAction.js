@@ -53,3 +53,56 @@ export const addCart = async (productCartData) => {
     throw error;
   }
 };
+
+
+
+export const deleteProductCart = async (id) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("Token is missing!");
+      return;
+    }
+    const response = await axios.delete(`${ApiRoutes.deleteCart}/${id}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+    console.log("Product Cart deleted successfully::", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Failed to delete product:",
+      error.response?.data || error.message
+    );
+    throw error;
+  }
+};
+
+
+export const editProductCart = async (productId, cartData) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("Token is missing!");
+      return;
+    }
+
+    const response = await axios.put(`${ApiRoutes.updateCart}/${productId}`, cartData , {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("Product cart updated in item:", response.data);
+    // return { productId, quantity };
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Failed to edit product:",
+      error.response?.data || error.message
+    );
+  }
+};

@@ -2,7 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { getAllCart } from "../../store/features/productCartSlice";
+import {
+  getAllCart,
+  removeCartItem,
+  updateProductCart,
+} from "../../store/features/productCartSlice";
 // import { TrashIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Navbar from "../../compoments/navbar";
@@ -18,6 +22,7 @@ export default function ProductCartPage() {
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [carts, setCart] = useState([]);
+  const [quantities, setQuantities] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -37,10 +42,44 @@ export default function ProductCartPage() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  //   const handleRemoveItem = (id) => {
-  //     dispatch(removeCartItem(id));
-  //     setCart((prev) => prev.filter((item) => item._id !== id));
-  //   };
+  const handleRemoveItem = (id) => {
+    console.log("Removing cart item with ID:", id);
+
+    if (!id || typeof id !== "string") {
+      console.error("Invalid ID type:", id);
+      return;
+    }
+    setCart((prev) => prev.filter((item) => item.productId._id !== id));
+
+    dispatch(removeCartItem(id));
+  };
+
+  const handleQuantityChange = (productId, newQuantity) => {
+    setQuantities((prev) => ({
+      ...prev,
+      [productId]: newQuantity,
+    }));
+  };
+
+  const handleAddToCartEdit = (productId) => {
+    if (!productId) {
+      console.error("Product ID is missing!");
+      return;
+    }
+
+    const newQuantity = quantities[productId] ?? 1;
+
+    console.log(
+      "Updating Product ID:",
+      productId,
+      "New Quantity:",
+      newQuantity
+    );
+
+    dispatch(
+      updateProductCart({ productId, cartData: { quantity: newQuantity } })
+    );
+  };
 
   return (
     <>
@@ -75,11 +114,25 @@ export default function ProductCartPage() {
 
                     {isMenuOpen === item._id && (
                       <div className="absolute right-0 mt-2 w-32 bg-white shadow-md rounded-lg p-2 z-10">
-                        <button className="flex items-center gap-1 w-full text-sm font-semibold text-gray-700 px-3 py-1 rounded-lg hover:bg-blue-100 transition">
+                        <button
+                          onClick={() =>
+                            handleAddToCartEdit(
+                              item.productId._id,
+                              item.quantity
+                            )
+                          }
+                          className="flex items-center gap-1 w-full text-sm font-semibold text-gray-700 px-3 py-1 rounded-lg hover:bg-blue-100 transition"
+                        >
                           <PencilSquareIcon className="w-4 h-4" />
                           Edit
                         </button>
-                        <button className="flex items-center gap-1 w-full text-sm font-semibold text-red-500 px-3 py-1 rounded-lg hover:bg-red-100 transition">
+                        <button
+                          onClick={() => {
+                            handleRemoveItem(item.productId._id);
+                          }}
+                          // onClick={(e) => handleRemoveItem(item.productId, e)}
+                          className="flex items-center gap-1 w-full text-sm font-semibold text-red-500 px-3 py-1 rounded-lg hover:bg-red-100 transition"
+                        >
                           <TrashIcon className="w-4 h-4" />
                           Delete
                         </button>
@@ -105,42 +158,36 @@ export default function ProductCartPage() {
                       <p className="text-sm text-gray-600 line-clamp-2 sm:truncate">
                         {item.productId?.description}
                       </p>
-                      <p className="text-md font-medium text-indigo-600">
+                      <p className="text-md mt-1 font-medium text-indigo-600">
                         ${item.productId?.price}
                       </p>
                     </div>
                   </div>
 
-                  <div className="relative flex items-center gap-3 sm:gap-4 mt-6 sm:mt-14">
+                  <div className="relative flex items-center gap-3 sm:gap-4 mt-6 sm:mt-11 border-t border-gray-300 pt-4 sm:border-0">
                     <button
-                      onClick={() =>
-                        setCarts((prev) =>
-                          prev.map((p) =>
-                            p._id === item._id
-                              ? { ...p, quantity: Math.max(1, p.quantity - 1) }
-                              : p
-                          )
-                        )
-                      }
+                      onClick={() => {
+                        const newQuantity = Math.max(
+                          1,
+                          (quantities[item.productId._id] || item.quantity) - 1
+                        );
+                        handleQuantityChange(item.productId._id, newQuantity);
+                      }}
                       className="w-9 h-9 flex items-center justify-center text-lg bg-gray-200 rounded-md hover:bg-gray-300 transition"
                     >
                       -
                     </button>
 
                     <span className="text-lg font-semibold">
-                      {item.quantity}
+                      {quantities[item.productId._id] || item.quantity}
                     </span>
 
                     <button
-                      onClick={() =>
-                        setCarts((prev) =>
-                          prev.map((p) =>
-                            p._id === item._id
-                              ? { ...p, quantity: p.quantity + 1 }
-                              : p
-                          )
-                        )
-                      }
+                      onClick={() => {
+                        const newQuantity =
+                          (quantities[item.productId._id] || item.quantity) + 1;
+                        handleQuantityChange(item.productId._id, newQuantity);
+                      }}
                       className="w-9 h-9 flex items-center justify-center text-lg bg-gray-200 rounded-md hover:bg-gray-300 transition"
                     >
                       +
@@ -149,7 +196,6 @@ export default function ProductCartPage() {
                 </div>
               ))}
 
-              {/* Checkout Button */}
               <button className="w-full mt-6 bg-indigo-600 text-white py-3 rounded-lg shadow-md hover:bg-indigo-700 transition text-lg font-medium">
                 Proceed to Checkout
               </button>

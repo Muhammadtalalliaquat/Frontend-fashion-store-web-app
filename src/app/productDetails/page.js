@@ -17,7 +17,6 @@ import { addCartItem } from "../../store/features/productCartSlice";
 import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-
 // import { ClipLoader } from "react-spinners";
 
 export default function ProductDetails() {

@@ -1,5 +1,10 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { fetchCart, addCart } from "../../server/productCartAction";
+import {
+  fetchCart,
+  addCart,
+  deleteProductCart,
+  editProductCart,
+} from "../../server/productCartAction";
 
 export const getAllCart = createAsyncThunk("carts/fetch", async () => {
   const response = await fetchCart();
@@ -12,6 +17,29 @@ export const addCartItem = createAsyncThunk("carts/add", async (productCartData)
     console.log("API Response: Product add in cart item successfully:", response);
     return response;
 });
+
+
+export const removeCartItem = createAsyncThunk("carts/delete", async (id) => {
+  const response = await deleteProductCart(id);
+  console.log("API Response: Product Cart deleted:", response);
+
+  if (!response) {
+    throw new Error("No response from API");
+  }
+  return id;
+});
+
+
+export const updateProductCart = createAsyncThunk("carts/edit", async ({ productId, cartData }) => {
+    const response = await editProductCart(productId, cartData);
+    console.log("API Response: Product Cart updated successfully:", response);
+    if (!response) {
+      throw new Error("No response from API");
+    }
+    return response;
+  }
+);
+
 
 const productCartSlice = createSlice({
   name: "cart",
@@ -36,15 +64,14 @@ const productCartSlice = createSlice({
         } else {
           state.cart = [action.payload];
         }
+      })
+      .addCase(removeCartItem.fulfilled, (state, action) => {
+        if (Array.isArray(state.cart)) {
+          state.cart = state.cart.filter(
+            (product) => product._id !== action.payload
+          );
+        }
       });
-    // Uncomment this when needed
-    // .addCase(removeProduct.fulfilled, (state, action) => {
-    //   if (Array.isArray(state.cart)) {
-    //     state.cart = state.cart.filter(
-    //       (product) => product._id !== action.payload
-    //     );
-    //   }
-    // });
   },
 });
 

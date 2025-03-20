@@ -35,7 +35,7 @@ export default function EmailVerifyComponent() {
   useEffect(() => {
     console.log(isVerified);
     if (isVerified) {
-      router.push("/home");
+      router.push("/fashion-store");
     }
   }, [isVerified, router]);
 
