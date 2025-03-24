@@ -14,6 +14,7 @@ function Navbar() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
+  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -54,7 +55,9 @@ function Navbar() {
           isScrolled ? styles.scrolled : ""
         }`}
       >
-        <li onClick={handleNavigate}>
+        <li 
+        className={pathname === "/fashion-store" ? `${styles.hide_on_mobile}` : ""} 
+        onClick={handleNavigate}>
           {pathname !== "/fashion-store" &&
             pathname !== "/adminDashboard" &&
             // !pathname.includes("/admin-update-product") &&
