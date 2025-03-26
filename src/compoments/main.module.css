@@ -1,5 +1,4 @@
-/* General container styles */
-.container {
+/* .container {
   max-width: 400px;
   margin: 2rem auto;
   background: linear-gradient(135deg, #ffffff, #f9fafb);
@@ -10,7 +9,6 @@
   overflow: hidden;
 }
 
-/* Title */
 .title {
   font-size: 1.8rem;
   font-weight: 700;
@@ -30,14 +28,12 @@
   border-radius: 10px;
 }
 
-/* Form */
 .form {
   display: flex;
   flex-direction: column;
   gap: 1.2rem;
 }
 
-/* Input group */
 .inputGroup {
   display: flex;
   flex-direction: column;
@@ -64,7 +60,6 @@
   box-shadow: 0 0 4px rgba(74, 144, 226, 0.5);
 }
 
-/* Button */
 .button {
   padding: 0.8rem;
   background-color: #4a90e2;
@@ -86,7 +81,6 @@
   transform: scale(0.98);
 }
 
-/* Footer */
 .footer {
   margin-top: 2rem;
   text-align: center;
@@ -113,7 +107,6 @@
   color: #3a78c3;
 }
 
-/* Messages */
 .message {
   margin-top: 1rem;
   font-size: 0.9rem;
@@ -126,7 +119,7 @@
 
 .error {
   color: #e74c3c;
-}
+} */
 
 /* Navbar styling */
 

@@ -17,13 +17,15 @@ import { addCartItem } from "../../store/features/productCartSlice";
 import {
   getAllReview,
   addProductReview,
+  removeReviews,
 } from "../../store/features/productReviewSlice";
 import { IoIosArrowBack } from "react-icons/io";
 import { FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
-import { shallowEqual, useDispatch } from "react-redux";
+import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { FcDeleteRow } from "react-icons/fc";
 // import { ClipLoader } from "react-spinners";
 
 export default function ProductDetails() {
@@ -45,12 +47,7 @@ export default function ProductDetails() {
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
-  const [showAddReview , setShowAddReview] = useState(false);
-
-  // const toggleReviewSection = () => {
-  //   setShowAddReview(!showAddReview)
-  // }
-
+  const [showAddReview, setShowAddReview] = useState(false);
 
   const handleStarClick = (value) => {
     setRating(value);
@@ -59,37 +56,9 @@ export default function ProductDetails() {
   // const handleInputChange = (e) => {
   //   let value = parseFloat(e.target.value)
   //   if(value >= 1 && value <= 5){
-  //     setRating(value)  
+  //     setRating(value)
   //   }
   // }
-
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    setUser(storedUser);
-
-    console.log(
-      "Product data here",
-      productId,
-      name,
-      price,
-      category,
-      description,
-      image
-    );
-
-    dispatch(getAllReview(productId))
-      .then((result) => {
-        console.log("API Response:", result.payload);
-        setReviews(result.payload.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch Error:", err, error);
-        setError("Failed to load products.");
-        setLoading(false);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [dispatch, productId]);
 
   const handleDelete = async () => {
     if (!productId) {
@@ -128,9 +97,8 @@ export default function ProductDetails() {
     });
   };
 
-
   const handleAddReview = (e) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault();
 
     const productReviewData = {
       productId,
@@ -141,56 +109,81 @@ export default function ProductDetails() {
     dispatch(addProductReview(productReviewData))
       .unwrap()
       .then((newReview) => {
-        console.log("Review added successfully:", newReview);
-        // setReviews((prevReviews) => [...prevReviews, newReview]);
+        console.log("Review added successfully:", newReview.data);
 
-        dispatch(getAllReview(productId));
+        // const reviewWithUser = {
+        //   ...newReview.data,
+        //   createdAt: newReview.data.createdAt || new Date().toISOString(),
+        // };
+
+        // console.log(reviewWithUser, "new review data here");
+
         setRating(0);
         setComment("");
+
+        dispatch(getAllReview(productId))
+          .then((result) => {
+            console.log("API Response:", result.payload);
+            setReviews(result.payload.data);
+            // setLoading(false);
+          })
+          .catch((err) => {
+            console.error("Fetch Error:", err, error);
+            setError("Failed to load products.");
+            // setLoading(false);
+          });
       })
       .catch((err) => {
         console.error("Error adding review:", err);
       });
   };
 
-  // const handleAddReview = async () => {
-  //   try {
-  //     const productReviewData = {
-  //       productId,
-  //       rating,
-  //       comment,
-  //     };
+  const handleRemoveReviews = async (id) => {
+    if (!id) {
+      console.error("Review ID (_id) is missing!");
+      return;
+    }
 
-  //     // const result = await dispatch(addProductReview(productReviewData));
-  //     console.log("Review Added:", productReviewData);
+    console.log(id, "Deleting review with this ID");
 
-  //     // // Optionally, clear input fields or show success message
-  //     // setComment("");
-  //     // setRating(0);
-  //   } catch (error) {
-  //     console.error("Error adding review:", error);
-  //   }
-  // };
+    try {
+      const result = await dispatch(removeReviews(id));
+      setReviews((prev) => prev.filter((review) => review._id !== id));
 
-  // const updateProductHandler = async () => {
-  //   if (!productId) {
-  //     console.error("Product ID is missing!");
-  //     return;
-  //   }
+      console.log("Product review deleted successfully:", result);
+    } catch (error) {
+      console.error("Error deleting review product:", error);
+    }
+  };
 
-  //   console.log(productId, "id here");
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
 
-  //   try {
-  //     const productData = { name, price, category, description, image };
-  //     const result = await dispatch(
-  //       updateProduct({ id: productId, productData })
-  //     );
-  //     console.log("Product deleted successfully:", result);
-  //     router.push("/adminDashboard");
-  //   } catch (error) {
-  //     console.error("Error deleting product:", error);
-  //   }
-  // };
+    // console.log(
+    //   "Product data here",
+    //   productId,
+    //   name,
+    //   price,
+    //   category,
+    //   description,
+    //   image
+    // );
+
+    dispatch(getAllReview(productId))
+      .then((result) => {
+        console.log("API Response:", result.payload);
+        setReviews(result.payload.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err, error);
+        setError("Failed to load products.");
+        setLoading(false);
+      });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch, productId]);
+ 
 
   return (
     <>
@@ -334,7 +327,6 @@ export default function ProductDetails() {
             </button>
           </div>
 
-          {/* Smoothly Animated Add Review Section */}
           <motion.div
             initial={{ opacity: 0, height: 0 }}
             animate={{
@@ -379,7 +371,7 @@ export default function ProductDetails() {
 
                 <button
                   type="submit"
-                  className="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700"
+                  className="mt-4 bg-blue-400 font-semibold text-white py-2 px-4 rounded hover:bg-blue-500"
                   disabled={loading}
                 >
                   {loading ? "Submitting..." : "Submit Review"}
@@ -388,54 +380,6 @@ export default function ProductDetails() {
             )}
           </motion.div>
         </div>
-
-        {/* <form
-          onSubmit={handleAddReview}
-          className="p-4 bg-white shadow rounded-lg"
-        >
-          <h3 className="text-xl font-semibold text-gray-800 mb-4">
-            Add a Review
-          </h3>
-
-          <div className="flex space-x-1 mb-3">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <FaStar
-                key={star}
-                size={22}
-                className={star <= rating ? "text-yellow-500" : "text-gray-300"}
-                onClick={() => handleStarClick(star)}
-              />
-            ))}
-          </div>
-
-          <label className="block text-gray-700">Rating (1-5):</label>
-          <input
-            type="number"
-            min="1"
-            max="5"
-            step="0.1"
-            value={rating}
-            onChange={handleInputChange}
-            className="w-full border p-2 rounded mt-1"
-            required
-          />
-
-          <label className="block text-gray-700 mt-3">Comment:</label>
-          <textarea
-            value={comment}
-            onChange={(e) => setComment(e.target.value)}
-            className="w-full border p-2 rounded mt-1"
-            required
-          />
-
-          <button
-            type="submit"
-            className="mt-4 bg-blue-600 text-white py-2 px-4 rounded hover:bg-blue-700 flex items-center"
-            disabled={loading}
-          >
-            {loading ? "Submitting..." : "Submit Review"}
-          </button>
-        </form> */}
 
         {/* Reviews Section */}
 
@@ -453,8 +397,12 @@ export default function ProductDetails() {
             {reviews.length > 0 ? (
               <div className="mt-4 space-y-4">
                 {reviews.map((review, index) => (
-                  <div key={index} className="p-4  shadow-sm bg-gray-100">
+                  <div
+                    key={index + review._id}
+                    className="p-4  shadow-sm bg-gray-100"
+                  >
                     <div className="flex items-center justify-between">
+                      {/* User Info */}
                       <h4 className="font-semibold text-gray-900 flex items-center">
                         <span className="text-blue-600 font-bold">
                           {review.userId?.userName || "Anonymous"}
@@ -463,24 +411,46 @@ export default function ProductDetails() {
                           ({index + 1})
                         </span>
                       </h4>
-                      <span className="text-yellow-1000 font-bold flex items-center">
-                        {review.rating}
-                        <Star className="w-5 h-5 ml-1 fill-yellow-500 stroke-none" />
-                      </span>
+                      <div className="flex items-center">
+                        {/* Rating Display */}
+                        <span className="text-yellow-600 font-bold flex items-center">
+                          {review.rating}
+                          <Star className="w-5 h-5 ml-1 fill-yellow-500 stroke-none" />
+                        </span>
+
+                        {/* Delete Button for Admins */}
+                        {user?.isAdmin === true && (
+                          <button
+                            onClick={() => handleRemoveReviews(review._id)}
+                            type="button"
+                            className="ml-4 p-2 rounded-full bg-red-100 hover:bg-red-200 text-red-600 transition-all"
+                            disabled={loading}
+                          >
+                            {loading ? (
+                              "Deleting..."
+                            ) : (
+                              <FcDeleteRow size={20} />
+                            )}
+                          </button>
+                        )}
+                      </div>
                     </div>
+
                     <p className="mt-2 text-gray-700">{review.comment}</p>
 
                     {/* 🕒 Display Time Ago */}
                     <p className="mt-1 text-gray-500 text-sm">
-                      {formatDistanceToNow(new Date(review.createdAt), {
-                        addSuffix: true,
-                      })}
+                      {review.createdAt
+                        ? formatDistanceToNow(new Date(review.createdAt), {
+                            addSuffix: true,
+                          })
+                        : "Date not available"}
                     </p>
                   </div>
                 ))}
               </div>
             ) : (
-              <p className="mt-2 text-gray-500">
+              <p className="mt-2 text-gray-500 text-center">
                 No reviews yet. Be the first to review!
               </p>
             )}
