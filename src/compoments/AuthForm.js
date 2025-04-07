@@ -7,6 +7,7 @@ import { useRouter } from "next/navigation";
 import { ApiRoutes } from "@/constant/constant";
 // import styles from "./main.module.css";
 import axios from "axios";
+// import { signIn, signOut, useSession } from "next-auth/react";
 
 export default function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
@@ -86,184 +87,103 @@ export default function AuthForm() {
   };
 
   return (
-    // <div className={styles.container}>
-    //   <h2 className={styles.title}>{isLogin ? "Login" : "Register"}</h2>
-    //   <form onSubmit={handleSubmit} className={styles.form}>
-    //     {!isLogin && (
-    //       <div className={styles.inputGroup}>
-    //         <label htmlFor="name" className={styles.label}>
-    //           Your Name
-    //         </label>
-    //         <input
-    //           type="text"
-    //           id="name"
-    //           value={userName}
-    //           onChange={(e) => setUserName(e.target.value)}
-    //           placeholder="Enter your name"
-    //           className={styles.input}
-    //           required
-    //         />
-    //       </div>
-    //     )}
+    <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200">
+      <div className="flex items-center justify-center pt-35 bg-cover bg-center bg-no-repeat">
+        <div className="bg-white bg-opacity-90 backdrop-blur-lg shadow-lg rounded-2xl p-8 max-w-sm w-full">
+          <h2 className="text-2xl font-bold text-gray-800 text-center">
+            {isLogin ? "Login" : "Register"}
+          </h2>
+          <div className="w-16 h-1 bg-blue-500 mx-auto mt-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 text-white"></div>
 
-    //     <div className={styles.inputGroup}>
-    //       <label htmlFor="email" className={styles.label}>
-    //         Email Address
-    //       </label>
-    //       <input
-    //         type="email"
-    //         id="email"
-    //         value={email}
-    //         onChange={(e) => setEmail(e.target.value)}
-    //         placeholder="Enter your email"
-    //         className={styles.input}
-    //         required
-    //       />
-    //     </div>
+          <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+            {!isLogin && (
+              <div>
+                <label
+                  className="block text-sm font-semibold text-gray-700 mb-2"
+                  // className="text-sm font-semibold text-gray-600"
+                >
+                  Your Name
+                </label>
+                <input
+                  type="text"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  placeholder="Enter your name"
+                  // className="w-full mt-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300"
+                  className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                  required
+                />
+              </div>
+            )}
 
-    //     <div className={styles.inputGroup}>
-    //       <label htmlFor="password" className={styles.label}>
-    //         Password
-    //       </label>
-    //       <input
-    //         type="password"
-    //         id="password"
-    //         value={password}
-    //         onChange={(e) => setPassword(e.target.value)}
-    //         placeholder="Enter your password"
-    //         className={styles.input}
-    //         required
-    //       />
-    //     </div>
-
-    //     <button type="submit" className={styles.button}>
-    //       {isLogin ? "Login" : "Register"}
-    //     </button>
-    //   </form>
-
-    //   <div className={styles.footer}>
-    //     <p className={styles.switchText}>
-    //       {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-    //       <button
-    //         type="button"
-    //         onClick={() => setIsLogin(!isLogin)}
-    //         className={styles.linkButton}
-    //       >
-    //         {isLogin ? "Register here" : "Login here"}
-    //       </button>
-    //     </p>
-
-    //     {isLogin && (
-    //       <button
-    //         type="button"
-    //         onClick={requestPasswordReset}
-    //         className={styles.linkButton}
-    //       >
-    //         Forgot Password?
-    //       </button>
-    //     )}
-
-    //     {message && (
-    //       <p
-    //         className={`${styles.message} ${
-    //           message.includes("successfully") ? styles.success : styles.error
-    //         }`}
-    //       >
-    //         {message}
-    //       </p>
-    //     )}
-    //     {authError && <p className={styles.error}>{authError}</p>}
-    //   </div>
-    // </div>
-
-    <div className="flex items-center justify-center mt-35 bg-cover bg-center bg-no-repeat">
-      <div className="bg-white bg-opacity-90 backdrop-blur-lg shadow-lg rounded-2xl p-8 max-w-sm w-full">
-        <h2 className="text-2xl font-bold text-gray-800 text-center">
-          {isLogin ? "Login" : "Register"}
-        </h2>
-        <div className="w-16 h-1 bg-blue-500 mx-auto mt-2 rounded"></div>
-
-        <form onSubmit={handleSubmit} className="mt-6 space-y-4">
-          {!isLogin && (
             <div>
-              <label className="text-sm font-semibold text-gray-600">
-                Your Name
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Email Address
               </label>
               <input
-                type="text"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                placeholder="Enter your name"
-                className="w-full mt-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300"
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="Enter your email"
+                // className="w-full mt-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                 required
               />
             </div>
-          )}
 
-          <div>
-            <label className="text-sm font-semibold text-gray-600">
-              Email Address
-            </label>
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Enter your email"
-              className="w-full mt-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300"
-              required
-            />
-          </div>
+            <div>
+              <label className="block text-sm font-semibold text-gray-700 mb-2">
+                Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Enter your password"
+                // className="w-full mt-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300"
+                className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                required
+              />
+            </div>
 
-          <div>
-            <label className="text-sm font-semibold text-gray-600">
-              Password
-            </label>
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              className="w-full mt-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300"
-              required
-            />
-          </div>
-
-          <button
-            type="submit"
-            className="w-full py-3 mt-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-all"
-          >
-            {isLogin ? "Login" : "Register"}
-          </button>
-        </form>
-
-        <div className="mt-4 text-center text-sm text-gray-600">
-          {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-          <button
-            type="button"
-            onClick={() => setIsLogin(!isLogin)}
-            className="text-blue-500 font-semibold hover:underline"
-          >
-            {isLogin ? "Register here" : "Login here"}
-          </button>
-        </div>
-
-        {isLogin && (
-          <div className="mt-2 text-center">
             <button
-              onClick={requestPasswordReset}
-              className="text-blue-500 text-sm font-semibold hover:underline"
+              type="submit"
+              // className="w-full py-3 mt-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-all"
+              className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-lg font-semibold hover:opacity-90 transition disabled:opacity-60"
             >
-              Forgot Password?
+              {isLogin ? "Login" : "Register"}
+            </button>
+          </form>
+
+          <div className="mt-4 text-center text-sm text-gray-600">
+            {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+            <button
+              type="button"
+              onClick={() => setIsLogin(!isLogin)}
+              className="text-blue-500 font-semibold hover:underline"
+            >
+              {isLogin ? "Register here" : "Login here"}
             </button>
           </div>
-        )}
 
-        {message && (
-          <p className="text-green-500 text-sm text-center mt-2">{message}</p>
-        )}
-        {authError && (
-          <p className="text-red-500 text-sm text-center mt-2">{authError}</p>
-        )}
+          {isLogin && (
+            <div className="mt-2 text-center">
+              <button
+                onClick={requestPasswordReset}
+                className="text-blue-500 text-sm font-semibold hover:underline"
+              >
+                Forgot Password?
+              </button>
+            </div>
+          )}
+
+          {message && (
+            <p className="text-green-500 text-sm text-center mt-2">{message}</p>
+          )}
+          {authError && (
+            <p className="text-red-500 text-sm text-center mt-2">{authError}</p>
+          )}
+        </div>
       </div>
     </div>
   );

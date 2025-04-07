@@ -9,7 +9,6 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaUserCircle } from "react-icons/fa";
 
-
 export default function AcountDetails() {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.account);
@@ -91,7 +90,7 @@ export default function AcountDetails() {
             <form onSubmit={handleSubmit} className="space-y-4">
               <div>
                 <label className="block font-medium text-gray-700">
-                  Username
+                  New Username
                 </label>
                 <input
                   type="text"
@@ -104,7 +103,9 @@ export default function AcountDetails() {
               </div>
 
               <div>
-                <label className="block font-medium text-gray-700">Email</label>
+                <label className="block font-medium text-gray-700">
+                  New Email
+                </label>
                 <input
                   type="email"
                   name="email"

@@ -11,7 +11,7 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
 import { formatDistanceToNow } from "date-fns";
-import { Star, Loader, ChevronDown, ChevronUp } from "lucide-react";
+import { Star, Loader, ChevronDown, ChevronUp, CreditCard } from "lucide-react";
 import { removeProduct } from "../../store/features/productSlice";
 import { addCartItem } from "../../store/features/productCartSlice";
 import {
@@ -197,7 +197,7 @@ export default function ProductDetails() {
             </h2>
             <button
               onClick={() => router.push("/fashion-store")}
-              className="flex items-center text-2xl font-bold text-gray-900 hover:text-gray-600 transition"
+              className="flex items-center text-2xl font-bold text-gray-900 bg-white shadow-md rounded-lg p-2 transition-all duration-300 ease-in-out transform "
               aria-label="Go Back"
             >
               <IoIosArrowBack />
@@ -287,16 +287,30 @@ export default function ProductDetails() {
             </div>
 
             {user ? (
-              <button
-                onClick={handleAddToCart}
-                className="mt-4 flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition"
-              >
-                <ShoppingCartIcon className="w-5 h-5" />
-                Add to Cart
-              </button>
+              // <button
+              //   onClick={handleAddToCart}
+              //   className="mt-4 flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition"
+              // >
+              //   <ShoppingCartIcon className="w-5 h-5" />
+              //   Add to Cart
+              // </button>
+              <div className="mt-6 flex flex-col sm:flex-row gap-4">
+                <button
+                  onClick={handleAddToCart}
+                  className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition"
+                >
+                  <ShoppingCartIcon className="w-5 h-5" />
+                  Add to Cart
+                </button>
+
+                <button className="flex items-center justify-center gap-2 bg-pink-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-pink-700 transition">
+                  <CreditCard className="w-5 h-5" />
+                  Buy Now
+                </button>
+              </div>
             ) : (
               <p className="text-gray-600 font-semibold">
-                Sign up to add items to your cart.
+                Sign up to add items to your cart or Buy product.
               </p>
             )}
           </div>
@@ -364,7 +378,8 @@ export default function ProductDetails() {
                   value={comment}
                   onChange={(e) => setComment(e.target.value)}
                   // className="w-full border border-grey-200 p-2 rounded mt-1"
-                  className="w-full border border-gray-300 p-2 rounded mt-1 focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  // className="w-full border border-gray-300 p-2 rounded mt-1 focus:border-gray-400 focus:ring focus:ring-gray-200"
+                  className="w-full px-4 py-3 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
                   placeholder="Write your review here..."
                   required
                 />

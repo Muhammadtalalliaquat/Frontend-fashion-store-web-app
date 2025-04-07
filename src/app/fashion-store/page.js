@@ -68,12 +68,12 @@ export default function AdminDashboard() {
             <FaSpinner className="animate-spin text-5xl text-blue-500" />
           </div>
         ) : products.length > 0 ? (
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
             {products.map((product) => (
               <div
                 key={product._id}
                 className="bg-white shadow-lg rounded-lg p-5 flex flex-col items-center text-center 
-          transition-transform duration-300 hover:scale-105 hover:shadow-xl border border-gray-200 group relative"
+          transition-transform duration-300 hover:scale-98 hover:shadow-xl border border-gray-200 group relative"
               >
                 <span
                   className={`absolute top-3 left-3 text-xs font-bold px-3 py-1 rounded-full text-white z-10 shadow-md
@@ -95,19 +95,18 @@ export default function AdminDashboard() {
                     priority
                   />
                 </div>
-                    
 
                 <h3 className="text-lg font-semibold text-gray-800 mt-1">
                   {product.name}
                 </h3>
-                
+
                 <p className="text-gray-700 text-sm mt-3 font-semibold">
                   ${product.price}
                 </p>
 
                 <button
                   className="absolute bottom-2 right-2 text-white font-semibold opacity-40 sm:opacity-0 sm:group-hover:opacity-40 transition-all duration-300 
-             ease-in-out bg-blue-500 bg-opacity-30 backdrop-blur-lg px-4 py-2 rounded-md w-36 
+             ease-in-out bg-blue-500 bg-opacity-30 backdrop-blur-lg px-4 py-2 rounded-md w-32 
              transform translate-x-0 sm:translate-x-4 sm:group-hover:translate-x-0"
                   //     className="absolute bottom-2 right-2 text-white font-semibold opacity-0 group-hover:opacity-40 transition-all duration-300
                   //  ease-in-out bg-blue-500 bg-opacity-30 backdrop-blur-lg px-4 py-2 rounded-md w-35
