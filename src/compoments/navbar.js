@@ -35,6 +35,8 @@ function Navbar() {
       pathname === "/account-details" ||
       pathname === "/productDetails" ||
       pathname === "/productCart" ||
+      pathname === "/ordersPage" ||
+      pathname === "/placeOrder" ||
       pathname.startsWith("/admin-update-product")
     ) {
       router.push("/fashion-store");

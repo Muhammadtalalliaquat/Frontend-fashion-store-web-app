@@ -156,19 +156,35 @@ export default function ProductDetails() {
     }
   };
 
+  const handleAddOrder = async () => {
+    const queryString = new URLSearchParams({
+      productId,
+      name,
+      price,
+      category,
+      stock,
+      quantity,
+      description,
+      image,
+    }).toString();
+
+    router.push(`/placeOrder?${queryString}`);
+    // router.push("/placeOrder");
+  }
+
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
 
-    // console.log(
-    //   "Product data here",
-    //   productId,
-    //   name,
-    //   price,
-    //   category,
-    //   description,
-    //   image
-    // );
+    console.log(
+      "Product data here",
+      productId,
+      name,
+      price,
+      category,
+      description,
+      image
+    );
 
     dispatch(getAllReview(productId))
       .then((result) => {
@@ -303,7 +319,10 @@ export default function ProductDetails() {
                   Add to Cart
                 </button>
 
-                <button className="flex items-center justify-center gap-2 bg-pink-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-pink-700 transition">
+                <button
+                  onClick={handleAddOrder}
+                  className="flex items-center justify-center gap-2 bg-pink-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-pink-700 transition"
+                >
                   <CreditCard className="w-5 h-5" />
                   Buy Now
                 </button>

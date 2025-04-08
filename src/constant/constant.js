@@ -26,4 +26,8 @@ export const ApiRoutes = {
   addReviews: BASIC_URL + `review/addReview`,
   deleteReviews: BASIC_URL + `review/deleteReview`,
   // updateCart: BASIC_URL + `cart/update`,
+
+  addOrder: BASIC_URL + `order/placeOrder`,
+  getOrders: BASIC_URL + `order/allOrders`,
+  updateOrder: BASIC_URL + `order/updateOrder`,
 };

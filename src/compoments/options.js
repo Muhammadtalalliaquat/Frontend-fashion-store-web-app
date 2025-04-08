@@ -93,15 +93,15 @@ export default function OptionsMenu() {
           </div>
         )}
 
-        {user?.isAdmin === true && (
+        {user && (
           <div className="py-1">
             <MenuItem>
               <Link
-                href="/adminDashboard"
+                href="/ordersPage"
                 className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               >
                 <GrUserAdmin />
-                Admin Dashboard
+                Orders Dashboard
               </Link>
             </MenuItem>
           </div>
