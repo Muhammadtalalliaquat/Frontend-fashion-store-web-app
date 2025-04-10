@@ -2,7 +2,9 @@
 
 import { useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { createOrder } from "../../store/features/orderSlice";
 import Navbar from "../../compoments/navbar";
+import { useDispatch } from "react-redux";
 import Image from "next/image";
 
 export default function PlaceOrderForm() {
@@ -12,19 +14,30 @@ export default function PlaceOrderForm() {
   const price = searchParams.get("price");
   const quantity = searchParams.get("quantity");
   const image = searchParams.get("image");
-  //   const productId = searchParams.get("productId");
-  //  const category = searchParams.get("category");
-  //  const stock = searchParams.get("stock");
-  //  const description = searchParams.get("description");
-  //  const [orderPlaced, setOrderPlaced] = useState(false);
+  const productId = searchParams.get("productId");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [area, setArea] = useState("");
-  
-  const handleAddOrder = () => {
-    router.push("/ordersPage");
-  };
+  const dispatch = useDispatch();
 
+  const handleAddOrder = () => {
+    const orderFormData = {
+      country,
+      city,
+      area,
+      quantity,
+      productId,
+    };
+
+    dispatch(createOrder(orderFormData))
+      .then((result) => {
+        console.log("API Response:", result.payload);
+        router.push("/ordersPage");
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+      });
+  };
 
   return (
     <>

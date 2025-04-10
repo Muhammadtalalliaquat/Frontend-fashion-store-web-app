@@ -7,10 +7,8 @@ import {
   removeCartItem,
   updateProductCart,
 } from "../../store/features/productCartSlice";
-// import { TrashIcon } from "@heroicons/react/24/outline";
 import Image from "next/image";
 import Navbar from "../../compoments/navbar";
-// import Link from "next/link";
 import {
   PencilSquareIcon,
   TrashIcon,
