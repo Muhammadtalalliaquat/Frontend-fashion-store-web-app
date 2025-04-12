@@ -23,9 +23,9 @@ export default function GetStarted() {
         </div>
 
         {/* Right Side: Glassmorphic Image Card */}
-        <div className="relative">
-          <div className="relative w-full max-w-md mx-auto">
-            <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-xl rounded-2xl shadow-lg border border-white/30"></div>
+        {/* <div className="relative"> */}
+          <div className="relative ">
+            {/* <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-xl rounded-2xl shadow-lg border border-white/30"></div> */}
             <Image
               src="/product_image.jpg"
               alt="Fashion Model"
@@ -35,7 +35,7 @@ export default function GetStarted() {
               priority
             />
           </div>
-        </div>
+        {/* </div> */}
       </div>
     </div>
   );

@@ -47,7 +47,7 @@ export default function OptionsMenu() {
           <MenuItem>
             <Link
               href="/account-details"
-              className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              className="flex items-center gap-2 font-semibold px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
             >
               <IoIosSettings size={18} className="text-gray-500" />
               Account settings
@@ -101,7 +101,7 @@ export default function OptionsMenu() {
                 className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
               >
                 <GrUserAdmin />
-                Orders Dashboard
+                Orders histore
               </Link>
             </MenuItem>
           </div>
