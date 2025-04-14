@@ -30,8 +30,26 @@ export default function AdminDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
+  const features = [
+    {
+      icon: "🚚",
+      title: "Fast Delivery",
+      description: "Get your orders delivered within 48 hours.",
+    },
+    {
+      icon: "🔄",
+      title: "Easy Returns",
+      description: "No-hassle returns within 7 days.",
+    },
+    {
+      icon: "💳",
+      title: "Secure Payments",
+      description: "All transactions are SSL secured.",
+    },
+  ];
+
   return (
-    <div>
+    <>
       <Navbar />
 
       <div className="flex items-center justify-between w-full bg-gradient-to-b from-blue-900 to-blue-700 p-10 mt-18 shadow-lg flex-col sm:flex-row">
@@ -60,7 +78,7 @@ export default function AdminDashboard() {
 
       <div className="p-6 mt-16">
         <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-          Products
+          Our Products
         </h2>
 
         {loading ? (
@@ -130,7 +148,25 @@ export default function AdminDashboard() {
         ) : (
           <p className="text-center text-gray-500">No products available.</p>
         )}
+
+      
       </div>
-    </div>
+        <div className=" py-12 mt-20">
+          <h2 className="text-3xl font-bold text-center text-gray-800 mb-10">
+            Why Shop With Us
+          </h2>
+          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-6xl mx-auto px-4">
+            {features.map((feature, index) => (
+              <div key={index} className="text-center">
+                <div className="text-5xl text-blue-500 mb-4">
+                  {feature.icon}
+                </div>
+                <h3 className="font-bold text-xl">{feature.title}</h3>
+                <p className="text-gray-600">{feature.description}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+    </>
   );
 }
