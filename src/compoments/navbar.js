@@ -5,6 +5,7 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import OptionsMenu from "./options";
 import { useRouter, usePathname } from "next/navigation";
+import Link from "next/link";
 
 // import ProductOptions from "./productOptions";
 
@@ -14,7 +15,6 @@ function Navbar() {
   const [isDarkTheme, setIsDarkTheme] = useState(false);
   const pathname = usePathname();
   const router = useRouter();
-  
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +37,7 @@ function Navbar() {
       pathname === "/productCart" ||
       pathname === "/ordersPage" ||
       pathname === "/placeOrder" ||
+      pathname === "/products" ||
       pathname.startsWith("/admin-update-product")
     ) {
       router.push("/fashion-store");
@@ -57,33 +58,36 @@ function Navbar() {
           isScrolled ? styles.scrolled : ""
         }`}
       >
-        <li 
-        className={pathname === "/fashion-store" ? `${styles.hide_on_mobile}` : ""} 
-        onClick={handleNavigate}>
+        {/* <li
+          className={
+            pathname === "/fashion-store" ? `${styles.hide_on_mobile}` : ""
+          }
+          onClick={handleNavigate}
+        >
           {pathname !== "/fashion-store" &&
             pathname !== "/adminDashboard" &&
             // !pathname.includes("/admin-update-product") &&
             "Home"}
         </li>
 
-        <li>
-          Products
-          {/* <select
-            className={styles.dropdownSelect}
-            onChange={(e) => {
-              const selectedValue = e.target.value;
-              if (selectedValue) {
-                router.push(selectedValue);
-              }
-            }}
-          >
-            <option value="">Product</option>
-            <option value="/items/mens-watches">Men's Watches</option>
-            <option value="/items/womens-watches">Women's Watches</option>
-            <option value="/items/jewelry">Jewelry</option>
-          </select> */}
-          {/* <ProductOptions /> */}
-        </li>
+        <li
+          className={pathname === "/products" ? `${styles.hide_on_mobile}` : ""}
+        >
+          <Link href="/products">
+            {" "}
+            {pathname !== "/products" && "products"}
+          </Link>
+        </li> */}
+        {pathname !== "/fashion-store" && pathname !== "/adminDashboard" && (
+          <li onClick={handleNavigate}>Home</li>
+        )}
+
+        {pathname !== "/products" && (
+          <li>
+            <Link href="/products">Products</Link>
+          </li>
+        )}
+
         <li>Shop</li>
         <li>Contact</li>
       </ul>

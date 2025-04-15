@@ -205,7 +205,7 @@ export default function ProductDetails() {
     <>
       <Navbar />
 
-      <div className="max-w-4xl mx-auto p-6 mt-18 sm:mt-20 md:mt-32 lg:mt-40 bg-white rounded-lg shadow-lg border border-gray-300">
+      <div className="max-w-4xl mx-auto p-6 mt-18 sm:mt-20 md:mt-32 lg:mt-30 bg-white rounded-lg shadow-lg border border-gray-300">
         <div className="flex justify-between items-center">
           <div className="w-full flex items-center justify-between">
             <h2 className="text-4xl font-bold text-gray-900 flex-shrink-0">

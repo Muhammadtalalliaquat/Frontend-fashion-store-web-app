@@ -30,29 +30,36 @@ export default function AdminDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  const features = [
+  const siteDetails = [
     {
-      icon: "🚚",
+      title: "Premium Quality",
+      description: "Top-grade materials for unmatched style and durability.",
+      icon: "✔",
+    },
+    {
       title: "Fast Delivery",
-      description: "Get your orders delivered within 48 hours.",
+      description: "Quick and secure delivery at your doorstep.",
+      icon: "🚚",
     },
     {
-      icon: "🔄",
-      title: "Easy Returns",
-      description: "No-hassle returns within 7 days.",
+      title: "24/7 Support",
+      description: "We’re here to help anytime, any day.",
+      icon: "📞",
     },
     {
-      icon: "💳",
-      title: "Secure Payments",
-      description: "All transactions are SSL secured.",
+      title: "Trusted by Thousands",
+      description: "Thousands of happy customers around the world.",
+      icon: "🌍",
     },
   ];
+
+ 
 
   return (
     <>
       <Navbar />
 
-      <div className="flex items-center justify-between w-full bg-gradient-to-b from-blue-900 to-blue-700 p-10 mt-18 shadow-lg flex-col sm:flex-row">
+      <div className="flex items-center justify-between w-full bg-gradient-to-b from-blue-900 to-blue-700 p-10 mt-17 shadow-lg flex-col sm:flex-row">
         <div className="w-full sm:w-1/2 text-left text-white p-10">
           <h1 className="text-4xl sm:text-5xl font-bold">
             Discover and Find Your Own Fashion
@@ -149,24 +156,56 @@ export default function AdminDashboard() {
           <p className="text-center text-gray-500">No products available.</p>
         )}
 
-      
-      </div>
-        <div className=" py-12 mt-20">
-          <h2 className="text-3xl font-bold text-center text-gray-800 mb-10">
-            Why Shop With Us
-          </h2>
-          <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-6xl mx-auto px-4">
-            {features.map((feature, index) => (
-              <div key={index} className="text-center">
-                <div className="text-5xl text-blue-500 mb-4">
-                  {feature.icon}
+        <section className="bg-gray-100 px-4 py-16">
+          <div className="max-w-6xl mx-auto text-center mb-12">
+            <h2 className="text-3xl font-bold text-gray-800">
+              About Our Store
+            </h2>
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+              At{" "}
+              <span className="font-semibold text-gray-800">EleganceWear</span>,
+              we bring you high-quality fashion for every occasion. From jewelry
+              to premium watches, we mix elegance with comfort.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+            {siteDetails.map((item, idx) => (
+              <div
+                key={idx}
+                className="relative group p-6 shadow-md overflow-hidden bg-white transition-colors duration-300"
+              >
+                {/* Background fill layer */}
+                <div className="absolute inset-0 bg-blue-100 origin-top-left scale-0 group-hover:scale-100 transition-transform duration-300 ease-out z-0" />
+
+                {/* Card content */}
+                <div className="relative z-10">
+                  <div className="text-4xl mb-4">{item.icon}</div>
+                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                    {item.title}
+                  </h3>
+                  <p className="text-gray-600 text-sm">{item.description}</p>
                 </div>
-                <h3 className="font-bold text-xl">{feature.title}</h3>
-                <p className="text-gray-600">{feature.description}</p>
               </div>
             ))}
           </div>
+        </section>
+      </div>
+
+      {/* <div className=" py-12 mt-20">
+        <h2 className="text-3xl font-bold text-center text-gray-800 mb-10">
+          Why Shop With Us
+        </h2>
+        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-6xl mx-auto px-4">
+          {features.map((feature, index) => (
+            <div key={index} className="text-center">
+              <div className="text-5xl text-blue-500 mb-4">{feature.icon}</div>
+              <h3 className="font-bold text-xl">{feature.title}</h3>
+              <p className="text-gray-600">{feature.description}</p>
+            </div>
+          ))}
         </div>
+      </div> */}
     </>
   );
 }

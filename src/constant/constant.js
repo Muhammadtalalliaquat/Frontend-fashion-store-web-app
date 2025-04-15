@@ -13,6 +13,7 @@ export const ApiRoutes = {
   accountUpdate: BASIC_URL + `user/updateAccount`,
 
   getProduct: BASIC_URL + `admin`,
+  getAllProducts: BASIC_URL + `admin/allProducts`,
   addProduct: BASIC_URL + `admin/addProdcuts`,
   editProduct: BASIC_URL + `admin/edit`,
   deleteProduct: BASIC_URL + `admin/delete`,

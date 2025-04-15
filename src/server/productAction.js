@@ -12,6 +12,19 @@ export const fetchProducts = async () => {
     }
 };
 
+export const fetchAllProducts = async () => {
+  try {
+    const response = await axios.get(`${ApiRoutes.getAllProducts}`);
+    // console.log("Products fetched:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Failed to fetch products:",
+      error.response?.data || error.message
+    );
+  }
+};
+
 export const addProduct = async (productData) => {
     try {
         const token = localStorage.getItem("token");
