@@ -9,6 +9,8 @@ import Image from "next/image";
 import { Listbox } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useRouter } from "next/navigation";
+import { LiaShoppingCartSolid } from "react-icons/lia";
+import { addCartItem } from "../../store/features/productCartSlice";
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -16,7 +18,44 @@ export default function Products() {
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("all");
+  const [quantities, setQuantities] = useState({});
+  const [activePopup, setActivePopup] = useState(null);
   const router = useRouter();
+
+  const handleQuantityChange = (id, value) => {
+    const num = Math.max(1, Number(value));
+    setQuantities((prev) => ({ ...prev, [id]: num }));
+  };
+
+  const handleAddToCart = (productId) => {
+    const selectedProduct = products.find(
+      (product) => product._id === productId
+    );
+
+    if (!selectedProduct) {
+      console.error("Product not found.");
+      return;
+    }
+
+    const productCartData = {
+      productId: selectedProduct._id,
+      name: selectedProduct.name,
+      price: selectedProduct.price,
+      category: selectedProduct.category,
+      description: selectedProduct.description,
+      image: selectedProduct.image,
+      quantity: quantities[selectedProduct._id] || 1,
+    };
+
+    dispatch(addCartItem(productCartData))
+      .then((result) => {
+        console.log("API Response:", result.payload);
+        router.push("/productCart");
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+      });
+  };
 
   useEffect(() => {
     dispatch(fetchAllProductShow())
@@ -96,47 +135,134 @@ export default function Products() {
               {filteredProducts.map((product) => (
                 <div
                   key={product._id}
-                  //   className="bg-white rounded-xl shadow-md p-4 hover:bg-gray-50 transition-all duration-300 flex flex-col items-center text-center"
                   className="group relative bg-white rounded-xl shadow-md p-4 hover:bg-gray-50 transition-all duration-300 flex flex-col items-center text-center"
                 >
-                  <div className="w-full h-44 mb-4">
-                    <Image
-                      src={product.image}
-                      alt="Product"
-                      width={300}
-                      height={176}
-                      className="w-full h-full object-contain rounded-lg"
-                      priority
-                    />
+                  <div className="relative group w-full max-w-sm pb-3 rounded-xl overflow-hidden shadow-lg border border-gray-200 p-2 sm:pb-4 pb-24 bg-cover bg-center bg-no-repeat">
+                    <button
+                      onClick={() => setActivePopup(product._id)}
+                      className="absolute top-3 right-3 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 z-30 bg-blue-100 hover:bg-blue-200 p-2 rounded-full shadow-md cursor-pointer"
+                    >
+                      <LiaShoppingCartSolid
+                        size={24}
+                        className="text-blue-600"
+                      />
+                    </button>
+                    {activePopup === product._id && (
+                      <div className="absolute top-14 right-3 bg-white shadow-lg rounded-lg p-4 z-40 w-40 flex flex-col items-center">
+                        <label className="text-sm mb-1">Quantity</label>
+                        <input
+                          type="number"
+                          min="1"
+                          max={product.stock}
+                          value={quantities[product._id] || 1}
+                          onChange={(e) =>
+                            handleQuantityChange(product._id, e.target.value)
+                          }
+                          className="mb-2 w-16 text-center border border-gray-300 rounded px-2 py-1"
+                        />
+                        <button
+                          className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm w-full"
+                          onClick={() => handleAddToCart(product._id)}
+                        >
+                          Add to Cart
+                        </button>
+                        <button
+                          onClick={() => setActivePopup(null)}
+                          className="text-xs text-gray-500 mt-1 hover:underline"
+                        >
+                          Cancel
+                        </button>
+                      </div>
+                    )}
+
+                    <div className="w-full h-44 sm:mb-2">
+                      <Image
+                        src={product.image}
+                        alt="Product"
+                        width={300}
+                        height={176}
+                        className="w-full h-full object-contain rounded-lg"
+                        priority
+                      />
+                    </div>
+                    <h2 className="text-lg font-semibold text-gray-800 mb-1">
+                      {product.name}
+                    </h2>
+                    <p className="text-gray-500 text-sm">{product.category}</p>
+                    <p className="text-blue-600 font-bold mt-1">
+                      ${product.price}
+                    </p>
+
+                    <div className="absolute inset-0 bg-white/30 backdrop-blur-md opacity-0 group-hover:opacity-70 transition-all duration-300 z-10" />
+
+                    <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex flex-col gap-2 items-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 z-20">
+                      <button
+                        className="bg-blue-600/80 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm backdrop-blur-md w-36"
+                        onClick={() => {
+                          const queryString = new URLSearchParams({
+                            productId: product._id,
+                            name: product.name,
+                            price: product.price.toString(),
+                            category: product.category,
+                            stock: product.stock.toString(),
+                            description: product.description,
+                            image: product.image,
+                          }).toString();
+                          router.push(`/productDetails?${queryString}`);
+                        }}
+                      >
+                        View Details
+                      </button>
+
+                      <button
+                        onClick={() => setActivePopup(product._id)}
+                        className="bg-green-600/80 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm backdrop-blur-md w-36"
+                      >
+                        Buy Now
+                      </button>
+
+                      {activePopup === product._id && (
+                        <div className="absolute bottom-14 bg-white shadow-lg rounded-lg p-4 z-30 w-40 flex flex-col items-center">
+                          <label className="text-sm mb-1">Quantity</label>
+                          <input
+                            type="number"
+                            min="1"
+                            max={product.stock}
+                            value={quantities[product._id] || 1}
+                            onChange={(e) =>
+                              handleQuantityChange(product._id, e.target.value)
+                            }
+                            className="mb-2 w-16 text-center border border-gray-300 rounded px-2 py-1"
+                          />
+                          <button
+                            className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm w-full"
+                            onClick={() => {
+                              const quantity = quantities[product._id] || 1;
+                              const queryString = new URLSearchParams({
+                                productId: product._id,
+                                name: product.name,
+                                price: product.price.toString(),
+                                category: product.category,
+                                stock: product.stock.toString(),
+                                description: product.description,
+                                image: product.image,
+                                quantity: quantity.toString(),
+                              }).toString();
+                              router.push(`/placeOrder?${queryString}`);
+                            }}
+                          >
+                            Confirm
+                          </button>
+                          <button
+                            onClick={() => setActivePopup(null)}
+                            className="text-xs text-gray-500 mt-1 hover:underline"
+                          >
+                            Cancel
+                          </button>
+                        </div>
+                      )}
+                    </div>
                   </div>
-                  <h2 className="text-lg font-semibold text-gray-800 mb-1">
-                    {product.name}
-                  </h2>
-                  <p className="text-gray-500 text-sm">{product.category}</p>
-                  <p className="text-blue-600 font-bold mt-1">
-                    ${product.price}
-                  </p>
-
-                  <button
-                    // className="absolute bottom-3 right-3 bg-blue-500 text-white px-4 py-2 rounded-md text-sm opacity-0 group-hover:opacity-100 transition-all duration-300"
-                    className="absolute bottom-3 right-3 bg-blue-500 text-white px-4 py-2 rounded-md text-sm 
-                    opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300"
-                    onClick={() => {
-                      const queryString = new URLSearchParams({
-                        productId: product._id,
-                        name: product.name,
-                        price: product.price.toString(),
-                        category: product.category,
-                        stock: product.stock.toString(),
-                        description: product.description,
-                        image: product.image,
-                      }).toString();
-
-                      router.push(`/productDetails?${queryString}`);
-                    }}
-                  >
-                    View Details
-                  </button>
                 </div>
               ))}
             </div>

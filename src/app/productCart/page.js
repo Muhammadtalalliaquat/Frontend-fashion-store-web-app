@@ -73,10 +73,26 @@ export default function ProductCartPage() {
       "New Quantity:",
       newQuantity
     );
-
     dispatch(
       updateProductCart({ productId, cartData: { quantity: newQuantity } })
-    );
+    )
+      .then((result) => {
+        console.log("API Response:", result.payload);
+        dispatch(getAllCart())
+          .then((result) => {
+            console.log("API Response:", result.payload);
+            setCart(result.payload.data.products);
+            setLoading(false);
+          })
+          .catch((err) => {
+            setError("Failed to load products cart items.");
+            console.error("Fetch Error:", err, error);
+            setLoading(false);
+          });
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err, error);
+      });
   };
 
   return (
@@ -138,7 +154,7 @@ export default function ProductCartPage() {
                     )}
                   </div>
 
-                  <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 w-full sm:w-auto">
+                  <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 w-full sm:w-auto flex-wrap">
                     <Image
                       src={item.productId?.image || "/fallback-image.jpg"}
                       alt={item.productId?.name || "Product Image"}
@@ -146,18 +162,18 @@ export default function ProductCartPage() {
                       height={80}
                       className="rounded-lg object-cover shadow-md w-20 h-20 sm:w-[90px] sm:h-[90px]"
                     />
-                    <div className="text-center sm:text-left">
-                      <h3 className="text-lg font-semibold text-gray-900">
+                    <div className="text-center sm:text-left max-w-xs overflow-hidden">
+                      <h3 className="text-lg font-semibold text-gray-900 truncate">
                         {item.productId?.name}
                       </h3>
-                      <p className="text-sm text-gray-600">
+                      <p className="text-sm text-gray-600 truncate">
                         {item.productId?.category}
                       </p>
-                      <p className="text-sm text-gray-600 line-clamp-2 sm:truncate">
+                      <p className="text-sm text-gray-600 line-clamp-2 sm:line-clamp-1">
                         {item.productId?.description}
                       </p>
                       <p className="text-md mt-1 font-medium text-indigo-600">
-                        ${item.productId?.price}
+                        ${item.productId?.price * item.quantity}
                       </p>
                     </div>
                   </div>
