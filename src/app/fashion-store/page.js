@@ -4,6 +4,8 @@ import Navbar from "../../compoments/navbar";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getAllProducts } from "../../store/features/productSlice";
+import { getDiscountOffer } from "../../store/features/discountSlice";
+import { createDiscountOffer } from "../../store/features/discountSlice";
 import Image from "next/image";
 import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
@@ -11,9 +13,28 @@ import { useRouter } from "next/navigation";
 export default function AdminDashboard() {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
+  const [discount, setDiscount] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
+  const [current, setCurrent] = useState(0);
+  const [activePopup, setActivePopup] = useState(null);
+  const [country, setCountry] = useState("");
+  const [city, setCity] = useState("");
+  const [area, setArea] = useState("");
+
   const router = useRouter();
+
+  const maxVisible = 1;
+
+  const nextSlide = () => {
+    setCurrent((prev) => (prev + maxVisible < discount.length ? prev + 1 : 0));
+  };
+
+  const prevSlide = () => {
+    setCurrent((prev) =>
+      prev - 1 < 0 ? discount.length - maxVisible : prev - 1
+    );
+  };
 
   useEffect(() => {
     dispatch(getAllProducts())
@@ -27,8 +48,42 @@ export default function AdminDashboard() {
         setError("Failed to load products.");
         setLoading(false);
       });
+
+    dispatch(getDiscountOffer())
+      .then((result) => {
+        console.log("API Response:", result.payload);
+        setDiscount(result.payload.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err, error);
+        setError("Failed to load products.");
+        setLoading(false);
+      });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
+
+
+  const handleAddSalediscountOrderPlace = (productId) => {
+      const orderFormData = {
+        country,
+        city,
+        area,
+        productId,
+      };
+  
+      console.log("Sending Order Data:", orderFormData);
+  
+  
+       dispatch(createDiscountOffer(orderFormData))
+         .then((result) => {
+           console.log("API Response:", result.payload);
+           router.push("/ordersPage");
+         })
+         .catch((err) => {
+           console.error("Fetch Error:", err);
+         });
+    };
 
   const siteDetails = [
     {
@@ -52,8 +107,6 @@ export default function AdminDashboard() {
       icon: "🌍",
     },
   ];
-
- 
 
   return (
     <>
@@ -155,57 +208,158 @@ export default function AdminDashboard() {
         ) : (
           <p className="text-center text-gray-500">No products available.</p>
         )}
+      </div>
 
-        <section className="bg-gray-100 px-4 py-16">
-          <div className="max-w-6xl mx-auto text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800">
-              About Our Store
-            </h2>
-            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-              At{" "}
-              <span className="font-semibold text-gray-800">EleganceWear</span>,
-              we bring you high-quality fashion for every occasion. From jewelry
-              to premium watches, we mix elegance with comfort.
-            </p>
-          </div>
+      <div className="w-full py-8 relative overflow-hidden">
+        <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
+          🏷️ Sales Discount Offers
+        </h2>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
-            {siteDetails.map((item, idx) => (
-              <div
-                key={idx}
-                className="relative group p-6 shadow-md overflow-hidden bg-white transition-colors duration-300"
-              >
-                {/* Background fill layer */}
-                <div className="absolute inset-0 bg-blue-100 origin-top-left scale-0 group-hover:scale-100 transition-transform duration-300 ease-out z-0" />
+        <div className="relative">
+          <div
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${current * 100}%)` }}
+          >
+            {discount.map((item, i) => (
+              <div key={i} className="min-w-full px-4 flex-shrink-0">
+                <div className="bg-white rounded-xl border border-blue-200 p-5 shadow mx-auto max-w-4xl flex flex-col md:flex-row items-center gap-6">
+                  <div className="w-full md:w-1/2">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={300}
+                      height={300}
+                      className="rounded-lg object-cover w-full h-64"
+                      priority
+                    />
+                  </div>
 
-                {/* Card content */}
-                <div className="relative z-10">
-                  <div className="text-4xl mb-4">{item.icon}</div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm">{item.description}</p>
+                  <div className="w-full md:w-1/2 text-center md:text-left space-y-3">
+                    <h3 className="text-2xl font-bold text-blue-500">
+                      {item.name}
+                    </h3>
+                    <div className="text-gray-500 line-through text-lg">
+                      ${item.price}
+                    </div>
+                    <div className="text-3xl font-bold text-blue-500">
+                      ${item.discountPrice}
+                    </div>
+                    <p className="text-sm text-gray-600">
+                      Limited time offer. Grab it now!
+                    </p>
+
+                    <button
+                      onClick={() => setActivePopup(item._id)}
+                      className="mt-2 bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-lg transition"
+                    >
+                      Buy Now
+                    </button>
+                  </div>
                 </div>
               </div>
             ))}
           </div>
-        </section>
+
+          <button
+            onClick={prevSlide}
+            className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-2 rounded-full shadow hover:bg-blue-600 transition"
+          >
+            ‹
+          </button>
+          <button
+            onClick={nextSlide}
+            className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-2 rounded-full shadow hover:bg-blue-600 transition"
+          >
+            ›
+          </button>
+        </div>
+
+        {activePopup && (
+          <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-[9999]">
+            <div className="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl relative">
+              <button
+                onClick={() => setActivePopup(null)}
+                className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
+              >
+                ×
+              </button>
+
+              <h2 className="text-xl font-semibold text-gray-700 mb-4 text-center">
+                Enter Shipping Details
+              </h2>
+
+              <div className="space-y-4">
+                <input
+                  type="text"
+                  placeholder="Country"
+                  value={country}
+                  onChange={(e) => setCountry(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg"
+                />
+                <input
+                  type="text"
+                  placeholder="City"
+                  value={city}
+                  onChange={(e) => setCity(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg"
+                />
+                <input
+                  type="text"
+                  placeholder="Area"
+                  value={area}
+                  onChange={(e) => setArea(e.target.value)}
+                  className="w-full p-3 border border-gray-300 rounded-lg"
+                />
+              </div>
+
+              <button
+                // onClick={() =>
+                //   handleAddSalediscountOrderPlace(activePopup, {
+                //     country,
+                //     city,
+                //     area,
+                //   })
+                // }
+                className="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300"
+              >
+                Place Order
+              </button>
+            </div>
+          </div>
+        )}
       </div>
 
-      {/* <div className=" py-12 mt-20">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-10">
-          Why Shop With Us
-        </h2>
-        <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-6xl mx-auto px-4">
-          {features.map((feature, index) => (
-            <div key={index} className="text-center">
-              <div className="text-5xl text-blue-500 mb-4">{feature.icon}</div>
-              <h3 className="font-bold text-xl">{feature.title}</h3>
-              <p className="text-gray-600">{feature.description}</p>
+      <section className="bg-gray-100 px-4 py-16">
+        <div className="max-w-6xl mx-auto text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-800">About Our Store</h2>
+          <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+            At <span className="font-semibold text-gray-800">EleganceWear</span>
+            , we bring you high-quality fashion for every occasion. From jewelry
+            to premium watches, we mix elegance with comfort.
+          </p>
+        </div>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          {siteDetails.map((item, idx) => (
+            <div
+              key={idx}
+              className="relative group p-6 shadow-md overflow-hidden bg-white transition-colors duration-300"
+            >
+              {/* Background fill layer */}
+              <div className="absolute inset-0 bg-blue-100 origin-top-left scale-0 group-hover:scale-100 transition-transform duration-300 ease-out z-0" />
+
+              <div className="relative z-10">
+                <div className="text-4xl mb-4">{item.icon}</div>
+                <h3 className="text-xl font-semibold text-gray-800 mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-gray-600 text-sm">{item.description}</p>
+              </div>
             </div>
           ))}
         </div>
-      </div> */}
+      </section>
+      {/* </div> */}
     </>
   );
 }

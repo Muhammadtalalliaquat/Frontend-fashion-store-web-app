@@ -12,6 +12,7 @@ export default function PlaceOrderForm() {
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
   const price = searchParams.get("price");
+  const discountPrice = searchParams.get("discountPrice");
   const quantity = searchParams.get("quantity");
   const image = searchParams.get("image");
   const productId = searchParams.get("productId");
@@ -25,9 +26,11 @@ export default function PlaceOrderForm() {
       country,
       city,
       area,
-      quantity,
       productId,
+      quantity,
     };
+
+    console.log("Sending Order Data:", orderFormData);
 
     dispatch(createOrder(orderFormData))
       .then((result) => {
@@ -60,8 +63,27 @@ export default function PlaceOrderForm() {
             <h3 className="text-xl font-medium text-gray-800">
               Product: {name}
             </h3>
-            <p className="text-lg font-medium text-gray-600">Price: ${price}</p>
-            <p className="text-lg font-medium text-gray-600">Qty: {quantity}</p>
+            {/* <p className="text-lg font-medium text-gray-600">Price: ${price}</p> */}
+            {discountPrice ? (
+              <p className="font-medium text-gray-600">
+                Price:{" "}
+                <span className="line-through mr-2 text-gray-400">
+                  ${price}
+                </span>
+                <span className="text-blue-600 font-semibold">
+                  ${discountPrice}
+                </span>
+              </p>
+            ) : (
+              <>
+                <p className="text-lg font-medium text-gray-600">
+                  Price: ${price}
+                </p>
+                <p className="text-lg font-medium text-gray-600">
+                  Qty: {quantity}
+                </p>
+              </>
+            )}
           </div>
 
           <div className="flex-1 flex flex-col">

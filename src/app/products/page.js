@@ -19,6 +19,7 @@ export default function Products() {
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("all");
   const [quantities, setQuantities] = useState({});
+  const [activePopupCart, setActivePopupCart] = useState(null);
   const [activePopup, setActivePopup] = useState(null);
   const router = useRouter();
 
@@ -105,7 +106,7 @@ export default function Products() {
                   {categories.find((c) => c.value === category)?.name}
                   <ChevronDownIcon className="w-5 h-5 absolute right-3 top-3 text-gray-500" />
                 </Listbox.Button>
-                <Listbox.Options className="absolute z-10 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-lg">
+                <Listbox.Options className="absolute z-40 mt-2 w-full bg-white border border-gray-200 rounded-xl shadow-lg">
                   {categories.map((item, idx) => (
                     <Listbox.Option
                       key={idx}
@@ -139,7 +140,7 @@ export default function Products() {
                 >
                   <div className="relative group w-full max-w-sm pb-3 rounded-xl overflow-hidden shadow-lg border border-gray-200 p-2 sm:pb-4 pb-24 bg-cover bg-center bg-no-repeat">
                     <button
-                      onClick={() => setActivePopup(product._id)}
+                      onClick={() => setActivePopupCart(product._id)}
                       className="absolute top-3 right-3 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 z-30 bg-blue-100 hover:bg-blue-200 p-2 rounded-full shadow-md cursor-pointer"
                     >
                       <LiaShoppingCartSolid
@@ -147,7 +148,7 @@ export default function Products() {
                         className="text-blue-600"
                       />
                     </button>
-                    {activePopup === product._id && (
+                    {activePopupCart === product._id && (
                       <div className="absolute top-14 right-3 bg-white shadow-lg rounded-lg p-4 z-40 w-40 flex flex-col items-center">
                         <label className="text-sm mb-1">Quantity</label>
                         <input
@@ -167,7 +168,7 @@ export default function Products() {
                           Add to Cart
                         </button>
                         <button
-                          onClick={() => setActivePopup(null)}
+                          onClick={() => setActivePopupCart(null)}
                           className="text-xs text-gray-500 mt-1 hover:underline"
                         >
                           Cancel
