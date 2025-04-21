@@ -6,6 +6,7 @@ import accountReducer from "../store/features/productReviewSlice";
 import reviewReducer from "../store/features/AccountUpdateSlice";
 import orderReducer from "../store/features/orderSlice";
 import discountReducer from "../store/features/discountSlice";
+import discountOrderReducer from "../store/features/discountSlice";
 
 
 export const store = configureStore({
@@ -16,7 +17,8 @@ export const store = configureStore({
     cart: cartReducer,
     reviews: reviewReducer,
     orders: orderReducer,
-    discount: discountReducer
+    discount: discountReducer,
+    discountOrder: discountOrderReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

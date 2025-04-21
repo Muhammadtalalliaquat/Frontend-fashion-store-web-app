@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAllOrders, updateOrder } from "../../store/features/orderSlice";
+import { getDiscountOfferOrder } from "../../store/features/discountOrderSlice";
 import Image from "next/image";
 import Navbar from "../../compoments/navbar";
 import { FaSpinner } from "react-icons/fa";
@@ -58,6 +59,17 @@ export default function OrdersPageDashboard() {
         console.error("Fetch Error:", err);
         setLoading(false);
       });
+
+       dispatch(getDiscountOfferOrder())
+         .then((result) => {
+           console.log("API Response:", result.payload);
+          //  setOrderList(result.payload.data);
+           setLoading(false);
+         })
+         .catch((err) => {
+           console.error("Fetch Error:", err);
+           setLoading(false);
+         });
   }, [dispatch]);
 
   return (

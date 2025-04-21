@@ -84,7 +84,7 @@ function AddProductPage() {
     <>
       <Navbar />
 
-      <div className="min-h-screen bg-gradient-to-br from-gray-100 to-gray-300 flex items-center justify-center p-6">
+      <div className="min-h-screen flex items-center justify-center p-6">
         <div className="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
           {/* Tabs */}
           <div className="flex bg-gray-100 border-b relative z-0">

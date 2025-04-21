@@ -28,13 +28,13 @@ export default function OptionsMenu() {
   }, []);
 
   return (
-    <Menu as="div" className="relative inline-block text-left">
+    <Menu as="div" className="relative inline-block text-left ml-3">
       <div>
-        <MenuButton className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-xs ring-1 ring-gray-300 hover:bg-gray-50">
-          Options
+        <MenuButton className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-blue-900 shadow-xs ring-1 ring-gray-300 hover:bg-gray-50">
+          Menu
           <ChevronDownIcon
             aria-hidden="true"
-            className="-mr-1 size-5 text-gray-400"
+            className="ml-9 size-5 text-blue-900"
           />
         </MenuButton>
       </div>
@@ -47,7 +47,7 @@ export default function OptionsMenu() {
           <MenuItem>
             <Link
               href="/account-details"
-              className="flex items-center gap-2 font-semibold px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              className="flex items-center gap-2 font-semibold px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-gray-900"
             >
               <IoIosSettings size={18} className="text-gray-500" />
               Account settings
@@ -59,7 +59,7 @@ export default function OptionsMenu() {
           <MenuItem>
             <Link
               href="/login"
-              className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-gray-900"
             >
               <LuLogIn size={18} className="text-gray-500" />
               Log in
@@ -72,7 +72,7 @@ export default function OptionsMenu() {
             <Link
               onClick={logOut}
               href="/"
-              className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+              className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-gray-900"
             >
               <LuLogIn size={18} className="text-red-500" />
               Sign out
@@ -84,7 +84,7 @@ export default function OptionsMenu() {
             <MenuItem>
               <Link
                 href="/productCart"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-gray-900"
               >
                 <AiFillProduct color="blue" />
                 Cart items
@@ -98,7 +98,7 @@ export default function OptionsMenu() {
             <MenuItem>
               <Link
                 href="/ordersPage"
-                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-gray-900"
               >
                 <GrUserAdmin />
                 Orders histore

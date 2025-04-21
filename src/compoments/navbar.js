@@ -6,17 +6,28 @@ import Image from "next/image";
 import OptionsMenu from "./options";
 import { useRouter, usePathname } from "next/navigation";
 import Link from "next/link";
-
-// import ProductOptions from "./productOptions";
+import { IoAdd } from "react-icons/io5";
+import { Package } from "lucide-react";
+import { GoHome } from "react-icons/go";
+import { LiaShoppingBagSolid } from "react-icons/lia";
+import { RiContactsLine } from "react-icons/ri";
+import { RiFunctionAddLine } from "react-icons/ri";
 
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [loadingUser, setLoadingUser] = useState(true);
+  const [user, setUser] = useState(null);
   const pathname = usePathname();
   const router = useRouter();
+  
 
   useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
+    setLoadingUser(false); 
+
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 30);
     };
@@ -44,13 +55,27 @@ function Navbar() {
     }
     // console.log("Current Path:", pathname);
   };
-
+  if (loadingUser) return null;
   return (
     <div className={`${styles.navbar} ${isScrolled ? styles.scrolled : ""}`}>
       <div className={`${styles.logo} ${isScrolled ? styles.scrolled : ""}`}>
         <span className={`${styles.btn} ${isScrolled ? styles.scrolled : ""}`}>
           Fashion Store
         </span>
+
+        {user?.isAdmin === true && pathname !== "/admin-add-product" && (
+          <abbr title="Add Product">
+            <button
+              onClick={() => router.push("/admin-add-product")}
+              className="hidden sm:flex group w-36 items-center justify-start px-2 py-1 text-blue-600 rounded-xl hover:bg-blue-600 hover:text-white transition-all duration-300 ease-in-out overflow-hidden"
+            >
+              <IoAdd size={20} className="z-10" />
+              <span className="ml-2 transform scale-x-0 group-hover:scale-x-100 origin-left transition-transform duration-300 whitespace-nowrap">
+                Add Product
+              </span>
+            </button>
+          </abbr>
+        )}
       </div>
 
       <ul
@@ -79,20 +104,57 @@ function Navbar() {
           </Link>
         </li> */}
         {pathname !== "/fashion-store" && pathname !== "/adminDashboard" && (
-          <li onClick={handleNavigate}>Home</li>
+          <li onClick={handleNavigate} className="flex items-center gap-2">
+            {isMenuOpen && <GoHome className="w-5 h-5 text-blue-750" />}
+            <span>Home</span>
+          </li>
         )}
-
         {pathname !== "/products" && (
-          <li>
-            <Link href="/products">Products</Link>
+          <li className="flex items-center gap-2">
+            <Link href="/products" className="flex items-center gap-2">
+              {isMenuOpen && <Package className="w-5 h-5 text-blue-750" />}
+              {pathname !== "/products" && "products"}
+            </Link>
           </li>
         )}
 
-        <li>Shop</li>
-        <li>Contact</li>
+        <li className="flex items-center gap-2">
+          {isMenuOpen && (
+            <LiaShoppingBagSolid className="w-5 h-5 text-blue-750" />
+          )}
+          <span>Shop</span>
+        </li>
+
+        <li className="flex items-center gap-2">
+          {isMenuOpen && <RiContactsLine className="w-5 h-5 text-blue-750" />}
+          <span>Contact</span>
+        </li>
+
+        {user?.isAdmin === true &&
+          pathname !== "/admin-add-product" &&
+          isMenuOpen && (
+            <li className="flex items-center gap-2 sm:hidden">
+              <Link
+                href="/admin-add-product"
+                className="flex items-center gap-2"
+              >
+                <RiFunctionAddLine className="w-5 h-5 text-blue-750" />
+                <span>Add Product</span>
+              </Link>
+            </li>
+          )}
+
+        {isMenuOpen && (
+          <div className="sm:hidden">
+            <OptionsMenu isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
+          </div>
+        )}
       </ul>
 
-      <OptionsMenu />
+      {/* Always render OptionsMenu on desktop */}
+      <div className="hidden sm:block">
+        <OptionsMenu isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
+      </div>
 
       <button
         className={`${styles.hamburger} ${isMenuOpen ? "open" : ""}`}
