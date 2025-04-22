@@ -1,3 +1,5 @@
 {
-  "editor.guides.bracketPairs": true
+  "editor.guides.bracketPairs": true,
+  "editor.cursorStyle": "line",
+  "editor.cursorSmoothCaretAnimation": "off"
 }

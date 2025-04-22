@@ -109,7 +109,7 @@ export default function MainDashboard() {
     <>
       <Navbar />
 
-      <div className="flex items-center justify-between w-full bg-gradient-to-b from-blue-900 to-blue-700 p-10 mt-17 shadow-lg flex-col sm:flex-row">
+      {/* <div className="flex items-center justify-between w-full bg-gradient-to-b from-blue-900 to-blue-700 p-10 mt-17 shadow-lg flex-col sm:flex-row">
         <div className="w-full sm:w-1/2 text-left text-white p-10">
           <h1 className="text-4xl sm:text-5xl font-bold">
             Discover and Find Your Own Fashion
@@ -131,7 +131,7 @@ export default function MainDashboard() {
             height={500}
           />
         </div>
-      </div>
+      </div> */}
 
       {/* 
       <div className="p-6 mt-16">
@@ -360,75 +360,110 @@ export default function MainDashboard() {
           </div>
         )}
 
-        {/* Products Section */}
         {!loading && (
-          <div className="p-6 mt-16">
-            <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
-              Our Products
-            </h2>
-
-            {products.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-                {products.map((product) => (
-                  <div
-                    key={product._id}
-                    className="bg-white shadow-lg rounded-lg p-5 flex flex-col items-center text-center transition-transform duration-300 hover:scale-98 hover:shadow-xl border border-gray-200 group relative"
-                  >
-                    <span
-                      className={`absolute top-3 left-3 text-xs font-bold px-3 py-1 rounded-full text-white z-10 shadow-md ${
-                        product.stock > 0 ? "bg-green-500" : "bg-red-500"
-                      }`}
-                    >
-                      {product.stock > 0
-                        ? `In Stock (${product.stock})`
-                        : "Out of Stock"}
-                    </span>
-
-                    <div className="relative opacity-100 group-hover:opacity-60 w-44 h-44 overflow-hidden rounded-lg border-b-2 border-gray-300 pb-2">
-                      <Image
-                        src={product.image}
-                        alt="Product"
-                        width={176}
-                        height={176}
-                        className="object-cover w-full h-full rounded-lg transition-all duration-300"
-                        priority
-                      />
-                    </div>
-
-                    <h3 className="text-lg font-semibold text-gray-800 mt-1">
-                      {product.name}
-                    </h3>
-                    <p className="text-gray-700 text-sm mt-3 font-semibold">
-                      ${product.price}
-                    </p>
-
-                    <button
-                      className="absolute bottom-2 right-2 text-white font-semibold opacity-40 sm:opacity-0 sm:group-hover:opacity-40 transition-all duration-300 ease-in-out bg-blue-500 bg-opacity-30 backdrop-blur-lg px-4 py-2 rounded-md w-32 transform translate-x-0 sm:translate-x-4 sm:group-hover:translate-x-0"
-                      onClick={() => {
-                        const queryString = new URLSearchParams({
-                          productId: product._id,
-                          name: product.name,
-                          price: product.price.toString(),
-                          category: product.category,
-                          stock: product.stock.toString(),
-                          description: product.description,
-                          image: product.image,
-                        }).toString();
-
-                        router.push(`/productDetails?${queryString}`);
-                      }}
-                    >
-                      View Details
-                    </button>
-                  </div>
-                ))}
+          <>
+            <div className="w-full bg-gradient-to-br from-indigo-800 via-grey-700 to-indigo-900 text-white py-20 px-6 sm:px-16 mt-16 shadow-xl overflow-hidden relative">
+              <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
+                <div className="absolute w-72 h-72 bg-blue-400 opacity-20 rounded-full -top-20 -left-20 animate-ping"></div>
+                <div className="absolute w-48 h-48 bg-purple-500 opacity-20 rounded-full top-1/2 left-1/2 animate-pulse"></div>
               </div>
-            ) : (
-              <p className="text-center text-gray-500">
-                No products available.
-              </p>
-            )}
-          </div>
+
+              <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-10">
+                <div className="sm:w-1/2 text-center sm:text-left space-y-6">
+                  <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
+                    Discover Your Fashion <br />
+                    <span className="text-yellow-300">With Style</span>
+                  </h1>
+                  <p className="text-lg text-gray-200">
+                    Unveil the latest trends in fashion. Explore curated
+                    collections and elevate your wardrobe.
+                  </p>
+                  <button className="mt-4 inline-block bg-yellow-300 hover:bg-yellow-400 text-black font-semibold px-6 py-3 rounded-full transition duration-300">
+                    Explore Now
+                  </button>
+                </div>
+
+                <div className="w-full sm:w-1/2 flex justify-center">
+                  <Image
+                    src="/product-photo.jpg"
+                    alt="Fashion Banner"
+                    className="w-[90%] max-w-[300px] sm:max-w-[400px] rounded-2xl shadow-2xl animate-fadeInUp"
+                    width={400}
+                    height={400}
+                    priority
+                  />
+                </div>
+              </div>
+            </div>
+
+            <div className="p-6 mt-16">
+              <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+                Our Products
+              </h2>
+
+              {products.length > 0 ? (
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+                  {products.map((product) => (
+                    <div
+                      key={product._id}
+                      className="bg-white shadow-lg rounded-lg p-5 flex flex-col items-center text-center transition-transform duration-300 hover:scale-98 hover:shadow-xl border border-gray-200 group relative"
+                    >
+                      <span
+                        className={`absolute top-3 left-3 text-xs font-bold px-3 py-1 rounded-full text-white z-10 shadow-md ${
+                          product.stock > 0 ? "bg-green-500" : "bg-red-500"
+                        }`}
+                      >
+                        {product.stock > 0
+                          ? `In Stock (${product.stock})`
+                          : "Out of Stock"}
+                      </span>
+
+                      <div className="relative opacity-100 group-hover:opacity-60 w-44 h-44 overflow-hidden rounded-lg border-b-2 border-gray-300 pb-2">
+                        <Image
+                          src={product.image}
+                          alt="Product"
+                          width={176}
+                          height={176}
+                          className="object-cover w-full h-full rounded-lg transition-all duration-300"
+                          priority
+                        />
+                      </div>
+
+                      <h3 className="text-lg font-semibold text-gray-800 mt-1">
+                        {product.name}
+                      </h3>
+                      <p className="text-gray-700 text-sm mt-3 font-semibold">
+                        ${product.price}
+                      </p>
+
+                      <button
+                        className="absolute bottom-2 right-2 text-white font-semibold opacity-40 sm:opacity-0 sm:group-hover:opacity-40 transition-all duration-300 ease-in-out bg-blue-500 bg-opacity-30 backdrop-blur-lg px-4 py-2 rounded-md w-32 transform translate-x-0 sm:translate-x-4 sm:group-hover:translate-x-0"
+                        onClick={() => {
+                          const queryString = new URLSearchParams({
+                            productId: product._id,
+                            name: product.name,
+                            price: product.price.toString(),
+                            category: product.category,
+                            stock: product.stock.toString(),
+                            description: product.description,
+                            image: product.image,
+                          }).toString();
+
+                          router.push(`/productDetails?${queryString}`);
+                        }}
+                      >
+                        View Details
+                      </button>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-center text-gray-500">
+                  No products available.
+                </p>
+              )}
+            </div>
+          </>
         )}
 
         {/* Sales Discount Offers Section */}
