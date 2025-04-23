@@ -29,17 +29,13 @@ export const addDiscount = async (orderData) => {
 
 export const fetchDiscount = async () => {
   try {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
-    if (!token) {
-      console.error("Token is missing!");
-      return;
-    }
-    const response = await axios.get(`${ApiRoutes.getDiscount}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    // if (!token) {
+    //   console.error("Token is missing!");
+    //   return;
+    // }
+    const response = await axios.get(`${ApiRoutes.getDiscount}`);
     return response.data;
   } catch (error) {
     console.error(
@@ -48,7 +44,6 @@ export const fetchDiscount = async () => {
     );
   }
 };
-
 
 
 export const updateDiscount = async (id, orderData) => {

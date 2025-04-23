@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchDiscountProduct,
   orderDiscountProduct,
+  updateDicountOrderStatus,
 } from "../../server/discountOfferOrderAction";
 
 export const getDiscountOfferOrder = createAsyncThunk("discountOrder/fetch", async () => {
@@ -13,6 +14,16 @@ export const getDiscountOfferOrder = createAsyncThunk("discountOrder/fetch", asy
 export const createDiscountOfferOrder = createAsyncThunk("discountOrder/placed", async (orderData) => {
     const response = await orderDiscountProduct(orderData);
     console.log("API Response: discount product order palced", response);
+    return response;
+  }
+);
+
+export const updateDiscountOrder = createAsyncThunk("discountOrder/edit", async ({ id, orderData }) => {
+    const response = await updateDicountOrderStatus(id, orderData);
+    console.log("API Response: order status updated successfully:", response);
+    if (!response) {
+      throw new Error("No response from API");
+    }
     return response;
   }
 );

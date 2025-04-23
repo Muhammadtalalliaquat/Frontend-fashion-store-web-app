@@ -170,7 +170,7 @@ export default function ProductDetails() {
 
     router.push(`/placeOrder?${queryString}`);
     // router.push("/placeOrder");
-  }
+  };
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -199,7 +199,6 @@ export default function ProductDetails() {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, productId]);
- 
 
   return (
     <>
@@ -341,79 +340,80 @@ export default function ProductDetails() {
           <p className="mt-2 text-gray-600 leading-relaxed">{description}</p>
         </div>
 
-        <div className="mt-8">
-          {/* Header with Toggle Button */}
-          <div className="flex justify-between items-center">
-            <h3 className="text-xl font-semibold text-gray-800">
-              Customer Reviews
-            </h3>
-            <button
-              onClick={() => setShowAddReview(!showAddReview)}
-              className="text-gray-400 font-semibold hover:text-gray-900 flex items-center"
-            >
-              {showAddReview ? "Hide Review" : "Add Review"}
-              {showAddReview ? (
-                <ChevronUp className="w-5 h-5 ml-1" />
-              ) : (
-                <ChevronDown className="w-5 h-5 ml-1" />
-              )}
-            </button>
-          </div>
-
-          <motion.div
-            initial={{ opacity: 0, height: 0 }}
-            animate={{
-              opacity: showAddReview ? 1 : 0,
-              height: showAddReview ? "auto" : 0,
-            }}
-            exit={{ opacity: 0, height: 0 }}
-            transition={{ duration: 0.3, ease: "easeInOut" }}
-            className="overflow-hidden"
-          >
-            {showAddReview && (
-              <form
-                onSubmit={handleAddReview}
-                className="p-4 bg-gray-100 rounded-lg shadow-sm mt-4"
+        {user?.isAdmin === true && (
+          <div className="mt-8">
+            <div className="flex justify-between items-center">
+              <h3 className="text-xl font-semibold text-gray-800">
+                Customer Reviews
+              </h3>
+              <button
+                onClick={() => setShowAddReview(!showAddReview)}
+                className="text-gray-400 font-semibold hover:text-gray-900 flex items-center"
               >
-                <h4 className="font-semibold text-gray-700">Write a Review</h4>
+                {showAddReview ? "Hide Review" : "Add Review"}
+                {showAddReview ? (
+                  <ChevronUp className="w-5 h-5 ml-1" />
+                ) : (
+                  <ChevronDown className="w-5 h-5 ml-1" />
+                )}
+              </button>
+            </div>
 
-                <div className="flex space-x-1 my-3">
-                  {[1, 2, 3, 4, 5].map((star) => (
-                    <FaStar
-                      key={star}
-                      size={22}
-                      className={
-                        star <= rating
-                          ? "text-yellow-500 cursor-pointer"
-                          : "text-gray-300 cursor-pointer"
-                      }
-                      onClick={() => handleStarClick(star)}
-                    />
-                  ))}
-                </div>
-
-                <label className="block text-gray-700">Comment:</label>
-                <textarea
-                  value={comment}
-                  onChange={(e) => setComment(e.target.value)}
-                  // className="w-full border border-grey-200 p-2 rounded mt-1"
-                  // className="w-full border border-gray-300 p-2 rounded mt-1 focus:border-gray-400 focus:ring focus:ring-gray-200"
-                  className="w-full px-4 py-3 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                  placeholder="Write your review here..."
-                  required
-                />
-
-                <button
-                  type="submit"
-                  className="mt-4 bg-blue-400 font-semibold text-white py-2 px-4 rounded hover:bg-blue-500"
-                  disabled={loading}
+            <motion.div
+              initial={{ opacity: 0, height: 0 }}
+              animate={{
+                opacity: showAddReview ? 1 : 0,
+                height: showAddReview ? "auto" : 0,
+              }}
+              exit={{ opacity: 0, height: 0 }}
+              transition={{ duration: 0.3, ease: "easeInOut" }}
+              className="overflow-hidden"
+            >
+              {showAddReview && (
+                <form
+                  onSubmit={handleAddReview}
+                  className="p-4 bg-gray-100 rounded-lg shadow-sm mt-4"
                 >
-                  {loading ? "Submitting..." : "Submit Review"}
-                </button>
-              </form>
-            )}
-          </motion.div>
-        </div>
+                  <h4 className="font-semibold text-gray-700">
+                    Write a Review
+                  </h4>
+
+                  <div className="flex space-x-1 my-3">
+                    {[1, 2, 3, 4, 5].map((star) => (
+                      <FaStar
+                        key={star}
+                        size={22}
+                        className={
+                          star <= rating
+                            ? "text-yellow-500 cursor-pointer"
+                            : "text-gray-300 cursor-pointer"
+                        }
+                        onClick={() => handleStarClick(star)}
+                      />
+                    ))}
+                  </div>
+
+                  <label className="block text-gray-700">Comment:</label>
+                  <textarea
+                    value={comment}
+                    onChange={(e) => setComment(e.target.value)}
+                    className="w-full px-4 py-3 mt-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+                    placeholder="Write your review here..."
+                    required
+                  />
+
+                  <button
+                    type="submit"
+                    className="mt-4 bg-blue-400 font-semibold text-white py-2 px-4 rounded hover:bg-blue-500"
+                    disabled={loading}
+                  >
+                    {loading ? "Submitting..." : "Submit Review"}
+                  </button>
+                </form>
+              )}
+            </motion.div>
+          </div>
+        )}
 
         {/* Reviews Section */}
 
@@ -436,7 +436,6 @@ export default function ProductDetails() {
                     className="p-4  shadow-sm bg-gray-100"
                   >
                     <div className="flex items-center justify-between">
-                      {/* User Info */}
                       <h4 className="font-semibold text-gray-900 flex items-center">
                         <span className="text-blue-600 font-bold">
                           {review.userId?.userName || "Anonymous"}
@@ -446,13 +445,11 @@ export default function ProductDetails() {
                         </span>
                       </h4>
                       <div className="flex items-center">
-                        {/* Rating Display */}
                         <span className="text-yellow-600 font-bold flex items-center">
                           {review.rating}
                           <Star className="w-5 h-5 ml-1 fill-yellow-500 stroke-none" />
                         </span>
 
-                        {/* Delete Button for Admins */}
                         {user?.isAdmin === true && (
                           <button
                             onClick={() => handleRemoveReviews(review._id)}

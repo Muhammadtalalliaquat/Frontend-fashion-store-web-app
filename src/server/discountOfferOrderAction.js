@@ -47,3 +47,29 @@ export const fetchDiscountProduct = async () => {
     );
   }
 };
+
+
+export const updateDicountOrderStatus = async (id, orderData) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("Token is missing!");
+      return;
+    }
+
+    const response = await axios.put(`${ApiRoutes.updateDiscountOrder}/${id}`, orderData, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("Discount Product order status updated:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Failed to update Discount order status:",
+      error.response?.data || error.message
+    );
+  }
+};

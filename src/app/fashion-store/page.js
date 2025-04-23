@@ -7,6 +7,7 @@ import { getAllProducts } from "../../store/features/productSlice";
 import { getDiscountOffer } from "../../store/features/discountSlice";
 import { createDiscountOfferOrder } from "../../store/features/discountOrderSlice";
 import Image from "next/image";
+import Link from "next/link";
 import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 
@@ -21,6 +22,8 @@ export default function MainDashboard() {
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [area, setArea] = useState("");
+  const [user, setUser] = useState(null);
+
   const router = useRouter();
 
   const maxVisible = 1;
@@ -36,6 +39,9 @@ export default function MainDashboard() {
   };
 
   useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
+
     dispatch(getAllProducts())
       .then((result) => {
         console.log("API Response:", result.payload);
@@ -532,7 +538,33 @@ export default function MainDashboard() {
               </button>
             </div>
 
-            {activePopup && (
+            {activePopup && !user && (
+              <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-[9999]">
+                <div className="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl relative">
+                  <button
+                    onClick={() => setActivePopup(null)}
+                    className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
+                  >
+                    ×
+                  </button>
+
+                  <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+                    You need to log in to place an order
+                  </h2>
+
+                  <div className="flex justify-center">
+                    <Link
+                      href="/login"
+                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                    >
+                      Go to Login
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {activePopup && user && (
               <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-[9999]">
                 <div className="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl relative">
                   <button

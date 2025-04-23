@@ -3,18 +3,14 @@ import { ApiRoutes } from "../constant/constant";
 
 export const fetchReviews = async (id) => {
   try {
-    const token = localStorage.getItem("token");
+    // const token = localStorage.getItem("token");
 
-    if (!token) {
-      console.error("Token is missing!");
-      return;
-    }
+    // if (!token) {
+    //   console.error("Token is missing!");
+    //   return;
+    // }
 
-    const response = await axios.get(`${ApiRoutes.getReview}/${id}`, {
-      headers: {
-        Authorization: `Bearer ${token}`,
-      },
-    });
+    const response = await axios.get(`${ApiRoutes.getReview}/${id}`);
     // console.log("Products reviews fetched:", response.data);
     return response.data;
   } catch (error) {

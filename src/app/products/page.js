@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { fetchAllProductShow } from "../../store/features/productSlice";
 import { FaSpinner } from "react-icons/fa";
 import Image from "next/image";
+import Link from "next/link";
 import { Listbox } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useRouter } from "next/navigation";
@@ -21,6 +22,7 @@ export default function Products() {
   const [quantities, setQuantities] = useState({});
   const [activePopupCart, setActivePopupCart] = useState(null);
   const [activePopup, setActivePopup] = useState(null);
+  const [user, setUser] = useState(null);
   const router = useRouter();
 
   const handleQuantityChange = (id, value) => {
@@ -59,6 +61,9 @@ export default function Products() {
   };
 
   useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
+
     dispatch(fetchAllProductShow())
       .then((result) => {
         console.log("API Response:", result.payload);
@@ -148,7 +153,34 @@ export default function Products() {
                         className="text-blue-600"
                       />
                     </button>
-                    {activePopupCart === product._id && (
+
+                    {activePopupCart === product._id && !user && (
+                      <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center px-3 z-[9999]">
+                        <div className="bg-white w-full max-w-sm sm:max-w-md p-4 sm:p-6  shadow-2xl relative">
+                          <button
+                            onClick={() => setActivePopupCart(false)}
+                            className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
+                          >
+                            ×
+                          </button>
+
+                          <h2 className="font-medium text-gray-800 p-3 mb-3 text-center">
+                            You need to log in to add items to your cart
+                          </h2>
+
+                          <div className="flex justify-center">
+                            <Link
+                              href="/login"
+                              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                            >
+                              Go to Login
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {activePopupCart === product._id && user && (
                       <div className="absolute top-14 right-3 bg-white shadow-lg rounded-lg p-4 z-40 w-40 flex flex-col items-center">
                         <label className="text-sm mb-1">Quantity</label>
                         <input
@@ -196,6 +228,32 @@ export default function Products() {
 
                     <div className="absolute inset-0 bg-white/30 backdrop-blur-md opacity-0 group-hover:opacity-70 transition-all duration-300 z-10" />
 
+                    {activePopup === product._id && !user && (
+                      <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center px-3 z-[9999]">
+                        <div className="bg-white w-full max-w-sm sm:max-w-md p-4 sm:p-6 shadow-2xl relative">
+                          <button
+                            onClick={() => setActivePopup(false)}
+                            className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
+                          >
+                            ×
+                          </button>
+
+                          <h2 className="font-medium text-gray-800 p-3 mb-3 text-center">
+                            You need to log in to Buy this product.
+                          </h2>
+
+                          <div className="flex justify-center">
+                            <Link
+                              href="/login"
+                              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                            >
+                              Go to Login
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
                     <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex flex-col gap-2 items-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 z-20">
                       <button
                         className="bg-blue-600/80 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm backdrop-blur-md w-36"
@@ -222,7 +280,7 @@ export default function Products() {
                         Buy Now
                       </button>
 
-                      {activePopup === product._id && (
+                      {activePopup === product._id && user && (
                         <div className="absolute bottom-14 bg-white shadow-lg rounded-lg p-4 z-30 w-40 flex flex-col items-center">
                           <label className="text-sm mb-1">Quantity</label>
                           <input

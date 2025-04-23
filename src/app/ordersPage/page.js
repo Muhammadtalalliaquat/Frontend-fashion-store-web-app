@@ -3,7 +3,10 @@
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { getAllOrders, updateOrder } from "../../store/features/orderSlice";
-import { getDiscountOfferOrder } from "../../store/features/discountOrderSlice";
+import {
+  getDiscountOfferOrder,
+  updateDiscountOrder,
+} from "../../store/features/discountOrderSlice";
 import Image from "next/image";
 import Navbar from "../../compoments/navbar";
 import { FaSpinner } from "react-icons/fa";
@@ -33,6 +36,29 @@ export default function OrdersPageDashboard() {
           .then((result) => {
             console.log("API Response:", result.payload);
             setOrderList(result.payload.data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.error("Fetch Error:", err);
+            setLoading(false);
+          });
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+      });
+  };
+
+  const handleUpdateStatus = (orderId, status) => {
+    const updatedData = { status };
+
+    dispatch(updateDiscountOrder({ id: orderId, orderData: updatedData }))
+      .then((result) => {
+        console.log("API Response:", result.payload);
+
+        dispatch(getDiscountOfferOrder())
+          .then((result) => {
+            console.log("API Response:", result.payload);
+            setDiscountOrder(result.payload.data);
             setLoading(false);
           })
           .catch((err) => {
@@ -166,13 +192,19 @@ export default function OrdersPageDashboard() {
                                       "delivered",
                                       "cancelled",
                                     ].map((status) => {
-                                      const colorMap = {
-                                        pending: "yellow",
-                                        processing: "blue",
-                                        shipped: "green",
-                                        delivered: "purple",
-                                        cancelled: "red",
+                                      const statusClassMap = {
+                                        pending:
+                                          "hover:bg-yellow-200 active:bg-yellow-300",
+                                        processing:
+                                          "hover:bg-blue-200 active:bg-blue-300",
+                                        shipped:
+                                          "hover:bg-green-200 active:bg-green-300",
+                                        delivered:
+                                          "hover:bg-purple-200 active:bg-purple-300",
+                                        cancelled:
+                                          "hover:bg-red-200 active:bg-red-300",
                                       };
+
                                       return (
                                         <button
                                           key={status}
@@ -182,7 +214,7 @@ export default function OrdersPageDashboard() {
                                               status
                                             )
                                           }
-                                          className={`block w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-${colorMap[status]}-200 active:bg-${colorMap[status]}-300 focus:outline-none transition-all`}
+                                          className={`block w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md focus:outline-none transition-all ${statusClassMap[status]}`}
                                         >
                                           {status.charAt(0).toUpperCase() +
                                             status.slice(1)}
@@ -296,12 +328,82 @@ export default function OrdersPageDashboard() {
                           className="w-full sm:w-[375px] h-auto rounded-lg mb-3 object-cover"
                         />
 
-                        <p className="font-medium text-gray-700">
-                          Product:{" "}
-                          <span className="text-blue-700">
-                            {order.productId.name}
-                          </span>
-                        </p>
+                        <div className="flex justify-between items-center">
+                          <p className="font-medium text-gray-700">
+                            Product:{" "}
+                            <span className="text-blue-700">
+                              {order.productId.name}
+                            </span>
+                          </p>
+
+                          {user.isAdmin && (
+                            <div className="relative">
+                              <span
+                                onClick={() => toggleDropdown(order._id)}
+                                className="cursor-pointer hover:text-gray-600"
+                              >
+                                <PencilSquareIcon className="w-4 h-4 text-gray-500" />
+                              </span>
+
+                              <motion.div
+                                initial={{ opacity: 0, height: 0 }}
+                                animate={{
+                                  opacity: openOrderId ? 1 : 0,
+                                  height: openOrderId ? "auto" : 0,
+                                }}
+                                exit={{ opacity: 0, height: 0 }}
+                                transition={{
+                                  duration: 0.3,
+                                  ease: "easeInOut",
+                                }}
+                                className="overflow-hidden absolute right-0 z-10"
+                              >
+                                {openOrderId === order._id && (
+                                  <div className="mt-2 w-48 rounded-md shadow-lg bg-white transition-all duration-300 ease-out transform">
+                                    <div className="py-1">
+                                      {[
+                                        "pending",
+                                        "processing",
+                                        "shipped",
+                                        "delivered",
+                                        "cancelled",
+                                      ].map((status) => {
+                                        const statusClassMap = {
+                                          pending:
+                                            "hover:bg-yellow-200 active:bg-yellow-300",
+                                          processing:
+                                            "hover:bg-blue-200 active:bg-blue-300",
+                                          shipped:
+                                            "hover:bg-green-200 active:bg-green-300",
+                                          delivered:
+                                            "hover:bg-purple-200 active:bg-purple-300",
+                                          cancelled:
+                                            "hover:bg-red-200 active:bg-red-300",
+                                        };
+
+                                        return (
+                                          <button
+                                            key={status}
+                                            onClick={() =>
+                                              handleUpdateStatus(
+                                                order._id,
+                                                status
+                                              )
+                                            }
+                                            className={`block w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md focus:outline-none transition-all ${statusClassMap[status]}`}
+                                          >
+                                            {status.charAt(0).toUpperCase() +
+                                              status.slice(1)}
+                                          </button>
+                                        );
+                                      })}
+                                    </div>
+                                  </div>
+                                )}
+                              </motion.div>
+                            </div>
+                          )}
+                        </div>
                         {/* <p className="text-sm text-gray-600">
                             Quantity: {order.quantity}
                           </p> */}
@@ -311,18 +413,18 @@ export default function OrdersPageDashboard() {
                         <p
                           className={`inline-block text-xs sm:text-sm rounded-md mt-1 font-medium capitalize
                           ${
-                           order.status === "pending"
-                           ? "bg-yellow-100 text-yellow-700"
-                           : order.status === "processing"
-                           ? "bg-blue-100 text-blue-700"
-                           : order.status === "shipped"
-                           ? "bg-green-100 text-green-700"
-                           : order.status === "delivered"
-                           ? "bg-purple-100 text-purple-700"
-                           : order.status === "cancelled"
-                           ? "bg-red-100 text-red-700"
-                           : "bg-gray-100 text-gray-700"
-                           }
+                            order.status === "pending"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : order.status === "processing"
+                              ? "bg-blue-100 text-blue-700"
+                              : order.status === "shipped"
+                              ? "bg-green-100 text-green-700"
+                              : order.status === "delivered"
+                              ? "bg-purple-100 text-purple-700"
+                              : order.status === "cancelled"
+                              ? "bg-red-100 text-red-700"
+                              : "bg-gray-100 text-gray-700"
+                          }
                            px-2 py-0.5
                           `}
                         >
