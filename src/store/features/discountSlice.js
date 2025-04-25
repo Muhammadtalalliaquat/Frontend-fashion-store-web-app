@@ -2,7 +2,8 @@ import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchDiscount,
   addDiscount,
-  updateDiscount,
+  updateDiscountOffer,
+  deleteDicountOfferProduct,
 } from "../../server/discountOfferAction";
 
 export const getDiscountOffer = createAsyncThunk("discount/fetch", async () => {
@@ -18,8 +19,8 @@ export const createDiscountOffer = createAsyncThunk("discount/add", async (order
   }
 );
 
-export const updateOrder = createAsyncThunk("discount/edit", async ({ id, orderData }) => {
-    const response = await updateDiscount(id, orderData);
+export const updateDiscountOrder = createAsyncThunk("discount/edit", async ({ id, orderData }) => {
+    const response = await updateDiscountOffer(id, orderData);
     console.log("API Response: update Discount offer successfully:", response);
     if (!response) {
       throw new Error("No response from API");
@@ -27,6 +28,16 @@ export const updateOrder = createAsyncThunk("discount/edit", async ({ id, orderD
     return response;
   }
 );
+
+export const removeDicountProduct = createAsyncThunk("discount/delete", async (id) => {
+  const response = await deleteDicountOfferProduct(id);
+  console.log("API Response:Discount Product deleted successfully:", response);
+
+  if (!response) {
+    throw new Error("No response from API");
+  }
+  return response;
+});
 
 const discountSlice = createSlice({
   name: "discount",
@@ -51,15 +62,15 @@ const discountSlice = createSlice({
         } else {
           state.products = [action.payload];
         }
+      })
+      .addCase(removeDicountProduct.fulfilled, (state, action) => {
+        // state.products = state.products.filter((product) => product._id !== action.payload);
+        if (Array.isArray(state.products)) {
+          state.products = state.products.filter(
+            (product) => product._id !== action.payload
+          );
+        }
       });
-    //   .addCase(removeProduct.fulfilled, (state, action) => {
-    //     // state.products = state.products.filter((product) => product._id !== action.payload);
-    //     if (Array.isArray(state.products)) {
-    //       state.products = state.products.filter(
-    //         (product) => product._id !== action.payload
-    //       );
-    //     }
-    //   });
   },
 });
 

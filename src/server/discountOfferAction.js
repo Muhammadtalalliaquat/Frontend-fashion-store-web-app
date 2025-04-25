@@ -46,7 +46,7 @@ export const fetchDiscount = async () => {
 };
 
 
-export const updateDiscount = async (id, orderData) => {
+export const updateDiscountOffer = async (id, orderData) => {
   try {
     const token = localStorage.getItem("token");
 
@@ -55,7 +55,10 @@ export const updateDiscount = async (id, orderData) => {
       return;
     }
 
-    const response = await axios.put(`${ApiRoutes.updateDiscount}/${id}`, orderData, {
+    const response = await axios.put(
+      `${ApiRoutes.updateDiscount}/${id}`,
+      orderData,
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -68,5 +71,31 @@ export const updateDiscount = async (id, orderData) => {
       "Failed to update Discount offer:",
       error.response?.data || error.message
     );
+  }
+};
+
+
+export const deleteDicountOfferProduct = async (id) => {
+  try {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      console.error("Token is missing!");
+      return;
+    }
+    const response = await axios.delete(`${ApiRoutes.deleteDiscountOrder}/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log("Dicount Offer Product deleted:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Failed to delete product:",
+      error.response?.data || error.message
+    );
+    throw error;
   }
 };
