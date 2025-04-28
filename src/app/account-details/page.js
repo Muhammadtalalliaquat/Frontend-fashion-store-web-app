@@ -12,19 +12,11 @@ import { FaUserCircle } from "react-icons/fa";
 export default function AcountDetails() {
   const dispatch = useDispatch();
   const { loading, error } = useSelector((state) => state.account);
-
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, setUser] = useState(null);
 
-  //  useEffect(() => {
-  //    if (user) {
-  //      setUserName(user.userName || "");
-  //      setEmail(user.email || "");
-  //    }
-  //    console.log("User data here:", user);
-  //  }, [user]);
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) {

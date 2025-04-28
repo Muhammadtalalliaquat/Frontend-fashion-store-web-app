@@ -47,15 +47,17 @@ function AddProductPage() {
     formData.append("price", price);
     formData.append("category", category);
     formData.append("description", description);
-    formData.append("stock", stock);
-    formData.append("image", image);
+    formData.append("stock", stock.toString());
+    if (image) {
+      formData.append("image", image);
+    }
 
     console.log("Product Data:", formData);
     setIsSubmitting(true);
 
     try {
       dispatch(createProduct(formData));
-      console.log("product successfully added!", data);
+      console.log("product successfully added!", formData);
       router.push("/fashion-store");
     } catch (error) {
       console.error("Error adding discount:", error);
@@ -69,7 +71,9 @@ function AddProductPage() {
     data.append("productName", productName);
     data.append("originalPrice", originalPrice);
     data.append("discountPrice", discountPrice);
-    data.append("image", image);
+    if (image) {
+      data.append("image", image);
+    }
 
     try {
       dispatch(createDiscountOffer(data));

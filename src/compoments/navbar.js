@@ -49,6 +49,7 @@ function Navbar() {
       pathname === "/ordersPage" ||
       pathname === "/placeOrder" ||
       pathname === "/products" ||
+      pathname === "/contact" ||
       pathname.startsWith("/admin-update-product")
     ) {
       router.push("/fashion-store");
@@ -125,10 +126,15 @@ function Navbar() {
           <span>Shop</span>
         </li>
 
+        {pathname !== "/contact" && (
         <li className="flex items-center gap-2">
           {isMenuOpen && <RiContactsLine className="w-5 h-5 text-blue-750" />}
-          <span>Contact</span>
+          <Link href={"/contact"}>
+            {/* {pathname !== "/contact" && "contact"} */}
+            <span>Contact</span>
+          </Link>
         </li>
+        )}
 
         {user?.isAdmin === true &&
           pathname !== "/admin-add-product" &&
