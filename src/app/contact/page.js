@@ -3,22 +3,29 @@
 import Navbar from "../../compoments/navbar";
 import { motion } from "framer-motion";
 import { createContact } from "../../store/features/contactSlice";
-import { useState } from "react";
-// import { useRouter } from "next/navigation";
+import { createFeedback } from "../../store/features/feedbackSlice";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
-
+import Link from "next/link";
 
 export default function ContactPage() {
-
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
-  // const router = useRouter();
+  const [feedBackMessage, setFeedBackMessage] = useState("");
+  const [user, setUser] = useState(null);
+  const [activePopup, setActivePopup] = useState(null);
   const dispatch = useDispatch();
-  
+  const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
+  }, []);
 
   const handleAddConatcData = (e) => {
     e.preventDefault();
@@ -30,7 +37,7 @@ export default function ContactPage() {
       message,
     };
 
-    setIsSubmitting(true); 
+    setIsSubmitting(true);
 
     dispatch(createContact(contactData))
       .then((result) => {
@@ -40,11 +47,28 @@ export default function ContactPage() {
         setEmail("");
         setMessage("");
         setIsSubmitting(false);
-         toast.success("Successfully send message.", {
-           position: "bottom-right",
-           autoClose: 3000,
-         });
+        toast.success("Successfully send message.", {
+          position: "bottom-right",
+          autoClose: 3000,
+        });
         // router.push("/fashion-store");
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+        setIsSubmitting(false);
+      });
+  };
+
+  const handleAddFeedbackData = (e) => {
+    e.preventDefault();
+    setIsSubmitting(true);
+
+    dispatch(createFeedback({feedBackMessage}))
+      .then((result) => {
+        console.log("API Response:", result.payload);
+        setFeedBackMessage("");
+        setIsSubmitting(false);
+        router.push("/fashion-store");
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
@@ -133,9 +157,40 @@ export default function ContactPage() {
               ></textarea>
             </div>
 
+            {activePopup && !user && (
+              <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center px-3 z-[9999]">
+                <div className="bg-white w-full max-w-sm sm:max-w-md p-4 sm:p-6 shadow-2xl rounded-xl relative">
+                  <button
+                    onClick={() => setActivePopup(false)}
+                    className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
+                  >
+                    ×
+                  </button>
+
+                  <h2 className="font-medium text-gray-800 p-3 mb-3 text-center">
+                    You need to log in to buy this product.
+                  </h2>
+
+                  <div className="flex justify-center">
+                    <Link
+                      href="/login"
+                      className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                    >
+                      Go to Login
+                    </Link>
+                  </div>
+                </div>
+              </div>
+            )}
+
             <div>
               <button
                 type="submit"
+                onClick={() => {
+                  if (!user) {
+                    setActivePopup(true);
+                  }
+                }}
                 className="w-full bg-black text-white font-semibold py-4 hover:bg-gray-800 transition flex items-center justify-center"
                 disabled={isSubmitting}
               >
@@ -156,14 +211,16 @@ export default function ContactPage() {
               We would love to hear your thoughts about our website.
             </p>
 
-            <form className="space-y-8">
+            <form onSubmit={handleAddFeedbackData} className="space-y-8">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Your Feedback (Optional)
+                  Your Feedback
                 </label>
                 <textarea
                   rows={5}
                   placeholder="Share your thoughts about our website..."
+                  value={feedBackMessage}
+                  onChange={(e) => setFeedBackMessage(e.target.value)}
                   required
                   className="block w-full border border-gray-300 p-4 focus:border-black focus:ring-black focus:outline-none"
                 ></textarea>
@@ -175,9 +232,14 @@ export default function ContactPage() {
               <div>
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white font-semibold py-4 hover:bg-blue-700 transition"
+                  className="w-full bg-blue-600 text-white font-semibold py-4 hover:bg-blue-700 transition flex items-center justify-center"
+                  disabled={isSubmitting}
                 >
-                  Submit Feedback
+                  {isSubmitting ? (
+                    <div className="animate-spin h-5 w-5 border-2 border-t-transparent border-white rounded-full"></div>
+                  ) : (
+                    "Submit Feedback"
+                  )}
                 </button>
               </div>
             </form>
@@ -185,12 +247,12 @@ export default function ContactPage() {
 
           <div className="mt-10 text-center text-gray-500 text-sm">
             <p>Need help? Email us at</p>
-            <a
+            <Link
               href="mailto:support@fashionstore.com"
               className="text-black underline font-medium"
             >
               support@fashionstore.com
-            </a>
+            </Link>
           </div>
         </motion.div>
       </div>

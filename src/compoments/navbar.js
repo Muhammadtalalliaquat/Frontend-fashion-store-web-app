@@ -45,6 +45,7 @@ function Navbar() {
       pathname === "/admin-add-product" ||
       pathname === "/account-details" ||
       pathname === "/productDetails" ||
+      pathname === "/adminDashboard" ||
       pathname === "/productCart" ||
       pathname === "/ordersPage" ||
       pathname === "/placeOrder" ||
@@ -104,7 +105,7 @@ function Navbar() {
             {pathname !== "/products" && "products"}
           </Link>
         </li> */}
-        {pathname !== "/fashion-store" && pathname !== "/adminDashboard" && (
+        {pathname !== "/fashion-store" && (
           <li onClick={handleNavigate} className="flex items-center gap-2">
             {isMenuOpen && <GoHome className="w-5 h-5 text-blue-750" />}
             <span>Home</span>

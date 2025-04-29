@@ -8,6 +8,7 @@ import orderReducer from "../store/features/orderSlice";
 import discountReducer from "../store/features/discountSlice";
 import discountOrderReducer from "../store/features/discountSlice";
 import contactReducer from "../store/features/contactSlice";
+import feedbackReducer from "../store/features/feedbackSlice";
 
 
 export const store = configureStore({
@@ -21,6 +22,7 @@ export const store = configureStore({
     discount: discountReducer,
     discountOrder: discountOrderReducer,
     contact: contactReducer,
+    feedBack: feedbackReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

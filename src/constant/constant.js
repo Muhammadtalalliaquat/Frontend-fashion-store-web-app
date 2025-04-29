@@ -43,4 +43,7 @@ export const ApiRoutes = {
 
   addContact: BASIC_URL + `contact-us/addContact`,
   getContact: BASIC_URL + `contact-us/getContacts`,
+
+  addFeedBack: BASIC_URL + `feed-back/addFeedBack`,
+  getFeedBack: BASIC_URL + `feed-back/getFeedBack`,
 };

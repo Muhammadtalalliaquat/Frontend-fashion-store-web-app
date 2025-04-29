@@ -9,6 +9,7 @@ import { LuLogIn } from "react-icons/lu";
 import { GrUserAdmin } from "react-icons/gr";
 import { useEffect, useState } from "react";
 import { AiFillProduct } from "react-icons/ai";
+import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 export default function OptionsMenu() {
   const dispatch = useDispatch();
@@ -102,6 +103,20 @@ export default function OptionsMenu() {
               >
                 <GrUserAdmin />
                 Orders histore
+              </Link>
+            </MenuItem>
+          </div>
+        )}
+
+        {user && user.isAdmin === true && (
+          <div className="py-1">
+            <MenuItem>
+              <Link
+                href="/adminDashboard"
+                className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-red-100 hover:text-gray-900"
+              >
+                <HiOutlineExclamationCircle size={20} color="red" />
+                Customers issues
               </Link>
             </MenuItem>
           </div>

@@ -16,7 +16,7 @@ export const createContact = createAsyncThunk(
   }
 );
 
-const ContacttSlice = createSlice({
+const ContactSlice = createSlice({
   name: "contact",
   initialState: { contact: [], status: "idle", error: null },
   reducers: {},
@@ -39,7 +39,7 @@ const ContacttSlice = createSlice({
         } else {
           state.contact = [action.payload];
         }
-      })
+      });
     //   .addCase(removeProduct.fulfilled, (state, action) => {
     //     // state.products = state.products.filter((product) => product._id !== action.payload);
     //     if (Array.isArray(state.contact)) {
@@ -51,4 +51,4 @@ const ContacttSlice = createSlice({
   },
 });
 
-export default ContacttSlice.reducer;
+export default ContactSlice.reducer;

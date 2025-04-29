@@ -340,7 +340,7 @@ export default function ProductDetails() {
           <p className="mt-2 text-gray-600 leading-relaxed">{description}</p>
         </div>
 
-        {user?.isAdmin === true && (
+        {user && (
           <div className="mt-8">
             <div className="flex justify-between items-center">
               <h3 className="text-xl font-semibold text-gray-800">
