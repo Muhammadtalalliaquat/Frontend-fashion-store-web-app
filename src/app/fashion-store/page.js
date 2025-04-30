@@ -14,6 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
+import Footer from "../../compoments/footer"
 import {
   PencilSquareIcon,
   TrashIcon,
@@ -179,15 +180,6 @@ export default function MainDashboard() {
     },
   ];
 
-  // const sliderRef = useRef(null);
-
-  // const scroll = (direction) => {
-  //   const { current } = sliderRef;
-  //   if (current) {
-  //     const scrollAmount = direction === "left" ? -300 : 300;
-  //     current.scrollBy({ left: scrollAmount, behavior: "smooth" });
-  //   }
-  // };
 
   return (
     <>
@@ -490,7 +482,7 @@ export default function MainDashboard() {
       )}
 
       {!loading && (
-        <section className="bg-gray-100 px-4 py-16">
+        <section className="bg-gray-200 px-4 py-16">
           <div className="max-w-6xl mx-auto text-center mb-12">
             <h2 className="text-3xl font-bold text-gray-800">
               About Our Store
@@ -509,7 +501,7 @@ export default function MainDashboard() {
                 key={idx}
                 className="relative group p-6 shadow-md overflow-hidden bg-white transition-colors duration-300"
               >
-                <div className="absolute inset-0 bg-blue-100 origin-top-left scale-0 group-hover:scale-100 transition-transform duration-300 ease-out z-0" />
+                <div className="absolute inset-0 bg-blue-50 origin-top-left scale-0 group-hover:scale-100 transition-transform duration-300 ease-out z-0" />
 
                 <div className="relative z-10">
                   <div className="text-4xl mb-4">{item.icon}</div>
@@ -569,6 +561,8 @@ export default function MainDashboard() {
           </button>
         </div>
       </div>
+
+      <Footer />
 
       {/* </div> */}
     </>

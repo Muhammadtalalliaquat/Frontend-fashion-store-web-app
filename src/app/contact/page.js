@@ -9,6 +9,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import Link from "next/link";
+import Footer from "../../compoments/footer";
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -16,6 +17,7 @@ export default function ContactPage() {
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
+  const [errormessage, setErrorMessage] = useState("");
   const [feedBackMessage, setFeedBackMessage] = useState("");
   const [user, setUser] = useState(null);
   const [activePopup, setActivePopup] = useState(null);
@@ -26,6 +28,7 @@ export default function ContactPage() {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
   }, []);
+
 
   const handleAddConatcData = (e) => {
     e.preventDefault();
@@ -38,34 +41,85 @@ export default function ContactPage() {
     };
 
     setIsSubmitting(true);
+    setErrorMessage(""); // Clear previous errors
 
     dispatch(createContact(contactData))
       .then((result) => {
-        console.log("API Response:", result.payload);
+        const { error, msg } = result.payload || {};
+
+        if (error) {
+          // Display validation or required field errors
+          setErrorMessage(msg || "Something went wrong.");
+          setIsSubmitting(false);
+          return;
+        }
+
+        // Success
         setFirstName("");
         setLastName("");
         setEmail("");
         setMessage("");
         setIsSubmitting(false);
-        toast.success("Successfully send message.", {
+
+        toast.success("Successfully sent message.", {
           position: "bottom-right",
           autoClose: 3000,
         });
-        // router.push("/fashion-store");
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
+        setErrorMessage("An unexpected error occurred.");
         setIsSubmitting(false);
       });
   };
+
+  // const handleAddConatcData = (e) => {
+  //   e.preventDefault();
+
+  //   const contactData = {
+  //     firstName,
+  //     lastName,
+  //     email,
+  //     message,
+  //   };
+
+  //   setIsSubmitting(true);
+
+  //   dispatch(createContact(contactData))
+  //     .then((result) => {
+  //       console.log("API Response:", result.payload);
+  //        const message = result.payload?.msg;
+  //        if (message) {
+  //          setErrorMessage(message);
+  //        }
+  //       setFirstName("");
+  //       setLastName("");
+  //       setEmail("");
+  //       setMessage("");
+  //       setIsSubmitting(false);
+  //       toast.success("Successfully send message.", {
+  //         position: "bottom-right",
+  //         autoClose: 3000,
+  //       });
+  //       // router.push("/fashion-store");
+  //     })
+  //     .catch((err) => {
+  //       console.error("Fetch Error:", err);
+  //       setIsSubmitting(false);
+  //     });
+  // };
 
   const handleAddFeedbackData = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
 
-    dispatch(createFeedback({feedBackMessage}))
+    dispatch(createFeedback({ feedBackMessage }))
       .then((result) => {
         console.log("API Response:", result.payload);
+        // const message = result.payload?.msg;
+        // if (message) {
+        //   setErrorMessage(message);
+        // }
         setFeedBackMessage("");
         setIsSubmitting(false);
         router.push("/fashion-store");
@@ -141,6 +195,11 @@ export default function ContactPage() {
                 required
                 className="block w-full border border-gray-300 p-4 focus:border-black focus:ring-black focus:outline-none"
               />
+              {errormessage && (
+                <p className="text-sm mt-2 text-center text-pink-500">
+                  {errormessage}
+                </p>
+              )}
             </div>
 
             <div>
@@ -256,6 +315,8 @@ export default function ContactPage() {
           </div>
         </motion.div>
       </div>
+
+      <Footer />
     </>
   );
 }

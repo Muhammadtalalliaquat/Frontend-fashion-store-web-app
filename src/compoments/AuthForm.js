@@ -24,11 +24,11 @@ export default function AuthForm() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+    setMessage("");
     try {
       if (isLogin) {
         const result = await dispatch(loginUser({ email, password }));
-        console.log(result.user, "datat revicced");
+        console.log(result.user, "data revicced");
         if (result.success) {
           if (result.user?.isAdmin === true) {
             router.push("/admin-add-product");
@@ -56,7 +56,7 @@ export default function AuthForm() {
 
   const requestPasswordReset = async (e) => {
     e.preventDefault();
-
+    
     if (!email) {
       setMessage("Please enter an email");
 

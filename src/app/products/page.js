@@ -12,6 +12,7 @@ import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { useRouter } from "next/navigation";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import { addCartItem } from "../../store/features/productCartSlice";
+import Footer from "../../compoments/footer";
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -328,6 +329,8 @@ export default function Products() {
           )}
         </div>
       </section>
+
+      <Footer />
     </>
   );
 }

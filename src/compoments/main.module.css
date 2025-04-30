@@ -16,7 +16,7 @@
 
 .navbar.scrolled {
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
-  backdrop-filter: blur(10px);
+  /* backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   transition: transform 0.3s ease, background 0.4s ease, opacity 0.4s ease, color 0.4s ease;
 
@@ -25,8 +25,8 @@
     rgba(10, 25, 47, 0.85),
     rgba(20, 40, 80, 0.85),
     rgba(30, 60, 110, 0.85)
-  );
-
+  ); */
+  background-color: #0d1d35;
   border-bottom: 1px solid rgba(100, 149, 237, 0.1);
   color: #dbeafe; 
 }

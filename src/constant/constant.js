@@ -46,4 +46,7 @@ export const ApiRoutes = {
 
   addFeedBack: BASIC_URL + `feed-back/addFeedBack`,
   getFeedBack: BASIC_URL + `feed-back/getFeedBack`,
+
+  addSubscribe: BASIC_URL + `Subscriber/addSubscribe`,
+  getSubscribe: BASIC_URL + `Subscriber/getSubscribe`,
 };
