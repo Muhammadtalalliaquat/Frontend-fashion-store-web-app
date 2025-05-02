@@ -28,9 +28,15 @@ function ProductPage() {
   const [stock, setStock] = useState(0);
 
   const [activeTab, setActiveTab] = useState("product");
+
   const [productName, setProductName] = useState("");
   const [originalPrice, setOriginalPrice] = useState("");
   const [discountPrice, setDiscountPrice] = useState("");
+  const [SalesCategory, setSalesCategory] = useState("");
+  const [inStock, setinStock] = useState("");
+  const [expiresAt, setExpiresAt] = useState(0);
+  const [offerTitle, setOfferTitle] = useState("");
+  const [offerDescription, setofferDescription] = useState("");
 
   useEffect(() => {
     console.log(productId);
@@ -99,11 +105,20 @@ function ProductPage() {
       return;
     }
 
-    const data = new FormData();
-    data.append("productName", productName);
-    data.append("originalPrice", originalPrice);
-    data.append("discountPrice", discountPrice);
-    data.append("image", image);
+     const data = new FormData();
+     data.append("productName", productName);
+     data.append("originalPrice", originalPrice);
+     data.append("discountPrice", discountPrice);
+     data.append("SalesCategory", SalesCategory);
+     data.append("inStock", inStock);
+     data.append("offerTitle", offerTitle);
+     data.append("description", description);
+     data.append("offerDescription", offerDescription);
+     data.append("expiresAt", expiresAt);
+
+     if (image) {
+       data.append("image", image);
+     }
 
     try {
       dispatch(updateDiscountOrder({ id: productId, orderData: data }));
@@ -248,6 +263,42 @@ function ProductPage() {
                     value: discountPrice,
                     setter: setDiscountPrice,
                     type: "number",
+                  },
+                  {
+                    label: "Sales Category",
+                    value: SalesCategory,
+                    setter: setSalesCategory,
+                    type: "text",
+                  },
+                  {
+                    label: "In Stock",
+                    value: inStock,
+                    setter: setinStock,
+                    type: "number",
+                  },
+                  {
+                    label: "Offer Title",
+                    value: offerTitle,
+                    setter: setOfferTitle,
+                    type: "text",
+                  },
+                  {
+                    label: "Description",
+                    value: description,
+                    setter: setDescription,
+                    type: "text",
+                  },
+                  {
+                    label: "Offer Description",
+                    value: offerDescription,
+                    setter: setofferDescription,
+                    type: "text",
+                  },
+                  {
+                    label: "Expires on:",
+                    value: expiresAt,
+                    setter: setExpiresAt,
+                    type: "date",
                   },
                 ].map((field, i) => (
                   <div key={i}>

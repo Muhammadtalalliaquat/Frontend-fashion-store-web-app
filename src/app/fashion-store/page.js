@@ -14,12 +14,14 @@ import Image from "next/image";
 import Link from "next/link";
 import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import Footer from "../../compoments/footer"
+import Footer from "../../compoments/footer";
+import ScrollTo from "../../compoments/scrolltotop";
 import {
   PencilSquareIcon,
   TrashIcon,
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
+import { RiDoubleQuotesL } from "react-icons/ri";
 // import OfferCard from "../../compoments/timeOfffer"
 
 export default function MainDashboard() {
@@ -38,14 +40,13 @@ export default function MainDashboard() {
   const [openOrderId, setOpenOrderId] = useState(null);
   const router = useRouter();
   const dispatch = useDispatch();
-  
+
   const toggleDropdown = (orderId) => {
     setOpenOrderId((prev) => (prev === orderId ? null : orderId));
   };
 
   const maxVisible = 1;
   const feddBackmaxVisible = 1;
-
 
   const nextSlide = () => {
     setCurrent((prev) => (prev + maxVisible < discount.length ? prev + 1 : 0));
@@ -180,11 +181,10 @@ export default function MainDashboard() {
     },
   ];
 
-
   return (
     <>
       <Navbar />
-
+      <ScrollTo />
       {/* <div> */}
       {loading && (
         <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
@@ -229,7 +229,7 @@ export default function MainDashboard() {
             </div>
           </div>
           <div className="p-6 mt-16">
-            <h2 className="text-3xl font-bold mb-6 text-center text-gray-800">
+            <h2 className="text-3xl font-bold mb-6 text-center text-blue-900">
               Our Products
             </h2>
 
@@ -238,7 +238,7 @@ export default function MainDashboard() {
                 {products.map((product) => (
                   <div
                     key={product._id}
-                    className="bg-white shadow-lg rounded-lg p-5 flex flex-col items-center text-center transition-transform duration-300 hover:scale-98 hover:shadow-xl border border-gray-200 group relative"
+                    className="bg-white shadow-lg  p-5 flex flex-col items-center text-center transition-transform duration-300 hover:scale-98 hover:shadow-xl border border-gray-200 group relative"
                   >
                     <span
                       className={`absolute top-3 left-3 text-xs font-bold px-3 py-1 rounded-full text-white z-10 shadow-md ${
@@ -269,7 +269,8 @@ export default function MainDashboard() {
                     </p>
 
                     <button
-                      className="absolute bottom-2 right-2 text-white font-semibold opacity-40 sm:opacity-0 sm:group-hover:opacity-40 transition-all duration-300 ease-in-out bg-blue-500 bg-opacity-30 backdrop-blur-lg px-4 py-2 rounded-md w-32 transform translate-x-0 sm:translate-x-4 sm:group-hover:translate-x-0"
+                      className="absolute bottom-2 right-2 bg-blue-600/80 hover:bg-blue-700 opacity-40 sm:opacity-0 sm:group-hover:opacity-40 transition-all duration-300 ease-in-out backdrop-blur-lg px-4 py-2 rounded-md w-36 transform translate-x-0 sm:translate-x-4 sm:group-hover:translate-x-0 text-white text-sm"
+                      // className="absolute bottom-2 right-2 text-white font-semibold opacity-40 sm:opacity-0 sm:group-hover:opacity-40 transition-all duration-300 ease-in-out bg-blue-500 bg-opacity-30 backdrop-blur-lg px-4 py-2 rounded-md w-32 transform translate-x-0 sm:translate-x-4 sm:group-hover:translate-x-0"
                       onClick={() => {
                         const queryString = new URLSearchParams({
                           productId: product._id,
@@ -301,7 +302,7 @@ export default function MainDashboard() {
       {/* Sales Discount Offers Section */}
       {!loading && (
         <div className="w-full py-8 relative overflow-hidden">
-          <h2 className="text-2xl font-bold text-center text-blue-600 mb-6">
+          <h2 className="text-2xl font-bold text-center text-blue-900 mb-6">
             🏷️ Sales Discount Offers
           </h2>
 
@@ -311,74 +312,93 @@ export default function MainDashboard() {
               style={{ transform: `translateX(-${current * 100}%)` }}
             >
               {discount.map((item, i) => (
-                <div key={i} className="min-w-full px-4 flex-shrink-0">
-                  <div className="relative bg-white rounded-xl border border-blue-200 p-5 shadow mx-auto max-w-4xl flex flex-col md:flex-row items-center gap-6">
-                    {user?.isAdmin === true && (
+                <div key={i} className="min-w-full px-4 flex-shrink-10">
+                  <div className="relative bg-white  border border-gray-200 p-6 shadow-lg mx-auto max-w-5xl flex flex-col md:flex-row items-center md:items-start gap-8 overflow-hidden">
+                    {/* Admin actions */}
+                    {user?.isAdmin && (
                       <div className="absolute top-4 right-4">
-                        <div className="relative">
-                          <button
-                            className="p-2 rounded-full hover:bg-gray-200 transition"
-                            onClick={() => toggleDropdown(item._id)}
-                          >
-                            <EllipsisVerticalIcon className="w-6 h-6 text-gray-600" />
-                          </button>
-
-                          {openOrderId === item._id && (
-                            <div className="absolute right-0 top-10 z-20 w-32 bg-white shadow-md rounded-lg p-2 transition-all duration-300 ease-in-out">
-                              <Link href={`/admin-update-product/${item._id}`}>
-                                <button className="flex items-center gap-1 w-full text-sm font-semibold text-grey-400 px-3 py-1 rounded-lg hover:bg-blue-200 transition">
-                                  <PencilSquareIcon className="w-4 h-4 text-gray-500" />
-                                  Edit
-                                </button>
-                              </Link>
-
-                              <button
-                                onClick={() =>
-                                  handleDeleteDiscountOffer(item._id)
-                                }
-                                className="flex items-center gap-1 w-full text-sm font-semibold text-red-300 px-3 py-1 rounded-lg hover:bg-red-100 transition"
-                              >
-                                <TrashIcon className="w-4 h-4 text-gray-350" />
-                                Delete
+                        <button
+                          className="p-2 rounded-full hover:bg-gray-100 transition"
+                          onClick={() => toggleDropdown(item._id)}
+                        >
+                          <EllipsisVerticalIcon className="w-6 h-6 text-gray-500" />
+                        </button>
+                        {openOrderId === item._id && (
+                          <div className="absolute right-0 mt-2 w-36 bg-white shadow-md rounded-lg p-2">
+                            <Link href={`/admin-update-product/${item._id}`}>
+                              <button className="flex items-center w-full text-sm text-gray-700 px-3 py-2 hover:bg-gray-100 rounded">
+                                <PencilSquareIcon className="w-4 h-4 mr-2" />
+                                Edit
                               </button>
-                            </div>
-                          )}
-                        </div>
+                            </Link>
+                            <button
+                              onClick={() =>
+                                handleDeleteDiscountOffer(item._id)
+                              }
+                              className="flex items-center w-full text-sm text-red-600 px-3 py-2 hover:bg-red-50 rounded"
+                            >
+                              <TrashIcon className="w-4 h-4 mr-2" />
+                              Delete
+                            </button>
+                          </div>
+                        )}
                       </div>
                     )}
 
+                    {/* Image section */}
                     <div className="w-full md:w-1/2">
                       <Image
                         src={item.image}
                         alt={item.name}
-                        width={300}
-                        height={300}
-                        className="rounded-lg object-cover w-full h-64"
+                        width={400}
+                        height={400}
+                        className="rounded-xl object-cover w-full h-72 md:h-full"
                         priority
                       />
                     </div>
 
-                    <div className="w-full md:w-1/2 text-center md:text-left space-y-3">
-                      <h3 className="text-2xl font-bold text-blue-500">
+                    {/* Details section */}
+                    <div className="w-full md:w-1/2 space-y-3 text-center md:text-left flex flex-col items-center md:items-start">
+                      <h3 className="text-3xl font-extrabold text-gray-900">
                         {item.name}
                       </h3>
-                      <div className="text-gray-500 line-through text-lg">
-                        ${item.price}
-                      </div>
-                      <div className="text-3xl font-bold text-blue-500">
-                        ${item.discountPrice}
-                      </div>
-                      {/* <OfferCard item={item.expiresAt} /> */}
-                      <p className="text-sm text-gray-600">
-                        Limited time offer. Grab it now!
+
+                      <p className="text-sm text-gray-500 italic">
+                        {item.description}
                       </p>
-                      {/* <p className="text-xs text-gray-400">
-                          Posted on:{" "}
-                          {new Date(item.createdAt).toLocaleString()}
-                        </p> */}
+
+                      <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
+                        <span className="text-gray-400 line-through text-xl">
+                          ${item.price}
+                        </span>
+                        <span className="text-4xl font-bold text-blue-600">
+                          ${item.discountPrice}
+                        </span>
+                      </div>
+
+                      <div className="bg-blue-50 p-3 rounded-lg max-w-xs md:max-w-full">
+                        <h4 className="text-lg font-semibold text-blue-500">
+                          {item.offerTitle}
+                        </h4>
+                        <p className="text-sm text-gray-700">
+                          {item.offerDescription}
+                        </p>
+                      </div>
+
+                      {item.expiresAt ? (
+                        <div className="text-sm text-red-500">
+                          ⏰ Expires on:{" "}
+                          {new Date(item.expiresAt).toLocaleDateString()}
+                        </div>
+                      ) : (
+                        <div className="text-sm text-green-500">
+                          🎉 Ongoing offer — no expiration!
+                        </div>
+                      )}
+
                       <button
                         onClick={() => setActivePopup(item._id)}
-                        className="mt-2 bg-blue-400 hover:bg-blue-500 text-white font-semibold py-2 px-6 rounded-lg transition"
+                        className="mt-3 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 hover:from-yellow-500 hover:to-yellow-700 text-gray-900 font-bold py-2 px-6 rounded-full shadow-lg transform hover:scale-105 transition"
                       >
                         Buy Now
                       </button>
@@ -388,15 +408,16 @@ export default function MainDashboard() {
               ))}
             </div>
 
+            {/* Navigation buttons */}
             <button
               onClick={prevSlide}
-              className="absolute left-4 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-2 rounded-full shadow hover:bg-blue-600 transition"
+              className="absolute left-2 md:left-4 top-1/2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 transform -translate-y-1/2 bg-white text-black p-2 rounded-full shadow hover:bg-blue-500 hover:text-white transition"
             >
               ‹
             </button>
             <button
               onClick={nextSlide}
-              className="absolute right-4 top-1/2 transform -translate-y-1/2 bg-blue-500 text-white p-2 rounded-full shadow hover:bg-blue-600 transition"
+              className="absolute right-2 md:right-4 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 top-1/2 transform -translate-y-1/2 bg-white text-black p-2 rounded-full shadow hover:bg-blue-500 hover:text-white transition"
             >
               ›
             </button>
@@ -482,14 +503,14 @@ export default function MainDashboard() {
       )}
 
       {!loading && (
-        <section className="bg-gray-200 px-4 py-16">
+        <section className="bg-gray-50 px-4 py-16">
           <div className="max-w-6xl mx-auto text-center mb-12">
-            <h2 className="text-3xl font-bold text-gray-800">
+            <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
               About Our Store
             </h2>
-            <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+            <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-base md:text-lg">
               At{" "}
-              <span className="font-semibold text-gray-800">EleganceWear</span>,
+              <span className="font-semibold text-gray-900">EleganceWear</span>,
               we bring you high-quality fashion for every occasion. From jewelry
               to premium watches, we mix elegance with comfort.
             </p>
@@ -499,70 +520,70 @@ export default function MainDashboard() {
             {siteDetails.map((item, idx) => (
               <div
                 key={idx}
-                className="relative group p-6 shadow-md overflow-hidden bg-white transition-colors duration-300"
+                className="group rounded-xl p-6 bg-white shadow hover:shadow-lg transition duration-300 border border-gray-200 hover:border-blue-500"
               >
-                <div className="absolute inset-0 bg-blue-50 origin-top-left scale-0 group-hover:scale-100 transition-transform duration-300 ease-out z-0" />
-
-                <div className="relative z-10">
-                  <div className="text-4xl mb-4">{item.icon}</div>
-                  <h3 className="text-xl font-semibold text-gray-800 mb-2">
-                    {item.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm">{item.description}</p>
+                <div className="flex items-center justify-center w-14 h-14 mb-4 bg-blue-100 text-pink-600 rounded-full text-2xl transition-transform duration-300 group-hover:rotate-12">
+                  {item.icon}
                 </div>
+                <h3 className="text-lg font-semibold text-gray-800 mb-2">
+                  {item.title}
+                </h3>
+                <p className="text-gray-600 text-sm">{item.description}</p>
               </div>
             ))}
+          </div>
+          <div className="my-12 flex flex-col items-center justify-center mt-20">
+            <h2 className="text-3xl sm:text-3xl font-bold text-center text-blue-900 mb-8">
+              Feedback Corner
+            </h2>
+
+            <div className="w-full max-w-[850px] overflow-hidden">
+              <div
+                className="flex transition-transform duration-500 ease-in-out"
+                style={{
+                  transform: `translateX(-${currentFeedback * 100}%)`,
+                }}
+              >
+                {feddBack.map((item, idx) => (
+                  <div
+                    key={idx}
+                    className="w-full flex-shrink-0 flex justify-center px-4"
+                  >
+                    <div
+                      className="group rounded-xl p-6 bg-white shadow hover:shadow-lg transition duration-300 border border-gray-200 hover:border-blue-500"
+                    >
+                      <RiDoubleQuotesL />
+                      <h3 className="text-blue-800 font-semibold mt-2 mb-2">
+                        {item.userId?.userName || "Anonymous"}
+                      </h3>
+                      <p className="text-gray-700">
+                        <q>{item.feedBackMessage}</q>
+                      </p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            <div className="flex justify-center space-x-4 mt-4">
+              <button
+                onClick={prevSlideFeedback}
+                className="bg-white shadow-md p-2 pl-3 pr-3 hover:bg-gray-50"
+              >
+                &lt;
+              </button>
+              <button
+                onClick={nextSlideFeedback}
+                className="bg-white shadow-md p-2 pl-3 pr-3 hover:bg-gray-50"
+              >
+                &gt;
+              </button>
+            </div>
           </div>
         </section>
       )}
 
-      <div className="my-12 flex flex-col items-center justify-center">
-        <h2 className="text-3xl sm:text-3xl font-bold text-center text-gray-800 mb-8">
-          What Our Users Say
-        </h2>
-
-        <div className="w-full max-w-[850px] overflow-hidden">
-          <div
-            className="flex transition-transform duration-500 ease-in-out"
-            style={{
-              transform: `translateX(-${currentFeedback * 100}%)`,
-            }}
-          >
-            {feddBack.map((item, idx) => (
-              <div
-                key={idx}
-                className="w-full flex-shrink-0 flex justify-center px-4"
-              >
-                <div className="w-80 bg-white shadow-md  p-6 transition hover:shadow-lg hover:bg-gray-50">
-                  <h3 className="text-blue-600 font-semibold mb-2">
-                    {item.userId?.userName || "Anonymous"}
-                  </h3>
-                  <p className="text-gray-700">
-                    <q>{item.feedBackMessage}</q>
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className="flex justify-center space-x-4 mt-4">
-          <button
-            onClick={prevSlideFeedback}
-            className="bg-white shadow-md p-2 pl-3 pr-3 hover:bg-gray-50"
-          >
-            &lt;
-          </button>
-          <button
-            onClick={nextSlideFeedback}
-            className="bg-white shadow-md p-2 pl-3 pr-3 hover:bg-gray-50"
-          >
-            &gt;
-          </button>
-        </div>
-      </div>
-
-      <Footer />
+      {!loading && <Footer />}
 
       {/* </div> */}
     </>

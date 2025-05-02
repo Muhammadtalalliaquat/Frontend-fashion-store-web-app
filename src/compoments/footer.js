@@ -3,7 +3,7 @@
 import Link from "next/link";
 import { createSubscribe } from "../store/features/subscribeSlice";
 import { useDispatch } from "react-redux";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Footer() {
   const [isSubscribed, setIsSubscribed] = useState(null);
@@ -41,6 +41,15 @@ export default function Footer() {
       });
   };
 
+
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => setMessage(""), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
+
   const footerData = {
     brand: {
       name: "Fashion Store",
@@ -77,8 +86,10 @@ export default function Footer() {
             <h3 className="font-semibold mb-3">Quick Links</h3>
             <ul className="space-y-2 text-sm text-gray-400">
               {footerData.quickLinks.map((link, index) => (
-                <li key={index} className="hover:text-pink-600">
-                  <a href={link.href}>{link.name}</a>
+                <li key={index}>
+                  <a className="hover:text-pink-600" href={link.href}>
+                    {link.name}
+                  </a>
                 </li>
               ))}
             </ul>
@@ -88,8 +99,10 @@ export default function Footer() {
             <h3 className="font-semibold mb-3">Customer Support</h3>
             <ul className="space-y-2 text-sm text-gray-400">
               {footerData.supportLinks.map((link, index) => (
-                <li key={index} className="hover:text-pink-600">
-                  <Link href={link.href}>{link.name}</Link>
+                <li key={index}>
+                  <Link className="hover:text-pink-600" href={link.href}>
+                    {link.name}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -100,7 +113,7 @@ export default function Footer() {
             <p className="text-sm text-gray-400 mb-2">
               Get the latest offers & updates.
             </p>
-            <form onSubmit={addHandelSubscribe}>
+            <form onSubmit={addHandelSubscribe} className="relative">
               <input
                 type="email"
                 placeholder="Email address"
@@ -115,10 +128,18 @@ export default function Footer() {
               >
                 {isSubscribed ? "Unsubscribe" : "Subscribe"}
               </button>
+
+              {/* Popup message */}
               {message && (
-                <p className="text-sm mt-2 text-center text-pink-500">
+                <div
+                  className={`fixed top-[110px] left-1/2 transform -translate-x-1/2 bg-pink-500 text-white px-4 py-2 rounded shadow-lg transition-all duration-500 ${
+                    message
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 -translate-y-2"
+                  }`}
+                >
                   {message}
-                </p>
+                </div>
               )}
             </form>
           </div>

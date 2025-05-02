@@ -212,10 +212,11 @@ export default function ProductDetails() {
             </h2>
             <button
               onClick={() => router.push("/fashion-store")}
-              className="flex items-center text-2xl font-bold text-gray-900 bg-white shadow-md rounded-lg p-2 transition-all duration-300 ease-in-out transform "
+              className="flex items-center gap-1 text-sm font-medium text-gray-700 bg-white shadow rounded-full p-1 transition-transform duration-300 ease-in-out hover:-translate-x-1 hover:shadow-md"
               aria-label="Go Back"
             >
-              <IoIosArrowBack />
+              <IoIosArrowBack className="text-lg" />
+              <span className="hidden sm:inline">Back</span>
             </button>
           </div>
 

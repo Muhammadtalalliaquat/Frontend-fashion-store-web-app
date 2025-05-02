@@ -19,25 +19,15 @@ function AddProductPage() {
   const [description, setDescription] = useState("");
   const [stock, setStock] = useState(0);
   const [activeTab, setActiveTab] = useState("product");
+
   const [productName, setProductName] = useState("");
   const [originalPrice, setOriginalPrice] = useState("");
   const [discountPrice, setDiscountPrice] = useState("");
-  
-  // const [formData, setFormData] = useState({
-  //   productName: "",
-  //   originalPrice: "",
-  //   discountPrice: "",
-  //   image: "",
-  // });
-
-  // const handleChange = (e) => {
-  //   const { name, value, files } = e.target;
-  //   if (name === "image") {
-  //     setFormData({ ...formData, image: files[0] });
-  //   } else {
-  //     setFormData({ ...formData, [name]: value });
-  //   }
-  // };
+  const [SalesCategory, setSalesCategory] = useState("");
+  const [inStock, setinStock] = useState("");
+  const [expiresAt, setExpiresAt] = useState(0);
+  const [offerTitle, setOfferTitle] = useState("");
+  const [offerDescription, setofferDescription] = useState("");
 
   const handleSubmitProduct = async (e) => {
     e.preventDefault();
@@ -71,6 +61,13 @@ function AddProductPage() {
     data.append("productName", productName);
     data.append("originalPrice", originalPrice);
     data.append("discountPrice", discountPrice);
+    data.append("SalesCategory", SalesCategory);
+    data.append("inStock", inStock);
+    data.append("offerTitle", offerTitle);
+    data.append("description", description);
+    data.append("offerDescription", offerDescription);
+    data.append("expiresAt", expiresAt);
+
     if (image) {
       data.append("image", image);
     }
@@ -89,7 +86,7 @@ function AddProductPage() {
       <Navbar />
 
       <div className="min-h-screen flex items-center justify-center p-6">
-        <div className="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div className="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden">
           {/* Tabs */}
           <div className="flex bg-gray-100 border-b relative z-0">
             <button
@@ -219,6 +216,36 @@ function AddProductPage() {
                     value: discountPrice,
                     setter: setDiscountPrice,
                     type: "number",
+                  },
+                  {
+                    label: "Sales Category",
+                    value: SalesCategory,
+                    setter: setSalesCategory,
+                    type: "text",
+                  },
+                  {
+                    label: "In Stock",
+                    value: inStock,
+                    setter: setinStock,
+                    type: "number",
+                  },
+                  {
+                    label: "Offer Title",
+                    value: offerTitle,
+                    setter: setOfferTitle,
+                    type: "text",
+                  },
+                  {
+                    label: "Offer Description",
+                    value: offerDescription,
+                    setter: setofferDescription,
+                    type: "text",
+                  },
+                  {
+                    label: "Expires on:",
+                    value: expiresAt,
+                    setter: setExpiresAt,
+                    type: "date",
                   },
                 ].map((field, i) => (
                   <div key={i}>
