@@ -31,13 +31,26 @@ export default function MainDashboard() {
   const [loading, setLoading] = useState(true);
   const [current, setCurrent] = useState(0);
   const [error, setError] = useState(null);
-  const [country, setCountry] = useState("");
-  const [city, setCity] = useState("");
-  const [area, setArea] = useState("");
+
+  // const [country, setCountry] = useState("");
+  // const [city, setCity] = useState("");
+  // const [area, setArea] = useState("");
   const [user, setUser] = useState(null);
+
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [posterCode, setPostercode] = useState(0);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+
   const [currentFeedback, setCurrentFeedback] = useState(0);
   const [activePopup, setActivePopup] = useState(null);
   const [openOrderId, setOpenOrderId] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -112,11 +125,21 @@ export default function MainDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  const handleAddSalediscountOrderPlace = (productId) => {
+  const handleAddSalediscountOrderPlace = (e, productId) => {
+    e.preventDefault();
+
     const orderFormData = {
-      country,
+      // country,
+      // city,
+      // area,
+      // productId,
+      email,
+      firstName,
+      lastName,
       city,
-      area,
+      posterCode,
+      phone,
+      address,
       productId,
     };
 
@@ -124,11 +147,20 @@ export default function MainDashboard() {
 
     dispatch(createDiscountOfferOrder(orderFormData))
       .then((result) => {
-        console.log("API Response:", result.payload);
-        router.push("/ordersPage");
+        // console.log("API Response:", result.payload);
+        // router.push("/ordersPage");
+        const message = result.payload?.msg;
+        if (message) {
+          setErrorMsg(message);
+          if (message.toLowerCase().includes("placed")) {
+            router.push("/ordersPage");
+          }
+        }
+        setIsSubmitting(false);
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
+        setIsSubmitting(false);
       });
   };
 
@@ -450,53 +482,164 @@ export default function MainDashboard() {
           )}
 
           {activePopup && user && (
+            // <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-[9999]">
+            //   <div className="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl relative">
+            //     <button
+            //       onClick={() => setActivePopup(null)}
+            //       className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
+            //     >
+            //       ×
+            //     </button>
+
+            //     <h2 className="text-xl font-semibold text-gray-700 mb-4 text-center">
+            //       Enter Shipping Details
+            //     </h2>
+
+            //     <div className="space-y-4">
+            //       <input
+            //         type="text"
+            //         placeholder="Country"
+            //         value={country}
+            //         onChange={(e) => setCountry(e.target.value)}
+            //         // className="w-full p-3 border border-gray-300 rounded-lg"
+            //         className="w-full p-3 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500 transition peer"
+            //       />
+            //       <input
+            //         type="text"
+            //         placeholder="City"
+            //         value={city}
+            //         onChange={(e) => setCity(e.target.value)}
+            //         // className="w-full p-3 border border-gray-300 rounded-lg"
+            //         className="w-full p-3 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500 transition peer"
+            //       />
+            //       <input
+            //         type="text"
+            //         placeholder="Area"
+            //         value={area}
+            //         onChange={(e) => setArea(e.target.value)}
+            //         // className="w-full p-3 border border-gray-300 rounded-lg"
+            //         className="w-full p-3 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500 transition peer"
+            //       />
+            //     </div>
+
+            //     <button
+            //       onClick={() => handleAddSalediscountOrderPlace(activePopup)}
+            //       className="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300"
+            //     >
+            //       Place Order
+            //     </button>
+            //   </div>
+            // </div>
+
             <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-[9999]">
-              <div className="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl relative">
+              <form
+                className="bg-white w-full max-w-md p-7 rounded-lg shadow-2xl relative"
+                onSubmit={(e) =>
+                  handleAddSalediscountOrderPlace(e, activePopup)
+                }
+              >
                 <button
                   onClick={() => setActivePopup(null)}
+                  type="button"
                   className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
                 >
                   ×
                 </button>
+                <input
+                  type="email"
+                  placeholder="Email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="w-full mb-3 px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                  required
+                />
 
-                <h2 className="text-xl font-semibold text-gray-700 mb-4 text-center">
-                  Enter Shipping Details
-                </h2>
+                <h2 className="text-lg font-semibold mb-4">Shipping Address</h2>
 
-                <div className="space-y-4">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
                   <input
                     type="text"
-                    placeholder="Country"
-                    value={country}
-                    onChange={(e) => setCountry(e.target.value)}
-                    // className="w-full p-3 border border-gray-300 rounded-lg"
-                    className="w-full p-3 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500 transition peer"
+                    placeholder="First name"
+                    value={firstName}
+                    onChange={(e) => setFirstName(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                    required
                   />
+                  <input
+                    type="text"
+                    placeholder="Last name"
+                    value={lastName}
+                    onChange={(e) => setLastName(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                    required
+                  />
+                </div>
+
+                <input
+                  type="text"
+                  placeholder="Address"
+                  value={address}
+                  onChange={(e) => setAddress(e.target.value)}
+                  className="w-full mb-3 px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                  required
+                />
+
+                <div className="grid grid-cols-2 gap-3 mb-3">
                   <input
                     type="text"
                     placeholder="City"
                     value={city}
                     onChange={(e) => setCity(e.target.value)}
-                    // className="w-full p-3 border border-gray-300 rounded-lg"
-                    className="w-full p-3 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500 transition peer"
+                    className="w-full px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                    required
                   />
                   <input
-                    type="text"
-                    placeholder="Area"
-                    value={area}
-                    onChange={(e) => setArea(e.target.value)}
-                    // className="w-full p-3 border border-gray-300 rounded-lg"
-                    className="w-full p-3 border border-gray-300 rounded-lg shadow focus:outline-none focus:ring-2 focus:ring-blue-500 transition peer"
+                    type="number"
+                    placeholder="Postcode"
+                    value={posterCode}
+                    onChange={(e) => setPostercode(e.target.value)}
+                    className="w-full px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                    required
                   />
                 </div>
 
+                <input
+                  type="text"
+                  placeholder="Phone"
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  className="w-full mb-4 px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                  required
+                />
+
                 <button
-                  onClick={() => handleAddSalediscountOrderPlace(activePopup)}
-                  className="mt-6 w-full bg-blue-600 text-white py-3 rounded-lg hover:bg-blue-700 transition duration-300"
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="w-full flex items-center justify-center bg-green-600 text-white py-2 rounded-md font-semibold hover:bg-green-700 transition"
                 >
-                  Place Order
+                  {isSubmitting ? (
+                    <div className="animate-spin h-5 w-5 border-t-2 border-white rounded-full"></div>
+                  ) : (
+                    "Place order"
+                  )}
                 </button>
-              </div>
+              </form>
+              {errorMsg && (
+                <p
+                  className={`fixed top-[110px] left-1/2 transform -translate-x-1/2 ${
+                    errorMsg.toLowerCase().includes("success") ||
+                    errorMsg.toLowerCase().includes("placed")
+                      ? "bg-green-500"
+                      : "bg-red-500"
+                  } text-white px-4 py-2 rounded shadow-lg transition-all duration-500 ${
+                    errorMsg
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 -translate-y-2"
+                  }`}
+                >
+                  {errorMsg}
+                </p>
+              )}
             </div>
           )}
         </div>
@@ -549,9 +692,7 @@ export default function MainDashboard() {
                     key={idx}
                     className="w-full flex-shrink-0 flex justify-center px-4"
                   >
-                    <div
-                      className="group rounded-xl p-6 bg-white shadow hover:shadow-lg transition duration-300 border border-gray-200 hover:border-blue-500"
-                    >
+                    <div className="group rounded-xl p-6 bg-white shadow hover:shadow-lg transition duration-300 border border-gray-200 hover:border-blue-500">
                       <RiDoubleQuotesL />
                       <h3 className="text-blue-800 font-semibold mt-2 mb-2">
                         {item.userId?.userName || "Anonymous"}

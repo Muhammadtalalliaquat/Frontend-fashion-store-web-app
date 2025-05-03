@@ -118,26 +118,21 @@ export default function OrdersPageDashboard() {
                 orderList.map((order) => (
                   <div
                     key={order._id}
-                    className="bg-white rounded-2xl shadow-lg p-5 border border-gray-100"
+                    className="bg-white shadow-lg p-5 border border-gray-100"
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div>
                         <p className="font-semibold text-gray-700 break-all">
                           Order ID:{" "}
-                          <span className="text-sm text-gray-500">
+                          <span className="text-sm text-gray-500 bg-orange-100 p-1 rounded-2xl">
                             {order._id}
                           </span>
                         </p>
                         <p className="text-sm text-gray-600 break-words">
                           Ordered by:{" "}
-                          <span className="font-medium">
-                            {order.userId.userName}
-                          </span>{" "}
-                          (
-                          <span className="break-all">
-                            {order.userId.email}
-                          </span>
-                          )
+                          <span className="font-medium">{order.firstName}</span>{" "}
+                          <span className="font-medium">{order.lastName}</span>{" "}
+                          (<span className="break-all">{order.email}</span>)
                         </p>
                         <p className="text-xs text-gray-400">
                           Date: {new Date(order.createdAt).toLocaleDateString()}
@@ -231,15 +226,18 @@ export default function OrdersPageDashboard() {
                     </div>
 
                     <div className="mt-2 border-t border-gray-300 pt-2">
-                      <p className="font-medium text-gray-700">Address:</p>
+                      {/* <p className="font-medium text-gray-700">Address:</p> */}
                       <p className="text-sm text-gray-600">
-                        <strong>Country:</strong> {order.address.country}
+                        <strong>Address:</strong> {order.address}
                       </p>
                       <p className="text-sm text-gray-600">
-                        <strong>City:</strong> {order.address.city}
+                        <strong>City:</strong> {order.city}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        <strong>Poster code:</strong> {order.posterCode}
                       </p>
                       <p className="text-sm text-gray-600 mb-4">
-                        <strong>Area:</strong> {order.address.area}
+                        <strong>Phone no:</strong> {order.phone}
                       </p>
                     </div>
 
@@ -434,19 +432,40 @@ export default function OrdersPageDashboard() {
                         <hr className="my-3" />
 
                         <p className="text-sm text-gray-600">
-                          Name: {order.userId?.userName}
+                          Name: {order.firstName} {order.lastName}
                         </p>
                         <p className="text-sm text-gray-600">
-                          Email: {order.userId?.email}
+                          Email: {order.email}
                         </p>
 
-                        <div className="mt-2 text-sm text-gray-600">
-                          <p className="font-medium text-gray-700">
+                        <div className="mt-4 text-sm text-gray-700 bg-gray-50 p-4 rounded-lg shadow">
+                          <p className="font-semibold text-gray-800 mb-2">
                             Shipping Address:
                           </p>
-                          <p>Country: {order.address.country}</p>
-                          <p>City: {order.address.city}</p>
-                          <p>Area: {order.address.area}</p>
+                          <p className="mb-1">
+                            <span className="font-medium text-gray-600">
+                              Address:
+                            </span>{" "}
+                            {order.address}
+                          </p>
+                          <p className="mb-1">
+                            <span className="font-medium text-gray-600">
+                              City:
+                            </span>{" "}
+                            {order.city}
+                          </p>
+                          <p className="mb-1">
+                            <span className="font-medium text-gray-600">
+                              Postcode:
+                            </span>{" "}
+                            {order.posterCode}
+                          </p>
+                          <p>
+                            <span className="font-medium text-gray-600">
+                              Phone:
+                            </span>{" "}
+                            {order.phone}
+                          </p>
                         </div>
                       </div>
                     ))}

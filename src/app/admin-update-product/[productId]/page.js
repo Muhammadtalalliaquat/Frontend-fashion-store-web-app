@@ -91,7 +91,6 @@ function ProductPage() {
     }
   };
 
-
   const handleSubmitUpdateDiscount = async (e) => {
     e.preventDefault();
 
@@ -105,20 +104,20 @@ function ProductPage() {
       return;
     }
 
-     const data = new FormData();
-     data.append("productName", productName);
-     data.append("originalPrice", originalPrice);
-     data.append("discountPrice", discountPrice);
-     data.append("SalesCategory", SalesCategory);
-     data.append("inStock", inStock);
-     data.append("offerTitle", offerTitle);
-     data.append("description", description);
-     data.append("offerDescription", offerDescription);
-     data.append("expiresAt", expiresAt);
+    const data = new FormData();
+    data.append("productName", productName);
+    data.append("originalPrice", originalPrice);
+    data.append("discountPrice", discountPrice);
+    data.append("SalesCategory", SalesCategory);
+    data.append("inStock", inStock);
+    data.append("offerTitle", offerTitle);
+    data.append("description", description);
+    data.append("offerDescription", offerDescription);
+    data.append("expiresAt", expiresAt);
 
-     if (image) {
-       data.append("image", image);
-     }
+    if (image) {
+      data.append("image", image);
+    }
 
     try {
       dispatch(updateDiscountOrder({ id: productId, orderData: data }));
@@ -134,7 +133,12 @@ function ProductPage() {
       <Navbar />
 
       <div className="min-h-screen flex items-center justify-center p-6">
-        <div className="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden">
+        <div
+          className={`w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden ${
+            activeTab === "discount" ? "mt-20" : ""
+          }`}
+          // className="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden"
+        >
           {/* Tabs */}
           <div className="flex bg-gray-100 border-b relative z-0">
             <button

@@ -86,7 +86,14 @@ function AddProductPage() {
       <Navbar />
 
       <div className="min-h-screen flex items-center justify-center p-6">
-        <div className="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden">
+        <div
+          // className="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden"
+          className={`w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden ${
+            activeTab === "discount"
+              ? "mt-20"
+              : ""
+          }`}
+        >
           {/* Tabs */}
           <div className="flex bg-gray-100 border-b relative z-0">
             <button
