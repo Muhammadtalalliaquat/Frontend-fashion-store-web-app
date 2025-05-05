@@ -29,13 +29,20 @@ export const addDiscount = async (orderData) => {
 
 export const fetchDiscount = async () => {
   try {
-    // const token = localStorage.getItem("token");
-
-    // if (!token) {
-    //   console.error("Token is missing!");
-    //   return;
-    // }
     const response = await axios.get(`${ApiRoutes.getDiscount}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Failed to fetch Orders:",
+      error.response?.data || error.message
+    );
+  }
+};
+
+
+export const fetchAllDiscount = async () => {
+  try {
+    const response = await axios.get(`${ApiRoutes.getAllDiscountProducts}`);
     return response.data;
   } catch (error) {
     console.error(

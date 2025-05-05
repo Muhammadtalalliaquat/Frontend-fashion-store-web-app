@@ -34,6 +34,7 @@ export const ApiRoutes = {
 
   addDiscounts: BASIC_URL + `sale-discounts/addDiscount`,
   getDiscount: BASIC_URL + `sale-discounts`,
+  getAllDiscountProducts: BASIC_URL + `sale-discounts/getAllProducts`,
   updateDiscount: BASIC_URL + `sale-discounts/updateDiscountOffer`,
   deleteDiscountOrder: BASIC_URL + `sale-discounts/deleteDiscountOffer`,
 

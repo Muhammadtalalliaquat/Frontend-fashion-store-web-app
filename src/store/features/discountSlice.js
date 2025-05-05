@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchDiscount,
+  fetchAllDiscount,
   addDiscount,
   updateDiscountOffer,
   deleteDicountOfferProduct,
@@ -8,6 +9,12 @@ import {
 
 export const getDiscountOffer = createAsyncThunk("discount/fetch", async () => {
   const response = await fetchDiscount();
+  console.log("API Response:", response);
+  return response;
+});
+
+export const getAllDiscountOffer = createAsyncThunk("discount/fetchAll", async () => {
+  const response = await fetchAllDiscount();
   console.log("API Response:", response);
   return response;
 });
@@ -53,6 +60,17 @@ const discountSlice = createSlice({
         state.products = action.payload;
       })
       .addCase(getDiscountOffer.rejected, (state, action) => {
+        state.status = "failed";
+        state.error = action.payload;
+      })
+      .addCase(getAllDiscountOffer.pending, (state) => {
+        state.status = "loading";
+      })
+      .addCase(getAllDiscountOffer.fulfilled, (state, action) => {
+        state.status = "success";
+        state.products = action.payload;
+      })
+      .addCase(getAllDiscountOffer.rejected, (state, action) => {
         state.status = "failed";
         state.error = action.payload;
       })

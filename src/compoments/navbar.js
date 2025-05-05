@@ -53,6 +53,7 @@ function Navbar() {
       pathname === "/contact" ||
       pathname === "/returnsPolicy" ||
       pathname === "/shippingInfo" ||
+      pathname === "/shop" ||
       pathname.startsWith("/admin-update-product")
     ) {
       router.push("/fashion-store");
@@ -122,21 +123,31 @@ function Navbar() {
           </li>
         )}
 
-        <li className="flex items-center gap-2">
+        {pathname !== "/shop" && (
+          <li className="flex items-center gap-2">
+            <Link href="/shop" className="flex items-center gap-2">
+              {isMenuOpen && (
+                <LiaShoppingBagSolid className="w-5 h-5 text-blue-750" />
+              )}
+              <span>Shop</span>
+            </Link>
+          </li>
+        )}
+        {/* <li className="flex items-center gap-2">
           {isMenuOpen && (
             <LiaShoppingBagSolid className="w-5 h-5 text-blue-750" />
           )}
           <span>Shop</span>
-        </li>
+        </li> */}
 
         {pathname !== "/contact" && (
-        <li className="flex items-center gap-2">
-          {isMenuOpen && <RiContactsLine className="w-5 h-5 text-blue-750" />}
-          <Link href={"/contact"}>
-            {/* {pathname !== "/contact" && "contact"} */}
-            <span>Contact</span>
-          </Link>
-        </li>
+          <li className="flex items-center gap-2">
+            {isMenuOpen && <RiContactsLine className="w-5 h-5 text-blue-750" />}
+            <Link href={"/contact"}>
+              {/* {pathname !== "/contact" && "contact"} */}
+              <span>Contact</span>
+            </Link>
+          </li>
         )}
 
         {user?.isAdmin === true &&

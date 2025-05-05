@@ -24,7 +24,7 @@ function AddProductPage() {
   const [originalPrice, setOriginalPrice] = useState("");
   const [discountPrice, setDiscountPrice] = useState("");
   const [SalesCategory, setSalesCategory] = useState("");
-  const [inStock, setinStock] = useState("");
+  const [inStock, setinStock] = useState(0);
   const [expiresAt, setExpiresAt] = useState(0);
   const [offerTitle, setOfferTitle] = useState("");
   const [offerDescription, setofferDescription] = useState("");
@@ -64,7 +64,7 @@ function AddProductPage() {
     data.append("SalesCategory", SalesCategory);
     data.append("inStock", inStock);
     data.append("offerTitle", offerTitle);
-    data.append("description", description);
+    // data.append("description", description);
     data.append("offerDescription", offerDescription);
     data.append("expiresAt", expiresAt);
 
@@ -89,9 +89,7 @@ function AddProductPage() {
         <div
           // className="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden"
           className={`w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden ${
-            activeTab === "discount"
-              ? "mt-20"
-              : ""
+            activeTab === "discount" ? "mt-20" : ""
           }`}
         >
           {/* Tabs */}
@@ -236,6 +234,12 @@ function AddProductPage() {
                     setter: setinStock,
                     type: "number",
                   },
+                  // {
+                  //   label: "Description",
+                  //   value: description,
+                  //   setter: setinStock,
+                  //   type: "text",
+                  // },
                   {
                     label: "Offer Title",
                     value: offerTitle,
