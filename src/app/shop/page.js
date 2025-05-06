@@ -5,16 +5,32 @@ import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { getAllDiscountOffer } from "../../store/features/discountSlice";
+import { addCartItem } from "../../store/features/productCartSlice";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import { FaSpinner } from "react-icons/fa";
+import { useRouter } from "next/navigation";
+import { motion } from "framer-motion";
+import Link from "next/link";
+
 import "animate.css";
 
 export default function ShopPage() {
   const [loading, setLoading] = useState(true);
   const [discount, setDiscount] = useState([]);
   const dispatch = useDispatch();
+  const [category, setCategory] = useState("all");
+  const [searchTerm, setSearchTerm] = useState("");
+
+  const [quantities, setQuantities] = useState({});
+  const [activePopupCart, setActivePopupCart] = useState(null);
+  // const [activePopup, setActivePopup] = useState(null);
+  const [user, setUser] = useState(null);
+  const router = useRouter();
 
   useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
+
     dispatch(getAllDiscountOffer())
       .then((result) => {
         console.log("API Response:", result.payload);
@@ -27,6 +43,49 @@ export default function ShopPage() {
         setLoading(false);
       });
   }, [dispatch]);
+
+  const filteredProducts = discount.filter(
+    (product) =>
+      (category === "all" || product.SalesCategory === category) &&
+      product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
+  const handleQuantityChange = (id, value) => {
+    const num = Math.max(1, Number(value));
+    setQuantities((prev) => ({ ...prev, [id]: num }));
+  };
+
+  const handleAddToCart = (productId) => {
+    const selectedProduct =
+      discount.find((product) => product._id === productId) ||
+      filteredProducts.find((product) => product._id === productId);
+
+    if (!selectedProduct) {
+      console.error("Product not found.");
+      return;
+    }
+
+    const productCartData = {
+      productId: selectedProduct._id,
+      name: selectedProduct.name,
+      price: selectedProduct.discountPrice,
+      category: selectedProduct.SalesCategory,
+      description: selectedProduct.offerDescription,
+      image: selectedProduct.image,
+      quantity: quantities[selectedProduct._id] || 1,
+    };
+
+    console.log("From cart data is here:", productCartData);
+
+    dispatch(addCartItem(productCartData))
+      .then((result) => {
+        console.log("API Response:", result.payload);
+        router.push("/productCart");
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+      });
+  };
 
   return (
     <>
@@ -48,71 +107,187 @@ export default function ShopPage() {
           <div className="md:col-span-1">
             <div className=" p-4 space-y-3">
               <h2 className="text-xl font-semibold mb-2">Filters</h2>
-              <button className="w-full bg-blue-100 text-black px-4 py-2 rounded-lg hover:bg-blue-200 transition">
+              <input
+                type="text"
+                placeholder="Search products..."
+                className="w-full  px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
+              <button
+                onClick={() => setCategory("all")}
+                className={`w-full px-4 py-2 rounded-lg transition ${
+                  category === "all"
+                    ? "bg-blue-100 text-black hover:bg-blue-200"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
                 All
               </button>
-              <button className="w-full bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+              <button
+                onClick={() => setCategory("Watch")}
+                className={`w-full px-4 py-2 rounded-lg transition ${
+                  category === "Watch"
+                    ? "bg-blue-100 text-black hover:bg-blue-200"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
                 Men Watches
               </button>
-              <button className="w-full bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+              <button
+                onClick={() => setCategory("Women watch")}
+                className={`w-full px-4 py-2 rounded-lg transition ${
+                  category === "Women watch"
+                    ? "bg-blue-100 text-black hover:bg-blue-200"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
                 Women Watches
               </button>
-              <button className="w-full bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition">
+              <button
+                onClick={() => setCategory("Jewellery")}
+                className={`w-full px-4 py-2 rounded-lg transition ${
+                  category === "Jewellery"
+                    ? "bg-blue-100 text-black hover:bg-blue-200"
+                    : "bg-gray-200 text-gray-700 hover:bg-gray-300"
+                }`}
+              >
                 Jewellery
               </button>
             </div>
           </div>
 
           {!loading &&
-            (discount.length > 0 ? (
+            (filteredProducts.length > 0 ? (
               <div className="md:col-span-3 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-                {discount.map((item) => (
+                {filteredProducts.map((item) => (
                   <div
                     key={item._id}
                     className="group rounded-xl p-6 shadow hover:shadow-lg transition duration-300 border border-gray-200 hover:border-blue-500"
                   >
-                    <Image
-                      width={500}
-                      height={500}
-                      src={item.image}
-                      alt={item.image}
-                      className="w-full h-60 object-cover rounded-lg mb-4"
-                    />
+                    <motion.div
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      transition={{ duration: 0.8 }}
+                      // className="backdrop-blur-lg  max-w-7xl w-full mx-4 md:mx-10 p-10 md:p-2 grid grid-cols-1 md:grid-cols-2 gap-12"
+                    >
+                      <div>
+                        {/* <button
+                          onClick={() => setActivePopupCart(item._id)}
+                          className="absolute right-3 z-30 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 bg-blue-100 hover:bg-blue-200 p-2 rounded-full shadow-md cursor-pointer"
+                        >
+                          <LiaShoppingCartSolid
+                            size={24}
+                            className="text-blue-600"
+                          />
+                        </button> */}
 
-                    <h3 className="text-lg font-semibold mb-1">
-                      {item.productName}
-                    </h3>
-                    <h3 className="text-lg font-semibold mb-1">
-                      {item.productName}
-                    </h3>
+                        {activePopupCart === item._id && !user && (
+                          <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center px-3 z-[9999]">
+                            <div className="bg-white w-full max-w-sm sm:max-w-md p-4 sm:p-6  shadow-2xl relative">
+                              <button
+                                onClick={() => setActivePopupCart(false)}
+                                className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
+                              >
+                                ×
+                              </button>
 
-                    <div className="flex justify-between items-center mb-2">
-                      <p className="text-gray-500">{item.SalesCategory}</p>
-                      <button className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-blue-100 hover:bg-blue-200 p-2 rounded-full shadow-md cursor-pointer">
-                        <LiaShoppingCartSolid
-                          size={20}
-                          className="text-blue-600"
-                        />
+                              <h2 className="font-medium text-gray-800 p-3 mb-3 text-center">
+                                You need to log in to add items to your cart
+                              </h2>
+
+                              <div className="flex justify-center">
+                                <Link
+                                  href="/login"
+                                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                                >
+                                  Go to Login
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
+                        {activePopupCart === item._id && user && (
+                          <div className="absolute top-14 right-3 bg-white shadow-lg rounded-lg p-4 z-40 w-40 flex flex-col items-center">
+                            <label className="text-sm mb-1">Quantity</label>
+                            <input
+                              type="number"
+                              min="1"
+                              max={item.inStock}
+                              value={quantities[item._id] || 1}
+                              onChange={(e) =>
+                                handleQuantityChange(item._id, e.target.value)
+                              }
+                              className="mb-2 w-16 text-center border border-gray-300 rounded px-2 py-1"
+                            />
+                            <button
+                              className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm w-full"
+                              onClick={() => handleAddToCart(item._id)}
+                            >
+                              Add to Cart
+                            </button>
+                            <button
+                              onClick={() => setActivePopupCart(null)}
+                              className="text-xs text-gray-500 mt-1 hover:underline"
+                            >
+                              Cancel
+                            </button>
+                          </div>
+                        )}
+                      </div>
+
+                      <Image
+                        width={500}
+                        height={500}
+                        src={item.image}
+                        alt={item.image}
+                        className="w-full h-60 object-cover rounded-lg mb-4"
+                      />
+
+                      {/* <h3 className="text-lg font-semibold mb-1">
+                        {item.productName}
+                        </h3> */}
+
+                      <div className="flex justify-between items-center mb-2">
+                        <p className="text-gray-700 text-lg font-semibold">
+                          {item.name}
+                        </p>
+                        <button
+                          onClick={() => setActivePopupCart(item._id)}
+                          className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-blue-100 hover:bg-blue-200 p-2 rounded-full shadow-md cursor-pointer"
+                        >
+                          <LiaShoppingCartSolid
+                            size={20}
+                            className="text-blue-600"
+                          />
+                        </button>
+                      </div>
+
+                      <h3 className="mb-1">{item.SalesCategory}</h3>
+
+                      <p className="text-lg flex justify-between items-center mb-2">
+                        <span className=" text-blue-600 font-bold mb-1">
+                          ${item.discountPrice}
+                        </span>
+                        <span className="line-through text-gray-400 ml-2">
+                          ${item.price}
+                        </span>
+                      </p>
+                      <div className="flex justify-between items-center mb-2">
+                        <p className="text-green-600 text-sm mb-1">
+                          {item.inStock ? "In Stock" : "Out of Stock"}
+                        </p>
+                        <p className="text-sm text-gray-600 mb-2">
+                          {item.offerTitle}
+                        </p>
+                      </div>
+                      <button
+                        className="bg-blue-500 text-white w-full py-2 rounded-full hover:bg-blue-600"
+                        // onClick={() => setActivePopup(item._id)}
+                      >
+                        Buy it now
                       </button>
-                    </div>
-
-                    <p className="flex justify-between items-center mb-2">
-                      <span className="text-blue-600 font-bold mb-1">
-                        ${item.discountPrice}
-                      </span>
-                      <span className="line-through text-gray-400 ml-2">
-                        ${item.price}
-                      </span>
-                    </p>
-                    <p className="text-green-600 text-sm mb-1">
-                      {item.inStock ? "In Stock" : "Out of Stock"}
-                    </p>
-                    <p className="text-sm text-gray-600 mb-2">
-                      {item.offerTitle}
-                    </p>
-                    <button className="bg-blue-500 text-white w-full py-2 rounded-full hover:bg-blue-600">
-                      Gift Now
-                    </button>
+                    </motion.div>
                   </div>
                 ))}
               </div>
