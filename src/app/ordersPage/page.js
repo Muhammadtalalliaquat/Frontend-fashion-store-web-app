@@ -293,6 +293,7 @@ export default function OrdersPageDashboard() {
                 </div>
               )}
             </div>
+
             <div className="mt-20">
               {discountOrder && discountOrder.length > 0 ? (
                 <>
@@ -317,23 +318,65 @@ export default function OrdersPageDashboard() {
                           </span>
                         </div>
 
-                        <Image
-                          src={order.productId.image}
-                          alt={order.productId.name}
-                          width={0}
-                          height={0}
-                          sizes="100vw"
-                          className="w-full sm:w-[375px] h-auto rounded-lg mb-3 object-cover"
-                        />
+                        {order.products.map((item, idx) => (
+                          <div key={idx} className="mb-4">
+                            <Image
+                              src={item.productId?.image}
+                              alt={item.productId?.name}
+                              width={0}
+                              height={0}
+                              sizes="100vw"
+                              className="w-full sm:w-[375px] h-auto rounded-lg mb-3 object-cover"
+                            />
+
+                            <p className="font-medium text-gray-800 mb-1 text-center">
+                              {item.productId?.name}
+                            </p>
+
+                            <div className="flex justify-between text-sm text-gray-700 px-2">
+                              <span>
+                                Qty:{" "}
+                                <span className="text-blue-700">
+                                  {item.quantity}
+                                </span>
+                              </span>
+                              <span>
+                                Price:{" "}
+                                <span className="text-blue-700">
+                                  ${item.productId?.discountPrice}
+                                </span>
+                              </span>
+                            </div>
+                          </div>
+                        ))}
+
+                        <p className="text-sm text-green-600 font-semibold">
+                          Total Price: Rs. {order.totalPrice}
+                        </p>
 
                         <div className="flex justify-between items-center">
-                          <p className="font-medium text-gray-700">
-                            Product:{" "}
-                            <span className="text-blue-700">
-                              {order.productId.name}
-                            </span>
-                          </p>
-
+                          <div className="flex justify-between items-center mb-2">
+                            <p
+                              className={`inline-block text-xs sm:text-sm rounded-md mt-1 font-medium capitalize
+                                  ${
+                                    order.status === "pending"
+                                      ? "bg-yellow-100 text-yellow-700"
+                                      : order.status === "processing"
+                                      ? "bg-blue-100 text-blue-700"
+                                      : order.status === "shipped"
+                                      ? "bg-green-100 text-green-700"
+                                      : order.status === "delivered"
+                                      ? "bg-purple-100 text-purple-700"
+                                      : order.status === "cancelled"
+                                      ? "bg-red-100 text-red-700"
+                                      : "bg-gray-100 text-gray-700"
+                                  }
+                                   px-2 py-0.5
+                                  `}
+                            >
+                              Status: {order.status}
+                            </p>
+                          </div>
                           {user.isAdmin && (
                             <div className="relative">
                               <span
@@ -402,32 +445,10 @@ export default function OrdersPageDashboard() {
                             </div>
                           )}
                         </div>
-                        {/* <p className="text-sm text-gray-600">
-                            Quantity: {order.quantity}
-                          </p> */}
-                        <p className="text-sm text-green-600 font-semibold">
+
+                        {/* <p className="text-sm text-green-600 font-semibold">
                           Total Price: Rs. {order.totalPrice}
-                        </p>
-                        <p
-                          className={`inline-block text-xs sm:text-sm rounded-md mt-1 font-medium capitalize
-                          ${
-                            order.status === "pending"
-                              ? "bg-yellow-100 text-yellow-700"
-                              : order.status === "processing"
-                              ? "bg-blue-100 text-blue-700"
-                              : order.status === "shipped"
-                              ? "bg-green-100 text-green-700"
-                              : order.status === "delivered"
-                              ? "bg-purple-100 text-purple-700"
-                              : order.status === "cancelled"
-                              ? "bg-red-100 text-red-700"
-                              : "bg-gray-100 text-gray-700"
-                          }
-                           px-2 py-0.5
-                          `}
-                        >
-                          Status: {order.status}
-                        </p>
+                        </p> */}
 
                         <hr className="my-3" />
 

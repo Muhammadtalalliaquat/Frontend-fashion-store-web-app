@@ -2,13 +2,13 @@
 
 import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { createOrder } from "../../store/features/orderSlice";
-import { getAllReview } from "../../store/features/productReviewSlice";
+import { createDiscountOfferOrder } from "../../store/features/discountOrderSlice";
+// import { getAllReview } from "../../store/features/productReviewSlice";
 import Navbar from "../../compoments/navbar";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
 
-export default function PlaceOrderForm() {
+export default function DiscountProductInfo() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const name = searchParams.get("name");
@@ -25,8 +25,9 @@ export default function PlaceOrderForm() {
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
-  const [reviews, setReviews] = useState([]);
+//   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -35,21 +36,20 @@ export default function PlaceOrderForm() {
       return () => clearTimeout(timer);
     }
 
-    dispatch(getAllReview(productId))
-      .then((result) => {
-        console.log("API Response:", result.payload);
-        setReviews(result.payload.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch Error:", err, error);
-        setLoading(false);
-      });
+    // dispatch(getAllReview(productId))
+    //   .then((result) => {
+    //     console.log("API Response:", result.payload);
+    //     setReviews(result.payload.data);
+    //     setLoading(false);
+    //   })
+    //   .catch((err) => {
+    //     console.error("Fetch Error:", err, error);
+    //     setLoading(false);
+    //   });
   }, [dispatch, errorMsg, productId]);
 
-  const handleOrderPlacement = (e) => {
+  const handleAddSalediscountOrderPlace = (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
 
     const orderFormData = {
       email,
@@ -65,9 +65,10 @@ export default function PlaceOrderForm() {
 
     console.log("Sending Order Data:", orderFormData);
 
-    dispatch(createOrder(orderFormData))
+    dispatch(createDiscountOfferOrder(orderFormData))
       .then((result) => {
         // console.log("API Response:", result.payload);
+        // router.push("/ordersPage");
         const message = result.payload?.msg;
         if (message) {
           setErrorMsg(message);
@@ -82,15 +83,15 @@ export default function PlaceOrderForm() {
         setIsSubmitting(false);
       });
   };
-
   return (
     <>
       <Navbar />
+
       <div className="max-w-6xl mx-auto p-6 md:p-10  rounded-lg  grid grid-cols-1 lg:grid-cols-3 gap-10 mt-20">
         <div className="lg:col-span-2">
           <h2 className="text-2xl font-semibold mb-6">Contact Information</h2>
 
-          <form onSubmit={handleOrderPlacement}>
+          <form onSubmit={handleAddSalediscountOrderPlace}>
             <input
               type="email"
               placeholder="Email"
@@ -184,6 +185,12 @@ export default function PlaceOrderForm() {
               {errorMsg}
             </p>
           )}
+
+          {/* <div className="mt-4 text-sm">
+                  <a href="/cart" className="text-blue-600 hover:underline">
+                    Return to cart
+                  </a>
+                </div> */}
         </div>
 
         <div className="border border-gray-200 rounded p-6 bg-gray-50">
