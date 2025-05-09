@@ -16,18 +16,15 @@ import { RiFunctionAddLine } from "react-icons/ri";
 function Navbar() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
   const [loadingUser, setLoadingUser] = useState(true);
   const [user, setUser] = useState(null);
   const pathname = usePathname();
   const router = useRouter();
-  
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
-    setLoadingUser(false); 
-
+    setLoadingUser(false);
     const handleScroll = () => {
       setIsScrolled(window.scrollY > 30);
     };
@@ -54,11 +51,11 @@ function Navbar() {
       pathname === "/returnsPolicy" ||
       pathname === "/shippingInfo" ||
       pathname === "/shop" ||
+      pathname === "/discountProductInfo" ||
       pathname.startsWith("/admin-update-product")
     ) {
       router.push("/fashion-store");
     }
-    // console.log("Current Path:", pathname);
   };
   if (loadingUser) return null;
   return (
@@ -183,9 +180,7 @@ function Navbar() {
       >
         {isMenuOpen ? (
           <Image
-            className={`${styles.closeMenustyle} ${
-              isDarkTheme ? styles.dark : styles.light
-            }`}
+            className={`${styles.closeMenustyle}`}
             width={15}
             height={15}
             src="https://i.postimg.cc/rsftGmBg/close.png"
@@ -193,9 +188,7 @@ function Navbar() {
           />
         ) : (
           <Image
-            className={`${styles.closeMenustyle} ${
-              isDarkTheme ? styles.dark : styles.light
-            }`}
+            className={`${styles.closeMenustyle}`}
             width={15}
             height={15}
             src="https://i.postimg.cc/FRtqmFnP/more.png"

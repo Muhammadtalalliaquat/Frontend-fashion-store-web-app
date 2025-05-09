@@ -1,9 +1,10 @@
 "use client";
 
 import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
 import Navbar from "../../compoments/navbar";
+import Footer from "../../compoments/footer";
 import {
   ShoppingCartIcon,
   PencilSquareIcon,
@@ -48,17 +49,12 @@ export default function ProductDetails() {
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
   const [showAddReview, setShowAddReview] = useState(false);
+  const [contentHeight, setContentHeight] = useState(0);
+  const contentRef = useRef(null);
 
   const handleStarClick = (value) => {
     setRating(value);
   };
-
-  // const handleInputChange = (e) => {
-  //   let value = parseFloat(e.target.value)
-  //   if(value >= 1 && value <= 5){
-  //     setRating(value)
-  //   }
-  // }
 
   const handleDelete = async () => {
     if (!productId) {
@@ -200,11 +196,17 @@ export default function ProductDetails() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, productId]);
 
+   useEffect(() => {
+     if (contentRef.current) {
+       setContentHeight(contentRef.current.scrollHeight);
+     }
+   }, [showAddReview]);
+
   return (
     <>
       <Navbar />
 
-      <div className="max-w-4xl mx-auto p-6 mt-18 sm:mt-20 md:mt-32 lg:mt-30 bg-white rounded-lg shadow-lg border border-gray-300">
+      <div className="max-w-4xl mx-auto p-6 mt-18 sm:mt-20 md:mt-32 mb-30 lg:mt-30 bg-white rounded-lg shadow-lg border border-gray-300">
         <div className="flex justify-between items-center">
           <div className="w-full flex items-center justify-between">
             <h2 className="text-4xl font-bold text-gray-900 flex-shrink-0">
@@ -364,7 +366,7 @@ export default function ProductDetails() {
               initial={{ opacity: 0, height: 0 }}
               animate={{
                 opacity: showAddReview ? 1 : 0,
-                height: showAddReview ? "auto" : 0,
+                height: showAddReview ? contentHeight : 0,
               }}
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3, ease: "easeInOut" }}
@@ -372,6 +374,7 @@ export default function ProductDetails() {
             >
               {showAddReview && (
                 <form
+                  ref={contentRef}
                   onSubmit={handleAddReview}
                   className="p-4 bg-gray-100 rounded-lg shadow-sm mt-4"
                 >
@@ -489,6 +492,8 @@ export default function ProductDetails() {
           </div>
         )}
       </div>
+
+       {!loading && <Footer />}
     </>
   );
 }

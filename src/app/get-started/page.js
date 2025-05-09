@@ -26,7 +26,7 @@ export default function GetStarted() {
           </p>
           <div className="flex gap-4">
             <Link
-              href="/fashion-store"
+              href="/shop"
               className="px-6 py-3 text-lg bg-blue-600 text-white font-semibold rounded-xl shadow-md hover:bg-blue-700 transition duration-300"
             >
               Shop Now

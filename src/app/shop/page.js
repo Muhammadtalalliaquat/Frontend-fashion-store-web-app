@@ -1,6 +1,7 @@
 "use client";
 
 import Navbar from "../../compoments/navbar";
+import Footer from "../../compoments/footer";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
@@ -96,7 +97,7 @@ export default function ShopPage() {
         </div>
       )}
 
-      <div className="container mx-auto p-4 mt-20">
+      <div className="container mx-auto p-4 mt-20 mb-30">
         <div className="bg-blue-500 text-white p-8 text-center mb-8 rounded-xl shadow-md animate__animated animate__fadeInDown">
           <h1 className="text-3xl font-bold mb-2">Popular Gift Collections</h1>
           <p className="text-lg">Select your favorite product now on sale</p>
@@ -226,6 +227,32 @@ export default function ShopPage() {
 
                         {/* <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex flex-col gap-2 items-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 z-20"> */}
 
+                        {activePopup === item._id && !user && (
+                          <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center px-3 z-[9999]">
+                            <div className="bg-white w-full max-w-sm sm:max-w-md p-4 sm:p-6 shadow-2xl relative">
+                              <button
+                                onClick={() => setActivePopup(false)}
+                                className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
+                              >
+                                ×
+                              </button>
+
+                              <h2 className="font-medium text-gray-800 p-3 mb-3 text-center">
+                                You need to log in to Buy this product.
+                              </h2>
+
+                              <div className="flex justify-center">
+                                <Link
+                                  href="/login"
+                                  className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                                >
+                                  Go to Login
+                                </Link>
+                              </div>
+                            </div>
+                          </div>
+                        )}
+
                         {activePopup === item._id && user && (
                           <div className="absolute top-14 right-2 sm:right-4 bg-white shadow-xl rounded-2xl p-4 z-40 w-11/12 sm:w-52 flex flex-col items-center border border-gray-200 transition-all duration-300">
                             <label className="text-sm mb-1">Quantity</label>
@@ -345,6 +372,8 @@ export default function ShopPage() {
             ))}
         </div>
       </div>
+
+      {!loading && <Footer />}
     </>
   );
 }
