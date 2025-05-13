@@ -474,8 +474,6 @@ export default function MainDashboard() {
           )}
 
           {activePopup && user && (
-          
-
             <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-[9999]">
               <form
                 className="bg-white w-full max-w-md p-7 rounded-lg shadow-2xl relative"

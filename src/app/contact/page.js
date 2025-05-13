@@ -41,20 +41,17 @@ export default function ContactPage() {
     };
 
     setIsSubmitting(true);
-    setErrorMessage(""); // Clear previous errors
-
+    setErrorMessage("");
     dispatch(createContact(contactData))
       .then((result) => {
         const { error, msg } = result.payload || {};
 
         if (error) {
-          // Display validation or required field errors
           setErrorMessage(msg || "Something went wrong.");
           setIsSubmitting(false);
           return;
         }
 
-        // Success
         setFirstName("");
         setLastName("");
         setEmail("");

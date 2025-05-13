@@ -85,26 +85,7 @@ function Navbar() {
           isScrolled ? styles.scrolled : ""
         }`}
       >
-        {/* <li
-          className={
-            pathname === "/fashion-store" ? `${styles.hide_on_mobile}` : ""
-          }
-          onClick={handleNavigate}
-        >
-          {pathname !== "/fashion-store" &&
-            pathname !== "/adminDashboard" &&
-            // !pathname.includes("/admin-update-product") &&
-            "Home"}
-        </li>
-
-        <li
-          className={pathname === "/products" ? `${styles.hide_on_mobile}` : ""}
-        >
-          <Link href="/products">
-            {" "}
-            {pathname !== "/products" && "products"}
-          </Link>
-        </li> */}
+      
         {pathname !== "/fashion-store" && (
           <li onClick={handleNavigate} className="flex items-center gap-2">
             {isMenuOpen && <GoHome className="w-5 h-5 text-blue-750" />}
@@ -130,18 +111,12 @@ function Navbar() {
             </Link>
           </li>
         )}
-        {/* <li className="flex items-center gap-2">
-          {isMenuOpen && (
-            <LiaShoppingBagSolid className="w-5 h-5 text-blue-750" />
-          )}
-          <span>Shop</span>
-        </li> */}
+     
 
         {pathname !== "/contact" && (
           <li className="flex items-center gap-2">
             {isMenuOpen && <RiContactsLine className="w-5 h-5 text-blue-750" />}
             <Link href={"/contact"}>
-              {/* {pathname !== "/contact" && "contact"} */}
               <span>Contact</span>
             </Link>
           </li>

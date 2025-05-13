@@ -2,13 +2,16 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
+// import { useRouter } from "next/navigation";
 import {
   getAllCart,
   removeCartItem,
   updateProductCart,
 } from "../../store/features/productCartSlice";
 import Image from "next/image";
+import Link from "next/link";
 import Navbar from "../../compoments/navbar";
+import { createMultipleOrders } from "../../store/features/multipleorderSlice";
 import {
   PencilSquareIcon,
   TrashIcon,
@@ -23,6 +26,30 @@ export default function ProductCartPage() {
   const [quantities, setQuantities] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [loading, setLoading] = useState(true);
+  const [selectedItems, setSelectedItems] = useState([]);
+  const [activePopup, setActivePopup] = useState(null);
+  const [user, setUser] = useState(null);
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [posterCode, setPostercode] = useState(0);
+  const [errorMsg, setErrorMsg] = useState("");
+  const [address, setAddress] = useState("");
+  const [city, setCity] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  // const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
+
+    if (errorMsg) {
+      const timer = setTimeout(() => setErrorMsg(""), 13000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMsg]);
 
   useEffect(() => {
     dispatch(getAllCart())
@@ -39,6 +66,19 @@ export default function ProductCartPage() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
+
+  const selectedCartItems = selectedItems;
+
+  const totalQuantity = selectedCartItems.reduce(
+    (acc, item) => acc + (quantities[item.productId._id] || item.quantity),
+    0
+  );
+
+  const totalPrice = selectedCartItems.reduce((acc, item) => {
+    const quantity = quantities[item.productId._id] || item.quantity;
+    const price = item.productId.discountPrice || item.productId.price;
+    return acc + price * quantity;
+  }, 0);
 
   const handleRemoveItem = (id) => {
     console.log("Removing cart item with ID:", id);
@@ -92,6 +132,44 @@ export default function ProductCartPage() {
       })
       .catch((err) => {
         console.error("Fetch Error:", err, error);
+      });
+  };
+
+  const handlePlaceOrders = (e, selectedProducts) => {
+    e.preventDefault();
+
+    if (selectedItems.length === 0) {
+      alert("Please select at least one product.");
+      return;
+    }
+
+    const orderFormData = {
+      email,
+      firstName,
+      lastName,
+      city,
+      posterCode,
+      phone,
+      address,
+      selectedProducts,
+    };
+
+    console.log("Sending Order Data:", orderFormData);
+
+    dispatch(createMultipleOrders(orderFormData))
+      .then((result) => {
+        const message = result.payload?.msg;
+        if (message) {
+          setErrorMsg(message);
+          if (message.toLowerCase().includes("placed")) {
+            setActivePopup(null);
+          }
+        }
+        setIsSubmitting(false);
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+        setIsSubmitting(false);
       });
   };
 
@@ -159,6 +237,23 @@ export default function ProductCartPage() {
                     </div>
 
                     <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 w-full sm:w-auto flex-wrap">
+                      <input
+                        type="checkbox"
+                        checked={selectedItems.some((i) => i._id === item._id)}
+                        onChange={(e) => {
+                          const isChecked = e.target.checked;
+
+                          setSelectedItems((prev) =>
+                            isChecked
+                              ? [...prev, item]
+                              : prev.filter((i) => i._id !== item._id)
+                          );
+
+                          console.log("Selected Item:", item);
+                        }}
+                        className="absolute top-3 left-3 sm:static w-5 h-5 accent-indigo-600 cursor-pointer transition-all duration-150 rounded-full"
+                      />
+
                       <Image
                         src={item.productId?.image || "/fallback-image.jpg"}
                         alt={item.productId?.name || "Product Image"}
@@ -196,7 +291,7 @@ export default function ProductCartPage() {
                           );
                           handleQuantityChange(item.productId._id, newQuantity);
                         }}
-                        className="w-9 h-9 flex items-center justify-center text-lg bg-gray-200 rounded-md hover:bg-gray-300 transition"
+                        className="w-9 h-9 flex items-center justify-center text-lg font-bold bg-gray-100 text-gray-700 rounded-full hover:bg-indigo-100 hover:text-indigo-600 transition"
                       >
                         -
                       </button>
@@ -212,7 +307,7 @@ export default function ProductCartPage() {
                             1;
                           handleQuantityChange(item.productId._id, newQuantity);
                         }}
-                        className="w-9 h-9 flex items-center justify-center text-lg bg-gray-200 rounded-md hover:bg-gray-300 transition"
+                        className="w-9 h-9 flex items-center justify-center text-lg font-bold bg-gray-100 text-gray-700 rounded-full hover:bg-indigo-100 hover:text-indigo-600 transition"
                       >
                         +
                       </button>
@@ -220,9 +315,169 @@ export default function ProductCartPage() {
                   </div>
                 ))}
 
-              <button className="w-full mt-6 bg-indigo-600 text-white py-3 rounded-lg shadow-md hover:bg-indigo-700 transition text-lg font-medium">
+              <button
+                onClick={() => {
+                  if (selectedItems.length === 0) {
+                    alert("Please select at least one product.");
+                    return;
+                  }
+
+                  setActivePopup(true);
+                }}
+                className="w-full mt-6 bg-indigo-600 text-white py-3 rounded-lg shadow-md hover:bg-indigo-700 transition text-lg font-medium"
+              >
                 Proceed to Checkout
               </button>
+
+              {activePopup && !user && (
+                <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-[9999]">
+                  <div className="bg-white w-full max-w-md p-6 rounded-2xl shadow-2xl relative">
+                    <button
+                      onClick={() => setActivePopup(null)}
+                      className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
+                    >
+                      ×
+                    </button>
+
+                    <h2 className="text-lg font-semibold text-gray-800 mb-4 text-center">
+                      You need to log in to place an order
+                    </h2>
+
+                    <div className="flex justify-center">
+                      <Link
+                        href="/login"
+                        className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                      >
+                        Go to Login
+                      </Link>
+                    </div>
+                  </div>
+                </div>
+              )}
+
+              {activePopup && user && (
+                <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-[9999]">
+                  <form
+                    className="bg-white w-full max-w-md p-7 rounded-lg shadow-2xl relative"
+                    onSubmit={(e) => handlePlaceOrders(e, selectedItems)}
+                  >
+                    <button
+                      onClick={() => setActivePopup(null)}
+                      type="button"
+                      className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
+                    >
+                      ×
+                    </button>
+                    <input
+                      type="email"
+                      placeholder="Email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      className="w-full mb-3 px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                      required
+                    />
+
+                    <h2 className="text-lg font-semibold mb-4">
+                      Shipping Address
+                    </h2>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-3 mb-3">
+                      <input
+                        type="text"
+                        placeholder="First name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                        required
+                      />
+                      <input
+                        type="text"
+                        placeholder="Last name"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                        required
+                      />
+                    </div>
+
+                    <input
+                      type="text"
+                      placeholder="Address"
+                      value={address}
+                      onChange={(e) => setAddress(e.target.value)}
+                      className="w-full mb-3 px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                      required
+                    />
+
+                    <div className="grid grid-cols-2 gap-3 mb-3">
+                      <input
+                        type="text"
+                        placeholder="City"
+                        value={city}
+                        onChange={(e) => setCity(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                        required
+                      />
+                      <input
+                        type="number"
+                        placeholder="Postcode"
+                        value={posterCode}
+                        onChange={(e) => setPostercode(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                        required
+                      />
+                    </div>
+
+                    <input
+                      type="text"
+                      placeholder="Phone"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
+                      className="w-full mb-4 px-3 py-2 border border-gray-400 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-green-500 transition"
+                      required
+                    />
+
+                    <button
+                      type="submit"
+                      disabled={isSubmitting}
+                      className="w-full flex items-center justify-center bg-blue-600 text-white py-2 rounded-md font-semibold hover:bg-blue-700 transition"
+                    >
+                      {isSubmitting ? (
+                        <div className="animate-spin h-5 w-5 border-t-2 border-white rounded-full"></div>
+                      ) : (
+                        "Place order"
+                      )}
+                    </button>
+                  </form>
+                </div>
+              )}
+              {errorMsg && (
+                <p
+                  className={`fixed top-[110px] left-1/2 transform -translate-x-1/2 ${
+                    errorMsg.toLowerCase().includes("success") ||
+                    errorMsg.toLowerCase().includes("placed")
+                      ? "bg-green-500"
+                      : "bg-red-500"
+                  } text-white px-4 py-2 rounded shadow-lg transition-all duration-500 ${
+                    errorMsg
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 -translate-y-2"
+                  }`}
+                >
+                  {errorMsg}
+                </p>
+              )}
+
+              {selectedCartItems.length > 0 && (
+                <div className="mt-6 p-4 rounded-xl border border-gray-200 bg-gray-50 text-right">
+                  <p className="text-sm font-medium">
+                    Total Quantity: {totalQuantity}
+                  </p>
+                  <p className="text-sm font-semibold text-indigo-700">
+                    Total Price: ${totalPrice.toFixed(2)}
+                  </p>
+                </div>
+              )}
             </>
           ) : (
             <div className="flex flex-col items-center justify-center mt-46">

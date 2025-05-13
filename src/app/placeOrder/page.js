@@ -29,6 +29,17 @@ export default function PlaceOrderForm() {
   const [loading, setLoading] = useState(true);
   const dispatch = useDispatch();
 
+
+  useEffect(() => {
+    const storedItems = localStorage.getItem("orderItems");
+    if (storedItems) {
+      const parsedItems = JSON.parse(storedItems);
+      console.log(parsedItems);
+    }
+  }, []);
+
+  
+
   useEffect(() => {
     if (errorMsg) {
       const timer = setTimeout(() => setErrorMsg(""), 3000);

@@ -8,7 +8,8 @@ import { IoIosSettings } from "react-icons/io";
 import { LuLogIn } from "react-icons/lu";
 import { GrUserAdmin } from "react-icons/gr";
 import { useEffect, useState } from "react";
-import { AiFillProduct } from "react-icons/ai";
+// import { AiFillProduct } from "react-icons/ai";
+import { ShoppingCart } from "lucide-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi";
 
 export default function OptionsMenu() {
@@ -87,7 +88,8 @@ export default function OptionsMenu() {
                 href="/productCart"
                 className="flex items-center gap-2 px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-gray-900"
               >
-                <AiFillProduct color="blue" />
+                {/* <AiFillProduct color="blue" /> */}
+                <ShoppingCart className="text-blue-600" size={19} />
                 Cart items
               </Link>
             </MenuItem>
