@@ -39,7 +39,6 @@ export default function PlaceOrderForm() {
   }, []);
 
   
-
   useEffect(() => {
     if (errorMsg) {
       const timer = setTimeout(() => setErrorMsg(""), 3000);

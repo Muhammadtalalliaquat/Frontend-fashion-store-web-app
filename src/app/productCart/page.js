@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-// import { useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
 import {
   getAllCart,
   removeCartItem,
@@ -38,15 +38,14 @@ export default function ProductCartPage() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
-
-  // const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
 
     if (errorMsg) {
-      const timer = setTimeout(() => setErrorMsg(""), 13000);
+      const timer = setTimeout(() => setErrorMsg(""), 3000);
       return () => clearTimeout(timer);
     }
   }, [errorMsg]);
@@ -163,6 +162,7 @@ export default function ProductCartPage() {
           setErrorMsg(message);
           if (message.toLowerCase().includes("placed")) {
             setActivePopup(null);
+            router.push("/ordersPage");
           }
         }
         setIsSubmitting(false);

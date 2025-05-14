@@ -253,9 +253,11 @@ export default function MainDashboard() {
             </div>
           </div>
           <div className="p-6 mt-16">
-            <h2 className="text-3xl font-bold mb-6 text-center text-blue-900">
-              Our Products
-            </h2>
+            <div className="mx-auto mb-8">
+              <h2 className="text-4xl font-extrabold text-center text-blue-800 tracking-tight pr-6">
+                Our Products
+              </h2>
+            </div>
 
             {products.length > 0 ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
@@ -668,7 +670,6 @@ export default function MainDashboard() {
       )}
 
       {!loading && <Footer />}
-
     </>
   );
 }

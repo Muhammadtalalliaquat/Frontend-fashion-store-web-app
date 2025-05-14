@@ -7,6 +7,10 @@ import {
   getDiscountOfferOrder,
   updateDiscountOrder,
 } from "../../store/features/discountOrderSlice";
+import {
+  getAllMultiplesOrders,
+  updateOrdersStatus,
+} from "../../store/features/multipleorderSlice";
 import Image from "next/image";
 import Navbar from "../../compoments/navbar";
 import { FaSpinner } from "react-icons/fa";
@@ -16,6 +20,7 @@ import { motion } from "framer-motion";
 export default function OrdersPageDashboard() {
   const [orderList, setOrderList] = useState();
   const [discountOrder, setDiscountOrder] = useState();
+  const [orders, setOrder] = useState();
   const dispatch = useDispatch();
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
@@ -71,6 +76,29 @@ export default function OrdersPageDashboard() {
       });
   };
 
+  const handleUpdateOrdersStatus = (orderId, status) => {
+    const updatedData = { status };
+
+    dispatch(updateOrdersStatus({ id: orderId, orderData: updatedData }))
+      .then((result) => {
+        console.log("API Response:", result.payload);
+
+        dispatch(getAllMultiplesOrders())
+          .then((result) => {
+            console.log("API Response:", result.payload);
+            setOrder(result.payload.data);
+            setLoading(false);
+          })
+          .catch((err) => {
+            console.error("Fetch Error:", err);
+            setLoading(false);
+          });
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+      });
+  };
+
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
@@ -79,6 +107,17 @@ export default function OrdersPageDashboard() {
       .then((result) => {
         console.log("API Response:", result.payload);
         setOrderList(result.payload.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+        setLoading(false);
+      });
+
+    dispatch(getAllMultiplesOrders())
+      .then((result) => {
+        console.log("API Response:", result.payload);
+        setOrder(result.payload.data);
         setLoading(false);
       })
       .catch((err) => {
@@ -293,6 +332,177 @@ export default function OrdersPageDashboard() {
                 </div>
               )}
             </div>
+
+            {orders.length === 0 ? (
+              <></>
+            ) : (
+              <div className="space-y-6">
+                {orders.map((order, index) => (
+                  <div
+                    key={order._id || index}
+                    className="border border-gray-200 rounded-xl p-6 shadow-lg bg-white"
+                  >
+                    <div className="flex justify-between items-start mb-4">
+                      <div>
+                        <p className="font-semibold text-gray-700 break-all">
+                          Order ID:{" "}
+                          <span className="text-sm text-gray-500 bg-orange-100 p-1 rounded-2xl">
+                            {order._id}
+                          </span>
+                        </p>
+                        <p className="text-sm text-gray-600 break-words">
+                          Ordered by:{" "}
+                          <span className="font-medium">{order.firstName}</span>{" "}
+                          <span className="font-medium">{order.lastName}</span>{" "}
+                          (<span className="break-all">{order.email}</span>)
+                        </p>
+                        <p className="text-xs text-gray-400">
+                          Date: {new Date(order.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+
+                      <div className="flex items-center gap-2 relative">
+                        <span
+                          className={`px-3 py-1 text-sm rounded-full font-medium capitalize ${
+                            order.status === "pending"
+                              ? "bg-yellow-100 text-yellow-700"
+                              : order.status === "processing"
+                              ? "bg-blue-100 text-blue-700"
+                              : order.status === "shipped"
+                              ? "bg-green-100 text-green-700"
+                              : order.status === "delivered"
+                              ? "bg-purple-100 text-purple-700"
+                              : order.status === "cancelled"
+                              ? "bg-red-100 text-red-700"
+                              : "bg-gray-100 text-gray-700"
+                          }`}
+                        >
+                          {order.status}
+                        </span>
+
+                        {user.isAdmin && (
+                          <div className="relative">
+                            <span
+                              onClick={() => toggleDropdown(order._id)}
+                              className="cursor-pointer hover:text-gray-600"
+                            >
+                              <PencilSquareIcon className="w-4 h-4 text-gray-500" />
+                            </span>
+
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{
+                                opacity: openOrderId ? 1 : 0,
+                                height: openOrderId ? "auto" : 0,
+                              }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.3, ease: "easeInOut" }}
+                              className="overflow-hidden absolute right-0 z-10"
+                            >
+                              {openOrderId === order._id && (
+                                <div className="mt-2 w-48 rounded-md shadow-lg bg-white transition-all duration-300 ease-out transform">
+                                  <div className="py-1">
+                                    {[
+                                      "pending",
+                                      "processing",
+                                      "shipped",
+                                      "delivered",
+                                      "cancelled",
+                                    ].map((status) => {
+                                      const statusClassMap = {
+                                        pending:
+                                          "hover:bg-yellow-200 active:bg-yellow-300",
+                                        processing:
+                                          "hover:bg-blue-200 active:bg-blue-300",
+                                        shipped:
+                                          "hover:bg-green-200 active:bg-green-300",
+                                        delivered:
+                                          "hover:bg-purple-200 active:bg-purple-300",
+                                        cancelled:
+                                          "hover:bg-red-200 active:bg-red-300",
+                                      };
+
+                                      return (
+                                        <button
+                                          key={status}
+                                          onClick={() =>
+                                            handleUpdateOrdersStatus(
+                                              order._id,
+                                              status
+                                            )
+                                          }
+                                          className={`block w-full px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md focus:outline-none transition-all ${statusClassMap[status]}`}
+                                        >
+                                          {status.charAt(0).toUpperCase() +
+                                            status.slice(1)}
+                                        </button>
+                                      );
+                                    })}
+                                  </div>
+                                </div>
+                              )}
+                            </motion.div>
+                          </div>
+                        )}
+                      </div>
+                    </div>
+
+                    <div className="mt-2 border-t border-gray-300 pt-2">
+                      {/* <p className="font-medium text-gray-700">Address:</p> */}
+                      <p className="text-sm text-gray-600">
+                        <strong>Address:</strong> {order.address}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        <strong>City:</strong> {order.city}
+                      </p>
+                      <p className="text-sm text-gray-600">
+                        <strong>Poster code:</strong> {order.posterCode}
+                      </p>
+                      <p className="text-sm text-gray-600 mb-4">
+                        <strong>Phone no:</strong> {order.phone}
+                      </p>
+                    </div>
+
+                    <div className="mt-4">
+                      <p className="font-semibold text-gray-800 mb-2">
+                        Products:
+                      </p>
+                      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        {order.products.map((prod, i) => (
+                          <div
+                            key={prod.productId?._id || i}
+                            className="border rounded-lg p-3 bg-gray-50 flex gap-4 items-center"
+                          >
+                            {prod.image ? (
+                              <Image
+                                width={300}
+                                height={300}
+                                src={prod.image}
+                                alt={prod.name}
+                                className="w-16 h-16 object-cover rounded"
+                              />
+                            ) : (
+                              <div className="w-16 h-16 bg-gray-200 rounded"></div>
+                            )}
+                            <div>
+                              <p className="font-bold text-gray-800">
+                                {prod.name}
+                              </p>
+                              <p className="text-sm text-gray-600">
+                                Qty: {prod.quantity}
+                              </p>
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                    <div className="text-right mt-3 text-lg font-bold text-gray-700">
+                      Total: ${order.totalPrice}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
 
             <div className="mt-20">
               {discountOrder && discountOrder.length > 0 ? (
