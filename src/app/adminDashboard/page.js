@@ -6,14 +6,12 @@ import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getAllContact } from "../../store/features/contactSlice";
 import { FaSpinner } from "react-icons/fa";
-import { useRouter } from "next/navigation";
 
 function AdminDashboard() {
   const dispatch = useDispatch();
   const [contact, setContact] = useState([]);
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(true);
-  const router = useRouter();
 
   useEffect(() => {
     dispatch(getAllContact())

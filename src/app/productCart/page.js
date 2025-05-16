@@ -45,7 +45,7 @@ export default function ProductCartPage() {
     setUser(storedUser);
 
     if (errorMsg) {
-      const timer = setTimeout(() => setErrorMsg(""), 3000);
+      const timer = setTimeout(() => setErrorMsg(""), 13000);
       return () => clearTimeout(timer);
     }
   }, [errorMsg]);
@@ -134,13 +134,19 @@ export default function ProductCartPage() {
       });
   };
 
-  const handlePlaceOrders = (e, selectedProducts) => {
+  const handlePlaceOrders = (e) => {
     e.preventDefault();
 
     if (selectedItems.length === 0) {
       alert("Please select at least one product.");
       return;
     }
+
+    const formattedProducts = selectedItems.map((item) => ({
+      productId: item.productId._id,
+      productType: item.productModel,
+      quantity: item.quantity,
+    }));
 
     const orderFormData = {
       email,
@@ -150,10 +156,10 @@ export default function ProductCartPage() {
       posterCode,
       phone,
       address,
-      selectedProducts,
+      selectedProducts: formattedProducts,
     };
 
-    console.log("Sending Order Data:", orderFormData);
+    console.log("Sending Order Data:", orderFormData.selectedProducts);
 
     dispatch(createMultipleOrders(orderFormData))
       .then((result) => {

@@ -64,7 +64,6 @@ function AddProductPage() {
     data.append("SalesCategory", SalesCategory);
     data.append("inStock", inStock);
     data.append("offerTitle", offerTitle);
-    // data.append("description", description);
     data.append("offerDescription", offerDescription);
     data.append("expiresAt", expiresAt);
 
@@ -234,12 +233,7 @@ function AddProductPage() {
                     setter: setinStock,
                     type: "number",
                   },
-                  // {
-                  //   label: "Description",
-                  //   value: description,
-                  //   setter: setinStock,
-                  //   type: "text",
-                  // },
+
                   {
                     label: "Offer Title",
                     value: offerTitle,

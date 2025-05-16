@@ -33,7 +33,7 @@ export default function GetStarted() {
             </Link>
             <Link
               href="/login"
-              className="px-6 py-3 text-lg bg-white border border-gray-300 text-gray-800 font-semibold rounded-xl shadow-md hover:bg-gray-100 transition duration-300"
+              className="px-6 py-3 text-lg  border border-gray-300 text-white font-semibold rounded-xl shadow-md hover:bg-gray-100 hover:text-black transition duration-300"
             >
               Join Us
             </Link>
