@@ -13,7 +13,7 @@ import {
 } from "../../store/features/multipleorderSlice";
 import Image from "next/image";
 import Navbar from "../../compoments/navbar";
-import Footer from "../../compoments/footer";
+// import Footer from "../../compoments/footer";
 import { FaSpinner } from "react-icons/fa";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import { motion } from "framer-motion";
@@ -142,11 +142,13 @@ export default function OrdersPageDashboard() {
     <>
       <Navbar />
 
-      {loading ? (
-        <div className="flex justify-center items-center min-h-screen">
+      {loading && (
+        <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
           <FaSpinner className="animate-spin text-5xl text-blue-500" />
         </div>
-      ) : (
+      )}
+
+      {!loading ? (
         <>
           <div className="p-6 max-w-5xl mx-auto">
             <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
@@ -725,9 +727,11 @@ export default function OrdersPageDashboard() {
             </div>
           </div>
         </>
+      ) : (
+        <p className="text-center text-gray-500">No products available.</p>
       )}
 
-      {!loading && <Footer />}
+      {/* {!loading && <Footer />} */}
     </>
   );
 }
