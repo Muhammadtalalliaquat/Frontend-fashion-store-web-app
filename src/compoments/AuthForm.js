@@ -56,7 +56,7 @@ export default function AuthForm() {
 
   const requestPasswordReset = async (e) => {
     e.preventDefault();
-    
+
     if (!email) {
       setMessage("Please enter an email");
 
@@ -186,22 +186,17 @@ export default function AuthForm() {
     //     </div>
     //   </div>
     // </div>
-    <div className="min-h-screen flex items-center justify-center bg-blue-100">
-      <div className="bg-white shadow-2xl flex w-[900px] max-w-full overflow-hidden">
-        {/* Left Section (branding) */}
-        <div className="w-1/2 bg-gradient-to-br from-blue-600 to-blue-800 text-white flex flex-col justify-center items-center p-10">
+    <div className="min-h-screen flex items-center justify-center bg-blue-100 px-4">
+      <div className="bg-white shadow-2xl flex flex-col md:flex-row w-full max-w-[900px] overflow-hidden">
+        <div className="w-full md:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800 text-white flex flex-col justify-center items-center p-8 md:p-10">
           <h2 className="text-3xl font-extrabold mb-4">Fashionly</h2>
           <p className="text-lg mb-6 text-center px-4">
-            Discover the trendiest fashion collections and make every products
+            Discover the trendiest fashion collections and make every product
             shine.
           </p>
-          {/* <button className="bg-white text-blue-700 px-6 py-2 rounded-full font-semibold shadow hover:shadow-lg transition">
-            Read More
-          </button> */}
         </div>
 
-        {/* Right Section (login/register form) */}
-        <div className="w-1/2 bg-white p-10 flex flex-col justify-center">
+        <div className="w-full md:w-1/2 bg-white p-8 md:p-10 flex flex-col justify-center">
           <h3 className="text-2xl font-bold text-gray-700 mb-2">
             {isLogin ? "Hello Again!" : "Welcome!"}
           </h3>
@@ -261,13 +256,16 @@ export default function AuthForm() {
             >
               {isLogin ? "Register here" : "Login here"}
             </button>
-
             {message && (
-            <p className="text-orange-500 text-sm text-center mt-2">{message}</p>
-          )}
-          {authError && (
-            <p className="text-red-500 text-sm text-center mt-2">{authError}</p>
-          )}
+              <p className="text-orange-500 text-sm text-center mt-2">
+                {message}
+              </p>
+            )}
+            {authError && (
+              <p className="text-red-500 text-sm text-center mt-2">
+                {authError}
+              </p>
+            )}
           </div>
         </div>
       </div>
