@@ -240,12 +240,16 @@ export default function AuthForm() {
             </button>
           </form>
 
-          <button
-            onClick={requestPasswordReset}
-            className="mt-4 text-blue-500 text-sm hover:underline"
-          >
-            Forgot Password?
-          </button>
+          {isLogin && (
+            <div className="mt-2 text-center">
+              <button
+                onClick={requestPasswordReset}
+                className="mt-4 text-blue-500 text-sm hover:underline"
+              >
+                Forgot Password?
+              </button>
+            </div>
+          )}
 
           <div className="mt-4 text-center text-sm text-gray-600">
             {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}

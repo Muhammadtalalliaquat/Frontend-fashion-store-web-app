@@ -27,13 +27,13 @@ export default function GetStarted() {
           <div className="flex gap-4">
             <Link
               href="/shop"
-              className="px-6 py-3 text-lg bg-blue-600 text-white font-semibold rounded-xl shadow-md hover:bg-blue-700 transition duration-300"
+              className="px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg bg-blue-600 text-white font-semibold rounded-xl shadow-md hover:bg-blue-700 transition duration-300"
             >
               Shop Now
             </Link>
             <Link
               href="/login"
-              className="px-6 py-3 text-lg  border border-gray-300 text-white font-semibold rounded-xl shadow-md hover:bg-gray-100 hover:text-black transition duration-300"
+              className="px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg border border-gray-300 text-white font-semibold rounded-xl shadow-md hover:bg-gray-100 hover:text-black transition duration-300"
             >
               Join Us
             </Link>

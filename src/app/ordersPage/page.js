@@ -482,7 +482,7 @@ export default function OrdersPageDashboard() {
                                 height={300}
                                 src={prod.image}
                                 alt={prod.name}
-                                className="w-16 h-16 object-cover rounded"
+                                className="w-16 h-16 object-cover rounded hover:scale-105"
                               />
                             ) : (
                               <div className="w-16 h-16 bg-gray-200 rounded"></div>
