@@ -7,7 +7,10 @@ import { useRouter } from "next/navigation";
 import { ApiRoutes } from "@/constant/constant";
 // import styles from "./main.module.css";
 import axios from "axios";
+// import { signInWithPopup } from "firebase/auth";
+// import { auth, provider } from "../firebase/firebaseconfig";
 // import { signIn, signOut, useSession } from "next-auth/react";
+// import Image from "next/image";
 
 export default function AuthForm() {
   const [isLogin, setIsLogin] = useState(true);
@@ -85,6 +88,20 @@ export default function AuthForm() {
       setMessage(errorMessage);
     }
   };
+
+  // const handleGoogleSignIn = async () => {
+  //   try {
+  //     const result = await signInWithPopup(auth, provider);
+  //     const user = result.user;
+  //     const token = await user.getIdToken();
+  //     localStorage.setItem("token", token);
+  //     localStorage.setItem("user", JSON.stringify(user));
+  //     console.log("user data here ", user, token);
+  //     router.push("/fashion-store");
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
 
   return (
     // <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200">
@@ -239,6 +256,20 @@ export default function AuthForm() {
               {isLogin ? "Login" : "Register"}
             </button>
           </form>
+
+          {/* <button
+            onClick={handleGoogleSignIn}
+            type="button"
+            className="w-full flex justify-center items-center gap-2 border border-gray-300 py-3 mt-4 hover:bg-gray-100 transition"
+          >
+            <Image
+              src="https://www.svgrepo.com/show/475656/google-color.svg"
+              alt="Google"
+              width={20}
+              height={20}
+            />
+            Continue with Google
+          </button> */}
 
           {isLogin && (
             <div className="mt-2 text-center">

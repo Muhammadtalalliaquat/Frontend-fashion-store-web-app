@@ -7,9 +7,9 @@ const nextConfig: NextConfig = {
       {
         protocol: "https",
         hostname: "images.unsplash.com",
-      }
+      },
     ],
-    domains: ["i.postimg.cc" , "res.cloudinary.com"],
+    domains: ["i.postimg.cc", "res.cloudinary.com", "www.svgrepo.com"],
   },
 };
 

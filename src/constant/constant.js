@@ -1,8 +1,8 @@
-const DEV_URL = `http://localhost:5000/`
-// const PROD_URL = `https://back-end-fashion-web-app-server-production.up.railway.app/`
+// const DEV_URL = `http://localhost:5000/`
+const PROD_URL = `https://back-end-fashion-web-app-server-production.up.railway.app/`
 
-export const BASIC_URL = DEV_URL;
-// export const BASIC_URL = PROD_URL
+// export const BASIC_URL = DEV_URL;
+export const BASIC_URL = PROD_URL
 
 export const ApiRoutes = {
   login: BASIC_URL + `user/login`,
