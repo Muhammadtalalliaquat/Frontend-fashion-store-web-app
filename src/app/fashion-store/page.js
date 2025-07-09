@@ -254,29 +254,46 @@ export default function MainDashboard() {
           </div>
           <div className="p-6 mt-16">
             <div className="mx-auto mb-8">
-              <h2 className="text-4xl font-extrabold text-center text-blue-800 tracking-tight pr-6">
+              <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-800 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">
                 Our Products
               </h2>
             </div>
 
             {products.length > 0 ? (
-              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {products.map((product) => (
-                  <div
+                  <Link
                     key={product._id}
-                    className="bg-white shadow-lg  p-5 flex flex-col items-center text-center transition-transform duration-300 hover:scale-98 hover:shadow-xl border border-gray-200 group relative"
+                    href={{
+                      pathname: "/productDetails",
+                      query: {
+                        productId: product._id,
+                        name: product.name,
+                        price: product.price,
+                        category: product.category,
+                        stock: product.stock,
+                        description: product.description,
+                        image: product.image,
+                      },
+                    }}
+                    className="block"
                   >
-                    <span
-                      className={`absolute top-3 left-3 text-xs font-bold px-3 py-1 rounded-full text-white z-10 shadow-md ${
-                        product.stock > 0 ? "bg-green-500" : "bg-red-500"
-                      }`}
+                    {/* View Details */}
+                    <div
+                      // key={product._id}
+                      className="bg-white shadow-lg  p-5 flex flex-col items-center text-center transition-transform duration-300 hover:scale-98 hover:shadow-xl border border-gray-200 group relative"
                     >
-                      {product.stock > 0
-                        ? `In Stock (${product.stock})`
-                        : "Out of Stock"}
-                    </span>
+                      <span
+                        className={`absolute top-3 left-3 text-xs font-bold px-3 py-1 rounded-full text-white z-10 shadow-md ${
+                          product.stock > 0 ? "bg-green-500" : "bg-red-500"
+                        }`}
+                      >
+                        {product.stock > 0
+                          ? `In Stock (${product.stock})`
+                          : "Out of Stock"}
+                      </span>
 
-                    <div className="relative opacity-100 group-hover:opacity-60 w-44 h-44 overflow-hidden rounded-lg border-b-2 border-gray-300 pb-2">
+                      {/* <div className="relative opacity-100 group-hover:opacity-60 w-44 h-44 overflow-hidden rounded-lg border-b-2 border-gray-300 pb-2">
                       <Image
                         src={product.image}
                         alt="Product"
@@ -285,16 +302,26 @@ export default function MainDashboard() {
                         className="object-cover w-full h-full rounded-lg transition-all duration-300"
                         priority
                       />
-                    </div>
+                    </div> */}
+                      <div className="relative opacity-100 group-hover:opacity-60 w-full sm:w-40 md:w-44 h-40 sm:h-44 overflow-hidden rounded-lg border-b-2 border-gray-300 pb-2">
+                        <Image
+                          src={product.image}
+                          alt="Product"
+                          width={176}
+                          height={176}
+                          className="object-cover w-full h-full rounded-lg transition-all duration-300"
+                          priority
+                        />
+                      </div>
 
-                    <h3 className="text-lg font-semibold text-gray-800 mt-1">
-                      {product.name}
-                    </h3>
-                    <p className="text-gray-700 text-sm mt-3 font-semibold">
-                      ${product.price}
-                    </p>
+                      <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-800 mt-1">
+                        {product.name}
+                      </h3>
+                      <p className="text-xs sm:text-sm md:text-base text-gray-700 mt-2 font-semibold">
+                        ${product.price}
+                      </p>
 
-                    <button
+                      {/* <button
                       className="absolute bottom-2 right-2 bg-blue-600/80 hover:bg-blue-700 opacity-40 sm:opacity-0 sm:group-hover:opacity-40 transition-all duration-300 ease-in-out backdrop-blur-lg px-4 py-2 rounded-md w-36 transform translate-x-0 sm:translate-x-4 sm:group-hover:translate-x-0 text-white text-sm"
                       // className="absolute bottom-2 right-2 text-white font-semibold opacity-40 sm:opacity-0 sm:group-hover:opacity-40 transition-all duration-300 ease-in-out bg-blue-500 bg-opacity-30 backdrop-blur-lg px-4 py-2 rounded-md w-32 transform translate-x-0 sm:translate-x-4 sm:group-hover:translate-x-0"
                       onClick={() => {
@@ -312,8 +339,9 @@ export default function MainDashboard() {
                       }}
                     >
                       View Details
-                    </button>
-                  </div>
+                    </button> */}
+                    </div>
+                  </Link>
                 ))}
               </div>
             ) : (
@@ -328,9 +356,11 @@ export default function MainDashboard() {
       {/* Sales Discount Offers Section */}
       {!loading && (
         <div className="w-full py-8 relative overflow-hidden">
-          <h2 className="text-2xl font-bold text-center text-blue-900 mb-6">
-            🏷️ Sales Discount Offers
-          </h2>
+          <div className="w-full max-w-screen-sm mx-auto mb-8 px-4">
+            <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-800 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">
+              🏷️ Sales Discount Offers
+            </h2>
+          </div>
 
           <div className="relative">
             <div
@@ -385,7 +415,7 @@ export default function MainDashboard() {
 
                     {/* Details section */}
                     <div className="w-full md:w-1/2 space-y-3 text-center md:text-left flex flex-col items-center md:items-start">
-                      <h3 className="text-3xl font-extrabold text-gray-900">
+                      <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
                         {item.name}
                       </h3>
 
@@ -394,10 +424,10 @@ export default function MainDashboard() {
                       </p>
 
                       <div className="flex flex-wrap items-center justify-center md:justify-start gap-2">
-                        <span className="text-gray-400 line-through text-xl">
+                        <span className="text-gray-400 line-through text-base sm:text-lg md:text-xl">
                           ${item.price}
                         </span>
-                        <span className="text-4xl font-bold text-blue-600">
+                        <span className="text-2xl sm:text-3xl md:text-4xl font-bold text-blue-600">
                           ${item.discountPrice}
                         </span>
                       </div>

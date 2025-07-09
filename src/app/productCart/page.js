@@ -68,8 +68,8 @@ export default function ProductCartPage() {
 
   const selectedCartItems = selectedItems;
 
-  const totalQuantity = selectedCartItems.reduce(
-    (acc, item) => acc + (quantities[item.productId._id] || item.quantity),
+  const totalQuantity = selectedCartItems.reduce((acc, item) => 
+    acc + (quantities[item.productId._id] || item.quantity),
     0
   );
 
@@ -200,7 +200,7 @@ export default function ProductCartPage() {
                 .map((item) => (
                   <div
                     key={item._id}
-                    className="relative flex flex-col sm:flex-row items-center sm:items-start justify-between bg-white p-4 rounded-lg shadow-md mb-4"
+                    className="relative flex flex-row sm:flex-row items-center sm:items-start justify-between bg-white p-4 rounded-lg shadow-md mb-4"
                   >
                     <div className="absolute top-2 right-2">
                       <button
@@ -242,7 +242,7 @@ export default function ProductCartPage() {
                       )}
                     </div>
 
-                    <div className="flex flex-col sm:flex-row items-center gap-4 sm:gap-5 w-full sm:w-auto flex-wrap">
+                    <div className="flex flex-row sm:flex-row items-center gap-4  sm:gap-5 w-full sm:w-auto flex-wrap">
                       <input
                         type="checkbox"
                         checked={selectedItems.some((i) => i._id === item._id)}
@@ -257,7 +257,7 @@ export default function ProductCartPage() {
 
                           console.log("Selected Item:", item);
                         }}
-                        className="absolute top-3 left-3 sm:static w-5 h-5 accent-indigo-600 cursor-pointer transition-all duration-150 rounded-full"
+                        className="h-4 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                       />
 
                       <Image
@@ -268,18 +268,20 @@ export default function ProductCartPage() {
                         className="rounded-lg object-cover shadow-md w-20 h-20 sm:w-[90px] sm:h-[90px]"
                       />
                       <div className="text-center sm:text-left max-w-xs overflow-hidden">
-                        <h3 className="text-lg font-semibold text-gray-900 truncate">
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">
                           {item.productId?.name}
                         </h3>
-                        <p className="text-sm text-gray-600 truncate">
+                        <p className="text-sm sm:text-base text-gray-600 truncate">
                           {item.productId?.SalesCategory ||
                             item.productId?.category}
                         </p>
-                        <p className="text-sm text-gray-600 line-clamp-2 sm:line-clamp-1">
-                          {item.productId?.offerDescription ||
-                            item.productId?.description}
-                        </p>
-                        <p className="text-md mt-1 font-medium text-indigo-600">
+
+                        {/* Optional multiline description with clamp */}
+                        {/* <p className="text-sm text-gray-600 line-clamp-2 sm:line-clamp-1 break-words">
+    {item.productId?.offerDescription || item.productId?.description}
+  </p> */}
+
+                        <p className="text-sm sm:text-base mt-1 font-medium text-indigo-600">
                           $
                           {(item.productId?.discountPrice ||
                             item.productId?.price) * item.quantity}
@@ -287,7 +289,7 @@ export default function ProductCartPage() {
                       </div>
                     </div>
 
-                    <div className="relative flex items-center gap-3 sm:gap-4 mt-6 sm:mt-11 border-t border-gray-300 pt-4 sm:border-0">
+                    <div className="relative flex items-center gap-3 sm:gap-4 mt-6 sm:mt-11  border-gray-300 pt-4">
                       <button
                         onClick={() => {
                           const newQuantity = Math.max(
@@ -297,12 +299,12 @@ export default function ProductCartPage() {
                           );
                           handleQuantityChange(item.productId._id, newQuantity);
                         }}
-                        className="w-9 h-9 flex items-center justify-center text-lg font-bold bg-gray-100 text-gray-700 rounded-full hover:bg-indigo-100 hover:text-indigo-600 transition"
+                        className="w-6 h-6 sm:w-9 sm:h-9 flex items-center justify-center text-lg font-bold bg-gray-100 text-gray-700 rounded-full hover:bg-indigo-100 hover:text-indigo-600 transition"
                       >
                         -
                       </button>
 
-                      <span className="text-lg font-semibold">
+                      <span className="text-base sm:text-lg md:text-xl font-semibold">
                         {quantities[item.productId._id] || item.quantity}
                       </span>
 
@@ -313,7 +315,7 @@ export default function ProductCartPage() {
                             1;
                           handleQuantityChange(item.productId._id, newQuantity);
                         }}
-                        className="w-9 h-9 flex items-center justify-center text-lg font-bold bg-gray-100 text-gray-700 rounded-full hover:bg-indigo-100 hover:text-indigo-600 transition"
+                        className="w-6 h-6 sm:w-9 sm:h-9 flex items-center justify-center text-lg font-bold bg-gray-100 text-gray-700 rounded-full hover:bg-indigo-100 hover:text-indigo-600 transition"
                       >
                         +
                       </button>
@@ -330,7 +332,8 @@ export default function ProductCartPage() {
 
                   setActivePopup(true);
                 }}
-                className="w-full mt-6 bg-indigo-600 text-white py-3 rounded-lg shadow-md hover:bg-indigo-700 transition text-lg font-medium"
+                // className="w-full mt-6 bg-indigo-600 text-white py-3 rounded-lg shadow-md hover:bg-indigo-700 transition text-lg font-medium"
+                className="w-full bg-gray-800 hover:bg-blue-700 text-sm sm:text-base rounded-lg text-white font-semibold py-2 shadow-md transition duration-300"
               >
                 Proceed to Checkout
               </button>

@@ -341,7 +341,7 @@ export default function ShopPage() {
                       </p>
                       <button
                         // className="bg-blue-500 font-bold text-white w-full py-2 rounded-full hover:bg-blue-600"
-                        className="bg-blue-500 font-bold text-white w-full py-1.5 text-sm rounded-full hover:bg-blue-600 sm:py-2 sm:text-base"
+                        className="bg-blue-500 font-bold text-white w-full py-1.5 text-sm rounded-lg hover:bg-blue-600 sm:py-2 sm:text-base"
                         onClick={() => setActivePopup(item._id)}
                       >
                         Buy it now

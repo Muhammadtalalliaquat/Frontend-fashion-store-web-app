@@ -139,7 +139,7 @@ export default function ContactPage() {
           className="backdrop-blur-lg  max-w-7xl w-full mx-4 md:mx-10 p-10 md:p-2 grid grid-cols-1 md:grid-cols-2 gap-12"
         >
           <div className="text-left mb-10">
-            <h1 className="text-2xl font-bold md:font-bold text-gray-900">
+            <h1 className="text-lg md:text-2xl font-bold text-gray-900">
               Contact Us
             </h1>
             <p className="mt-2 text-gray-500">
@@ -224,7 +224,7 @@ export default function ContactPage() {
                   </button>
 
                   <h2 className="font-medium text-gray-800 p-3 mb-3 text-center">
-                    You need to log in to buy this product.
+                    You need to log in to contact our team.
                   </h2>
 
                   <div className="flex justify-center">
@@ -247,7 +247,8 @@ export default function ContactPage() {
                     setActivePopup(true);
                   }
                 }}
-                className="w-full bg-black text-white font-semibold py-4 hover:bg-gray-800 transition flex items-center justify-center"
+                className="w-full bg-gray-800 hover:bg-gray-900 text-sm sm:text-base text-white font-semibold py-2 shadow-md transition duration-300"
+                // className="w-full bg-black text-white font-semibold py-4 hover:bg-gray-800 transition flex items-center justify-center"
                 disabled={isSubmitting}
               >
                 {isSubmitting ? (
@@ -260,7 +261,7 @@ export default function ContactPage() {
           </form>
 
           <div className="space-y-8">
-            <h2 className="text-2xl font-semibold text-gray-900 mb-4">
+            <h2 className="text-lg md:text-2xl font-bold text-gray-900">
               Website Feedback
             </h2>
             <p className="text-gray-500 mb-6">
@@ -288,7 +289,8 @@ export default function ContactPage() {
               <div>
                 <button
                   type="submit"
-                  className="w-full bg-blue-600 text-white font-semibold py-4 hover:bg-blue-700 transition flex items-center justify-center"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-sm sm:text-base text-white font-semibold py-2 shadow-md transition duration-300"
+                  // className="w-full bg-blue-600 text-white font-semibold py-4 hover:bg-blue-700 transition flex items-center justify-center"
                   disabled={isSubmitting}
                 >
                   {isSubmitting ? (
