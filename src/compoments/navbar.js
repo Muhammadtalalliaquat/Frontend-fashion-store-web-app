@@ -85,7 +85,6 @@ function Navbar() {
           isScrolled ? styles.scrolled : ""
         }`}
       >
-      
         {pathname !== "/fashion-store" && (
           <li onClick={handleNavigate} className="flex items-center gap-2">
             {isMenuOpen && <GoHome className="w-5 h-5 text-blue-750" />}
@@ -111,7 +110,6 @@ function Navbar() {
             </Link>
           </li>
         )}
-     
 
         {pathname !== "/contact" && (
           <li className="flex items-center gap-2">
@@ -147,8 +145,34 @@ function Navbar() {
       <div className="hidden sm:block">
         <OptionsMenu isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
       </div>
-
       <button
+        className={styles.hamburger}
+        onClick={toggleMenubar}
+        aria-label="Toggle menu"
+      >
+        <div className={styles.iconWrapper}>
+          <Image
+            src="https://i.postimg.cc/FRtqmFnP/more.png"
+            alt="Hamburger Icon"
+            width={15}
+            height={15}
+            className={`${styles.icon} ${
+              !isMenuOpen ? styles.show : styles.hide
+            }`}
+          />
+          <Image
+            src="https://i.postimg.cc/rsftGmBg/close.png"
+            alt="Close Icon"
+            width={15}
+            height={15}
+            className={`${styles.icon} ${
+              isMenuOpen ? styles.show : styles.hide
+            }`}
+          />
+        </div>
+      </button>
+
+      {/* <button
         className={`${styles.hamburger} ${isMenuOpen ? "open" : ""}`}
         onClick={toggleMenubar}
         aria-label="Toggle menu"
@@ -170,7 +194,7 @@ function Navbar() {
             alt="Hamburger Menu"
           />
         )}
-      </button>
+      </button> */}
     </div>
   );
 }

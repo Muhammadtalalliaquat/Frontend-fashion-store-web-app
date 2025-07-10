@@ -213,7 +213,7 @@ export default function MainDashboard() {
       <ScrollTo />
       {loading && (
         <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
-          <FaSpinner className="animate-spin text-5xl text-blue-500" />
+          <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
         </div>
       )}
 
@@ -254,7 +254,7 @@ export default function MainDashboard() {
           </div>
           <div className="p-6 mt-16">
             <div className="mx-auto mb-8">
-              <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-800 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">
+              <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-900 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">
                 Our Products
               </h2>
             </div>
@@ -357,7 +357,7 @@ export default function MainDashboard() {
       {!loading && (
         <div className="w-full py-8 relative overflow-hidden">
           <div className="w-full max-w-screen-sm mx-auto mb-8 px-4">
-            <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-800 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">
+            <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-900 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">
               🏷️ Sales Discount Offers
             </h2>
           </div>
@@ -623,7 +623,7 @@ export default function MainDashboard() {
       {!loading && (
         <section className="bg-gray-50 px-4 py-16">
           <div className="max-w-6xl mx-auto text-center mb-12">
-            <h2 className="text-3xl md:text-4xl font-bold text-gray-800">
+            <h2 className="text-2xl sm:text-2xl md:text-3xl font-semibold text-blue-900">
               About Our Store
             </h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-base md:text-lg">
@@ -651,7 +651,7 @@ export default function MainDashboard() {
             ))}
           </div>
           <div className="my-12 flex flex-col items-center justify-center mt-20">
-            <h2 className="text-3xl sm:text-3xl font-bold text-center text-blue-900 mb-8">
+            <h2 className="text-2xl sm:text-2xl md:text-3xl font-semibold text-center text-blue-900 mb-8">
               Feedback Corner
             </h2>
 

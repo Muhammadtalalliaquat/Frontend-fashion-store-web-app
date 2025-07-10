@@ -133,7 +133,7 @@ export default function Products() {
 
           {loading ? (
             <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
-              <FaSpinner className="animate-spin text-5xl text-blue-500" />
+              <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
             </div>
           ) : filteredProducts.length === 0 ? (
             <p className="text-center text-gray-500">No products found.</p>

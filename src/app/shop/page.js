@@ -93,7 +93,7 @@ export default function ShopPage() {
 
       {loading && (
         <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
-          <FaSpinner className="animate-spin text-5xl text-blue-500" />
+          <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
         </div>
       )}
 

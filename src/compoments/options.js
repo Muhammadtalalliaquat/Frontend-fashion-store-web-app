@@ -43,7 +43,8 @@ export default function OptionsMenu() {
 
       <MenuItems
         transition
-        className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 overflow-y-auto max-h-60 sm:max-h-80 focus:outline-none"
+        className="absolute left-0 sm:right-0 sm:left-auto z-10 mt-2 w-56 h-50 origin-top-left sm:origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 overflow-y-auto max-h-60 sm:max-h-80 focus:outline-none"
+        // className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 overflow-y-auto max-h-60 sm:max-h-80 focus:outline-none"
         // className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
       >
         <div className="py-1">

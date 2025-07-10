@@ -210,7 +210,7 @@ export default function ProductDetails() {
         <div className="max-w-4xl mx-auto p-6 mt-18 sm:mt-20 md:mt-32 mb-30 lg:mt-30 bg-white rounded-lg shadow-lg border border-gray-300">
           <div className="flex justify-between items-center">
             <div className="w-full flex items-center justify-between">
-              <h2 className="text-4xl font-bold text-gray-900 flex-shrink-0">
+              <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-900 flex-shrink-0">
                 {name}
               </h2>
               <button
@@ -270,7 +270,9 @@ export default function ProductDetails() {
             </div>
 
             <div className="space-y-4">
-              <p className="text-2xl font-semibold text-gray-700">${price}</p>
+              <p className="text-lg sm:text-2xl md:text-2xl font-semibold text-gray-700">
+                ${price}
+              </p>
               <p className="text-gray-600">
                 <span className="font-medium">Category:</span> {category}
               </p>
