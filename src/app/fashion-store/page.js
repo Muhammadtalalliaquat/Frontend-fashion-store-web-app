@@ -12,7 +12,7 @@ import { createDiscountOfferOrder } from "../../store/features/discountOrderSlic
 import { getAllFeedback } from "../../store/features/feedbackSlice";
 import Image from "next/image";
 import Link from "next/link";
-import { FaSpinner } from "react-icons/fa";
+// import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import Footer from "../../compoments/footer";
 import ScrollTo from "../../compoments/scrolltotop";
@@ -22,6 +22,7 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
 import { RiDoubleQuotesL } from "react-icons/ri";
+import FashionStoreLoader from "@/compoments/storeLOader";
 
 export default function MainDashboard() {
   const [products, setProducts] = useState([]);
@@ -45,7 +46,7 @@ export default function MainDashboard() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
-  
+
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
@@ -88,7 +89,6 @@ export default function MainDashboard() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-
   const toggleDropdown = (orderId) => {
     setOpenOrderId((prev) => (prev === orderId ? null : orderId));
   };
@@ -117,7 +117,6 @@ export default function MainDashboard() {
       prev - 1 < 0 ? feddBack.length - feddBackmaxVisible : prev - 1
     );
   };
-
 
   const handleAddSalediscountOrderPlace = (e, productId) => {
     e.preventDefault();
@@ -212,9 +211,10 @@ export default function MainDashboard() {
       <Navbar />
       <ScrollTo />
       {loading && (
-        <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
-          <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
-        </div>
+        // <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
+        //   <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
+        // </div>
+        <FashionStoreLoader />
       )}
 
       {!loading && (

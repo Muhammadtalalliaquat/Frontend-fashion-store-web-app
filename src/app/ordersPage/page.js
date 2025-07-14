@@ -14,8 +14,10 @@ import {
 import Image from "next/image";
 import Navbar from "../../compoments/navbar";
 // import Footer from "../../compoments/footer";
-import { FaSpinner } from "react-icons/fa";
+// import { FaSpinner } from "react-icons/fa";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
+import FashionStoreLoader from "@/compoments/storeLOader";
+
 import { motion } from "framer-motion";
 
 export default function OrdersPageDashboard() {
@@ -143,9 +145,10 @@ export default function OrdersPageDashboard() {
       <Navbar />
 
       {loading && (
-        <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
-          <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
-        </div>
+        // <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
+        //   <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
+        // </div>
+        <FashionStoreLoader order={true} />
       )}
 
       {!loading ? (

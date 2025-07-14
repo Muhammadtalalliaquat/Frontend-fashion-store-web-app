@@ -3,6 +3,7 @@
 import Image from "next/image";
 import { motion } from "framer-motion";
 import Link from "next/link";
+// import FashionStoreLoader from "@/compoments/storeLOader";
 
 export default function GetStarted() {
   return (

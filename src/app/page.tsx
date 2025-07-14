@@ -47,5 +47,5 @@ export default function MainPage() {
     }
   }, [router]);
 
-  // return <GetStarted />;
+  return;
 }

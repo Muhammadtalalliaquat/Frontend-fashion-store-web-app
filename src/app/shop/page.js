@@ -8,7 +8,8 @@ import { useState, useEffect } from "react";
 import { getAllDiscountOffer } from "../../store/features/discountSlice";
 import { addCartItem } from "../../store/features/productCartSlice";
 import { LiaShoppingCartSolid } from "react-icons/lia";
-import { FaSpinner } from "react-icons/fa";
+import FashionStoreLoader from "@/compoments/storeLOader";
+// import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -92,9 +93,10 @@ export default function ShopPage() {
       <Navbar />
 
       {loading && (
-        <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
-          <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
-        </div>
+        // <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
+        //   <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
+        // </div>
+        <FashionStoreLoader product={discount} />
       )}
 
       <div className="container mx-auto p-4 mt-20 mb-30">

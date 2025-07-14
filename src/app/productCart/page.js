@@ -17,7 +17,8 @@ import {
   TrashIcon,
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
-import { FaSpinner } from "react-icons/fa";
+// import { FaSpinner } from "react-icons/fa";
+import FashionStoreLoader from "@/compoments/storeLOader";
 
 export default function ProductCartPage() {
   const dispatch = useDispatch();
@@ -68,8 +69,8 @@ export default function ProductCartPage() {
 
   const selectedCartItems = selectedItems;
 
-  const totalQuantity = selectedCartItems.reduce((acc, item) => 
-    acc + (quantities[item.productId._id] || item.quantity),
+  const totalQuantity = selectedCartItems.reduce(
+    (acc, item) => acc + (quantities[item.productId._id] || item.quantity),
     0
   );
 
@@ -184,9 +185,10 @@ export default function ProductCartPage() {
       <Navbar />
 
       {loading ? (
-        <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
-          <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
-        </div>
+        // <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
+        //   <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
+        // </div>
+        <FashionStoreLoader cart={true} />
       ) : (
         <div className="max-w-4xl mx-auto p-4 sm:p-6">
           {carts && carts.length > 0 ? (

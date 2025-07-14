@@ -4,7 +4,8 @@ import Navbar from "../../compoments/navbar";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { fetchAllProductShow } from "../../store/features/productSlice";
-import { FaSpinner } from "react-icons/fa";
+// import { FaSpinner } from "react-icons/fa";
+import FashionStoreLoader from "@/compoments/storeLOader";
 import Image from "next/image";
 import Link from "next/link";
 import { Listbox } from "@headlessui/react";
@@ -132,9 +133,10 @@ export default function Products() {
           </div>
 
           {loading ? (
-            <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
-              <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
-            </div>
+            // <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
+            //   <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
+            // </div>
+            <FashionStoreLoader product={products} />
           ) : filteredProducts.length === 0 ? (
             <p className="text-center text-gray-500">No products found.</p>
           ) : (
