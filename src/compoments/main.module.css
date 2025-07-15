@@ -215,7 +215,7 @@
   
   .icon {
     position: absolute;
-    top: 13;
+    top: 9;
     left: 0;
     transition: opacity 0.3s ease, transform 0.3s ease;
     opacity: 0;
