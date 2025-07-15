@@ -213,7 +213,7 @@
     height: 30px;
     background: none;
     border: none;
-    padding-top: 10;
+    /* padding-top: 13; */
     cursor: pointer;
   }
   
@@ -225,7 +225,7 @@
   
   .icon {
     position: absolute;
-    top: 0;
+    top: 10;
     left: 0;
     transition: opacity 0.3s ease, transform 0.3s ease;
     opacity: 0;
