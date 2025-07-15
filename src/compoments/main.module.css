@@ -195,16 +195,7 @@
     background-color: #f0f0f0;
   }
 
-  /* .hamburger {
-    display: block;
-    width: 30px;
-    height: 24px;
-    transition: transform 0.3s ease;
-  }
 
-  .hamburger.open {
-    transform: rotate(90deg);
-  } */
   
   .hamburger {
     display: block;
@@ -213,7 +204,6 @@
     height: 30px;
     background: none;
     border: none;
-    /* padding-top: 13; */
     cursor: pointer;
   }
   
