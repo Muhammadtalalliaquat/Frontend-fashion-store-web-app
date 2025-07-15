@@ -147,9 +147,9 @@
     -webkit-backdrop-filter: none;
   }
 
-  .hide_on_mobile {
+  /* .hide_on_mobile {
     display: none;
-  }
+  } */
 
   .menu li {
     width: 100%;
@@ -199,7 +199,7 @@
   
   .hamburger {
     display: block;
-    position: relative;
+    /* position: relative; */
     width: 30px;
     height: 30px;
     background: none;

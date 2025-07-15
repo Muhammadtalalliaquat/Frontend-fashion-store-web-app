@@ -93,7 +93,7 @@ function Navbar() {
         )}
         {pathname !== "/products" && (
           <li className="flex items-center gap-2">
-            <Link href="/products" className="flex items-center gap-2">
+            <Link href="/products" className="flex items-center gap-2 w-full">
               {isMenuOpen && <Package className="w-5 h-5 text-blue-750" />}
               {pathname !== "/products" && "products"}
             </Link>
@@ -102,7 +102,7 @@ function Navbar() {
 
         {pathname !== "/shop" && (
           <li className="flex items-center gap-2">
-            <Link href="/shop" className="flex items-center gap-2">
+            <Link href="/shop" className="flex items-center gap-2 w-full">
               {isMenuOpen && (
                 <LiaShoppingBagSolid className="w-5 h-5 text-blue-750" />
               )}
@@ -114,7 +114,7 @@ function Navbar() {
         {pathname !== "/contact" && (
           <li className="flex items-center gap-2">
             {isMenuOpen && <RiContactsLine className="w-5 h-5 text-blue-750" />}
-            <Link href={"/contact"}>
+            <Link className="w-full" href={"/contact"}>
               <span>Contact</span>
             </Link>
           </li>
@@ -126,7 +126,7 @@ function Navbar() {
             <li className="flex items-center gap-2 sm:hidden">
               <Link
                 href="/admin-add-product"
-                className="flex items-center gap-2"
+                className="flex items-center gap-2 w-full"
               >
                 <RiFunctionAddLine className="w-5 h-5 text-blue-750" />
                 <span>Add Product</span>
@@ -141,7 +141,6 @@ function Navbar() {
         )}
       </ul>
 
-      {/* Always render OptionsMenu on desktop */}
       <div className="hidden sm:block">
         <OptionsMenu isMenuOpen={isMenuOpen} isScrolled={isScrolled} />
       </div>
