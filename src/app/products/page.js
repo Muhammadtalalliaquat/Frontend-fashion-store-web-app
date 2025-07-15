@@ -1,19 +1,24 @@
 "use client";
 
-import Navbar from "../../compoments/navbar";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { fetchAllProductShow } from "../../store/features/productSlice";
-// import { FaSpinner } from "react-icons/fa";
-import FashionStoreLoader from "@/compoments/storeLOader";
-import Image from "next/image";
-import Link from "next/link";
 import { Listbox } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
-import { useRouter } from "next/navigation";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import { addCartItem } from "../../store/features/productCartSlice";
+import FashionStoreLoader from "@/compoments/storeLOader";
+import Navbar from "../../compoments/navbar";
 import Footer from "../../compoments/footer";
+import Image from "next/image";
+import Link from "next/link";
+import { TiArrowSortedUp } from "react-icons/ti";
+import { motion } from "framer-motion";
+// import { FaSpinner } from "react-icons/fa";
+// import { FaSortDown } from "react-icons/fa6";
+// import { FaSortDown, FaSortUp } from "react-icons/fa";
+
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -24,6 +29,8 @@ export default function Products() {
   const [quantities, setQuantities] = useState({});
   const [activePopupCart, setActivePopupCart] = useState(null);
   const [activePopup, setActivePopup] = useState(null);
+  const [sortedProducts, setSortedProducts] = useState([]);
+  const [sortOrder, setSortOrder] = useState("desc");
   const [user, setUser] = useState(null);
   const router = useRouter();
 
@@ -79,11 +86,29 @@ export default function Products() {
       });
   }, [dispatch]);
 
-  const filteredProducts = products.filter(
-    (product) =>
-      (category === "all" || product.category === category) &&
-      product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  );
+  useEffect(() => {
+    const filtered = products.filter(
+      (product) =>
+        (category === "all" || product.category === category) &&
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setSortedProducts(filtered); // update what's displayed
+  }, [products, category, searchTerm]);
+
+  // const filteredProducts = products.filter(
+  //   (product) =>
+  //     (category === "all" || product.category === category) &&
+  //     product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  // );
+
+  const toggleSortByPrice = () => {
+    const sorted = [...sortedProducts].sort((a, b) => {
+      return sortOrder === "desc" ? a.price - b.price : b.price - a.price;
+    });
+    setSortedProducts(sorted);
+    setSortOrder(sortOrder === "desc" ? "asc" : "desc");
+  };
 
   const categories = [
     { name: "All Categories", value: "all" },
@@ -101,15 +126,36 @@ export default function Products() {
           </div>
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+            <button
+              onClick={toggleSortByPrice}
+              className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2
+              border border-gray-300 sm:border-0
+              shadow-sm sm:shadow-none
+              text-gray-700 hover:text-white hover:bg-gray-900
+              font-medium px-4 py-2 rounded-full transition duration-200
+              text-sm sm:text-base w-full sm:w-auto"
+            >
+              <span className="flex items-center gap-1">
+                Sort by Price:
+                {/* {sortOrder === "desc" ? "High" : "Low"} */}
+                <motion.div
+                  animate={{ rotate: sortOrder === "asc" ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <TiArrowSortedUp className="text-xl" />
+                </motion.div>
+              </span>
+            </button>
+
             <input
               type="text"
               placeholder="Search products..."
-              className="w-full sm:w-1/2 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className="w-full sm:w-1/2 px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:outline-none focus:ring-2 focus:ring-gray-700"
               onChange={(e) => setSearchTerm(e.target.value)}
             />
             <Listbox value={category} onChange={setCategory}>
               <div className="relative w-full sm:w-1/3">
-                <Listbox.Button className="w-full bg-white border border-gray-300 rounded-xl py-3 px-4 text-left shadow-md focus:outline-none focus:ring-2 focus:ring-blue-500">
+                <Listbox.Button className="w-full bg-white border border-gray-300 rounded-xl py-3 px-4 text-left shadow-md focus:outline-none focus:ring-2 focus:ring-gray-700">
                   {categories.find((c) => c.value === category)?.name}
                   <ChevronDownIcon className="w-5 h-5 absolute right-3 top-3 text-gray-500" />
                 </Listbox.Button>
@@ -133,15 +179,12 @@ export default function Products() {
           </div>
 
           {loading ? (
-            // <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
-            //   <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
-            // </div>
             <FashionStoreLoader product={products} />
-          ) : filteredProducts.length === 0 ? (
+          ) : sortedProducts.length === 0 ? (
             <p className="text-center text-gray-500">No products found.</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {filteredProducts.map((product) => (
+              {sortedProducts.map((product) => (
                 <div
                   key={product._id}
                   className="group relative bg-white rounded-xl shadow-md p-4 hover:bg-gray-50 transition-all duration-300 flex flex-col items-center text-center"
