@@ -23,6 +23,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { RiDoubleQuotesL } from "react-icons/ri";
 import FashionStoreLoader from "@/compoments/storeLOader";
+import CategoryCarousel from "@/compoments/heroSection";
 
 export default function MainDashboard() {
   const [products, setProducts] = useState([]);
@@ -219,7 +220,7 @@ export default function MainDashboard() {
 
       {!loading && (
         <>
-          <div className="w-full bg-gradient-to-br from-indigo-800 via-black to-indigo-900 text-white py-20 px-6 sm:px-16 mt-16 shadow-xl overflow-hidden relative">
+          {/* <div className="w-full bg-gradient-to-br from-indigo-800 via-black to-indigo-900 text-white py-20 px-6 sm:px-16 mt-16 shadow-xl overflow-hidden relative">
             <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
               <div className="absolute w-72 h-72 bg-blue-400 opacity-20 rounded-full -top-20 -left-20 animate-ping"></div>
               <div className="absolute w-48 h-48 bg-purple-500 opacity-20 rounded-full top-1/2 left-1/2 animate-pulse"></div>
@@ -251,7 +252,9 @@ export default function MainDashboard() {
                 />
               </div>
             </div>
-          </div>
+          </div> */}
+          <CategoryCarousel />
+
           <div className="p-6 mt-16">
             <div className="mx-auto mb-8">
               <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-900 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">

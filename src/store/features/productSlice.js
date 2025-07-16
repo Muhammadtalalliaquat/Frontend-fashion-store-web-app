@@ -1,11 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
+  fetchHeroProducts,
   fetchProducts,
   fetchAllProducts,
   addProduct,
   editProduct,
   deleteProduct,
 } from "../../server/productAction";
+
+
+export const getHeroProducts = createAsyncThunk("products/fetch", async () => {
+  const response = await fetchHeroProducts();
+  console.log("API Response:", response);
+  return response;
+});
 
 export const getAllProducts = createAsyncThunk("products/fetch", async () => {
   const response = await fetchProducts();

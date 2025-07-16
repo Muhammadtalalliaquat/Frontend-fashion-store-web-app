@@ -2,6 +2,20 @@
 import axios from "axios";
 import { ApiRoutes } from "../constant/constant";
 
+
+export const fetchHeroProducts = async () => {
+  try {
+    const response = await axios.get(`${ApiRoutes.getHeroProducts}`);
+    // console.log("Products fetched:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Failed to fetch products:",
+      error.response?.data || error.message
+    );
+  }
+};
+
 export const fetchProducts = async () => {
     try {
         const response = await axios.get(`${ApiRoutes.getProduct}`);

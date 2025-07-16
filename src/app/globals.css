@@ -1,4 +1,16 @@
 @import "tailwindcss";
+@import 'swiper/css';
+@import 'swiper/css/navigation';
+@import 'swiper/css/pagination';
+
+.swiper-pagination-bullet {
+  background-color: #d1d5db !important; 
+  opacity: 1;
+}
+
+.swiper-pagination-bullet-active {
+  background-color: #facc15 !important;
+}
 
 @theme {
   --font-sans: var(--font-geist-sans);
