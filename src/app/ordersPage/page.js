@@ -16,7 +16,7 @@ import Navbar from "../../compoments/navbar";
 // import Footer from "../../compoments/footer";
 // import { FaSpinner } from "react-icons/fa";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
-import FashionStoreLoader from "@/compoments/storeLoader";
+import FashionStoreLoader from "../../compoments/storeLoader";
 import { motion } from "framer-motion";
 
 export default function OrdersPageDashboard() {

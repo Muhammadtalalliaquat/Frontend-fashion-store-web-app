@@ -22,7 +22,7 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
 import { RiDoubleQuotesL } from "react-icons/ri";
-import FashionStoreLoader from "@/compoments/storeLoader";
+import FashionStoreLoader from "../../compoments/storeLoader";
 import CategoryCarousel from "@/compoments/heroSection";
 
 export default function MainDashboard() {
