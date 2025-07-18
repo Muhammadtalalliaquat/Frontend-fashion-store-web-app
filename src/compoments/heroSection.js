@@ -14,15 +14,19 @@ import "swiper/css/pagination";
 
 export default function CategoryCarousel() {
   const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
   const dispatch = useDispatch();
   const router = useRouter();
   useEffect(() => {
     dispatch(getHeroProducts())
       .then((result) => {
         setProducts(result.payload.data);
+        setLoading(false);
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
+        setLoading(false);
       });
   }, [dispatch]);
 
@@ -33,63 +37,65 @@ export default function CategoryCarousel() {
         <div className="absolute w-48 h-48 bg-purple-500 opacity-20 rounded-full top-1/2 left-1/2 animate-pulse"></div>
       </div>
 
-      <Swiper
-        spaceBetween={40}
-        slidesPerView={1}
-        // navigation
-        pagination={{ clickable: true }}
-        modules={[Navigation, Pagination]}
-        className="relative z-10"
-      >
-        {products.map((item, index) => (
-          <SwiperSlide key={index}>
-            <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mt-20 bg-white/5 backdrop-blur-sm shadow-2xl rounded-xl p-8 sm:p-20">
-              <div className="flex-1 text-center lg:text-left space-y-5">
-                <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight text-white">
-                  Discover Your Fashion <br />
-                  <span className="text-yellow-300 text-2xl sm:text-4xl">
-                    With Style
-                  </span>
-                </h1>
+      {!loading && (
+        <Swiper
+          spaceBetween={40}
+          slidesPerView={1}
+          // navigation
+          pagination={{ clickable: true }}
+          modules={[Navigation, Pagination]}
+          className="relative z-10"
+        >
+          {products.map((item, index) => (
+            <SwiperSlide key={index}>
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mt-20 bg-white/5 backdrop-blur-sm shadow-2xl rounded-xl p-8 sm:p-20">
+                <div className="flex-1 text-center lg:text-left space-y-5">
+                  <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight text-white">
+                    Discover Your Fashion <br />
+                    <span className="text-yellow-300 text-2xl sm:text-4xl">
+                      With Style
+                    </span>
+                  </h1>
 
-                <h2 className="text-1xl sm:text-2xl font-bold text-white">
-                  {item.category} Collection
-                </h2>
+                  <h2 className="text-1xl sm:text-2xl font-bold text-white">
+                    {item.category} Collection
+                  </h2>
 
-                <h3 className="text-lg sm:text-xl font-semibold text-yellow-300">
-                  {item.name}
-                </h3>
+                  <h3 className="text-lg sm:text-xl font-semibold text-yellow-300">
+                    {item.name}
+                  </h3>
 
-                <p className="text-base sm:text-lg text-gray-200 max-w-md mx-auto lg:mx-0 leading-relaxed">
-                  Discover fresh trends in {item.name.toLowerCase()} wear.{" "}
-                  <br />
-                  Handpicked fashion to elevate your wardrobe.
-                </p>
+                  <p className="text-base sm:text-lg text-gray-200 max-w-md mx-auto lg:mx-0 leading-relaxed">
+                    Discover fresh trends in {item.name.toLowerCase()} wear.{" "}
+                    <br />
+                    Handpicked fashion to elevate your wardrobe.
+                  </p>
 
-                <button
-                  onClick={() => router.push(`/products`)}
-                  className="mt-4 inline-block bg-yellow-300 hover:bg-yellow-400 text-black font-semibold px-6 py-3 rounded-full transition duration-300 shadow-md"
-                >
-                  Shop Now
-                </button>
+                  <button
+                    onClick={() => router.push(`/products`)}
+                    className="mt-4 inline-block bg-yellow-300 hover:bg-yellow-400 text-black font-semibold px-6 py-3 rounded-full transition duration-300 shadow-md"
+                  >
+                    Shop Now
+                  </button>
+                </div>
+
+                <div className="flex justify-center lg:justify-end">
+                  <Image
+                    src={item.image}
+                    alt={item.name}
+                    width={500}
+                    height={500}
+                    priority
+                    quality={100}
+                    // sizes="(max-width: 768px) 90vw, 400px"
+                    className="rounded-2xl shadow-xl w-full max-w-[400px] object-cover shadow-2xl animate-fadeInUp"
+                  />
+                </div>
               </div>
-
-              <div className="flex justify-center lg:justify-end">
-                <Image
-                  src={item.image}
-                  alt={item.name}
-                  width={500}
-                  height={500}
-                  priority
-                  quality={100}
-                  // sizes="(max-width: 768px) 90vw, 400px"
-                  className="rounded-2xl shadow-xl w-full max-w-[400px] object-cover"
-                />
-              </div>
-            </div>
-          </SwiperSlide>
-        ))}
-      </Swiper>
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
     </section>
   );
 }

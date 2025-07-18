@@ -22,7 +22,7 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
 import { RiDoubleQuotesL } from "react-icons/ri";
-import FashionStoreLoader from "@/compoments/storeLOader";
+import FashionStoreLoader from "@/compoments/storeLoader";
 import CategoryCarousel from "@/compoments/heroSection";
 
 export default function MainDashboard() {
@@ -211,50 +211,11 @@ export default function MainDashboard() {
     <>
       <Navbar />
       <ScrollTo />
-      {loading && (
-        // <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
-        //   <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
-        // </div>
-        <FashionStoreLoader />
-      )}
+      <CategoryCarousel />
+      {loading && <FashionStoreLoader />}
 
       {!loading && (
         <>
-          {/* <div className="w-full bg-gradient-to-br from-indigo-800 via-black to-indigo-900 text-white py-20 px-6 sm:px-16 mt-16 shadow-xl overflow-hidden relative">
-            <div className="absolute top-0 left-0 w-full h-full overflow-hidden z-0">
-              <div className="absolute w-72 h-72 bg-blue-400 opacity-20 rounded-full -top-20 -left-20 animate-ping"></div>
-              <div className="absolute w-48 h-48 bg-purple-500 opacity-20 rounded-full top-1/2 left-1/2 animate-pulse"></div>
-            </div>
-
-            <div className="relative z-10 flex flex-col sm:flex-row items-center justify-between gap-10">
-              <div className="sm:w-1/2 text-center sm:text-left space-y-6">
-                <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight">
-                  Discover Your Fashion <br />
-                  <span className="text-yellow-300">With Style</span>
-                </h1>
-                <p className="text-lg text-gray-200">
-                  Unveil the latest trends in fashion. Explore curated
-                  collections and elevate your wardrobe.
-                </p>
-                <button className="mt-4 inline-block bg-yellow-300 hover:bg-yellow-400 text-black font-semibold px-6 py-3 rounded-full transition duration-300">
-                  Explore Now
-                </button>
-              </div>
-
-              <div className="w-full sm:w-1/3 flex justify-center">
-                <Image
-                  src="/fashion-store.png"
-                  alt="Fashion Banner"
-                  className="w-[90%] max-w-[300px] sm:max-w-[400px] rounded-2xl shadow-2xl animate-fadeInUp"
-                  width={400}
-                  height={400}
-                  priority
-                />
-              </div>
-            </div>
-          </div> */}
-          <CategoryCarousel />
-
           <div className="p-6 mt-16">
             <div className="mx-auto mb-8">
               <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-900 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">

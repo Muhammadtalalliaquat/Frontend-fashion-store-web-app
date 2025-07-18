@@ -7,7 +7,7 @@ import { setErrorUpdate } from "../../store/features/AccountUpdateSlice";
 import Navbar from "../../compoments/navbar";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import { FaUserCircle } from "react-icons/fa";
+// import { FaUserCircle } from "react-icons/fa";
 
 export default function AcountDetails() {
   const dispatch = useDispatch();
@@ -15,7 +15,7 @@ export default function AcountDetails() {
   const [userName, setUserName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState("");
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -23,7 +23,9 @@ export default function AcountDetails() {
       setUser(storedUser);
       setUserName(storedUser.userName);
       setEmail(storedUser.email);
+      console.log(user);
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async (e) => {
@@ -35,7 +37,7 @@ export default function AcountDetails() {
 
     if (response.success) {
       console.log("Account updated successfully!");
-      toast.success("Account updated successfully! 🎉", {
+      toast.success("Account details updated successfully! 🎉", {
         position: "top-right",
         autoClose: 3000,
       });
@@ -44,11 +46,113 @@ export default function AcountDetails() {
     }
   };
 
+  let cars = ["nisan" , "Calora" , "suzuki" , "Civic"]
+  console.log(cars.lastIndexOf(1))
+
   return (
     <>
       <Navbar />
 
-      <div className="flex items-center justify-center min-h-screen bg-gray-100">
+      <div className="px-4 py-10 sm:px-6 lg:px-8 mt-20">
+        <div className="max-w-4xl mx-auto bg-white rounded-t-2xl shadow-md overflow-hidden">
+          {/* Header */}
+          <div className="bg-blue-800 px-6 py-5 sm:px-8">
+            <h1 className="text-white text-2xl font-semibold">Account Details</h1>
+          </div>
+
+          <div className="mb-2 bg-white rounded-t-2xl shadow-lg p-6 border border-gray-200">
+            <div className="flex items-center gap-4 mb-4">
+              <div className="w-12 h-12 bg-blue-100 text-blue-600 flex items-center justify-center rounded-full text-xl font-bold uppercase">
+                {user?.userName?.charAt(0)}
+              </div>
+              <div>
+                <h3 className="text-lg font-semibold text-gray-800">
+                  {user?.userName}
+                </h3>
+                <p className="text-sm text-gray-500">
+                  {user?.email}
+                </p>
+              </div>
+            </div>
+
+            <div className="border-t pt-4 mt-4">
+              <p className="text-sm text-gray-600">
+                Welcome back,{" "}
+                <span className="text-blue-600 font-medium">
+                  {user?.userName?.split(" ")[0] || "User"}
+                </span>
+                !
+              </p>
+            </div>
+          </div>
+
+          {/* Form Section */}
+          <div className="p-6 sm:p-7 space-y-6 bg-white shadow-md rounded-lg">
+            <p className="text-sm text-blue-700 bg-blue-100 border border-blue-200 p-3 rounded-md">
+              Manage your personal information
+            </p>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Full Name
+                </label>
+                <input
+                  type="text"
+                  value={userName}
+                  onChange={(e) => setUserName(e.target.value)}
+                  // className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  className="peer w-full px-4 pt-4 pb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
+                  placeholder="Enter name"
+                />
+              </div>
+
+              <div>
+                <label className="block text-sm font-medium text-gray-700">
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  className="peer w-full px-4 pt-4 pb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
+                  // className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                  placeholder="you@example.com"
+                />
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                New Password
+              </label>
+              <input
+                type="password"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                className="peer w-full px-4 pt-4 pb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
+                // className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
+                placeholder="••••••••"
+              />
+            </div>
+
+            {error && <p className="text-sm text-red-500">{error}</p>}
+
+            <div className="pt-4">
+              <button
+                type="submit"
+                onClick={handleSubmit}
+                disabled={loading}
+                className="w-full sm:w-auto inline-flex justify-center items-center px-4 py-2 bg-blue-800 hover:bg-blue-900 text-white font-medium rounded-lg transition"
+              >
+                {loading ? "Updating..." : "Save Changes"}
+              </button>
+            </div>
+          </div>
+        </div>
+        <ToastContainer />
+      </div>
+
+      {/* <div className="flex items-center justify-center min-h-screen bg-gray-100">
         <div className="w-full max-w-lg bg-white shadow-lg rounded-2xl overflow-hidden">
           <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-6 text-white text-center">
             <div className="flex items-center justify-center gap-4">
@@ -133,7 +237,7 @@ export default function AcountDetails() {
           </div>
           <ToastContainer />
         </div>
-      </div>
+      </div> */}
     </>
   );
 }

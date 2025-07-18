@@ -8,7 +8,7 @@ import { Listbox } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import { addCartItem } from "../../store/features/productCartSlice";
-import FashionStoreLoader from "@/compoments/storeLOader";
+import FashionStoreLoader from "@/compoments/storeLoader";
 import Navbar from "../../compoments/navbar";
 import Footer from "../../compoments/footer";
 import Image from "next/image";
@@ -18,7 +18,6 @@ import { motion } from "framer-motion";
 // import { FaSpinner } from "react-icons/fa";
 // import { FaSortDown } from "react-icons/fa6";
 // import { FaSortDown, FaSortUp } from "react-icons/fa";
-
 
 export default function Products() {
   const dispatch = useDispatch();

@@ -24,13 +24,17 @@ export default function AuthForm() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
+    setIsSubmitting(true);
+
     try {
       if (isLogin) {
         const result = await dispatch(loginUser({ email, password }));
+
         console.log(result.user, "data revicced");
         if (result.success) {
           if (result.user?.isAdmin === true) {
@@ -40,6 +44,7 @@ export default function AuthForm() {
           }
           // router.push("/adminDashboard");
         } else {
+          setIsSubmitting(false);
           console.log("Please verify your email before proceeding.");
         }
       } else {
@@ -251,9 +256,17 @@ export default function AuthForm() {
             />
             <button
               type="submit"
-              className="w-full bg-blue-500 text-white py-3 font-semibold hover:bg-blue-600 transition"
+              disabled={isSubmitting}
+              className="w-full bg-blue-500 text-white py-3 font-semibold hover:bg-blue-600 transition flex items-center justify-center"
             >
-              {isLogin ? "Login" : "Register"}
+              {isSubmitting ? (
+                <div className="animate-spin h-5 w-5 border-t-2  border-white rounded-full"></div>
+              ) : isLogin ? (
+                "Login"
+              ) : (
+                "Register"
+              )}
+              {/* {isLogin ? "Login" : "Register"} */}
             </button>
           </form>
 

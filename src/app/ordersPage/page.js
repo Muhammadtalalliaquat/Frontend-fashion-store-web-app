@@ -16,8 +16,7 @@ import Navbar from "../../compoments/navbar";
 // import Footer from "../../compoments/footer";
 // import { FaSpinner } from "react-icons/fa";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
-import FashionStoreLoader from "@/compoments/storeLOader";
-
+import FashionStoreLoader from "@/compoments/storeLoader";
 import { motion } from "framer-motion";
 
 export default function OrdersPageDashboard() {
@@ -319,9 +318,9 @@ export default function OrdersPageDashboard() {
                   </div>
                 ))
               ) : (
-                <div className="flex items-center justify-center mt-6 p-4 bg-gray-100 rounded-lg">
+                <div className="flex flex-col items-center justify-center mt-10 p-6 bg-white border border-gray-200 rounded-2xl shadow-sm w-full max-w-md mx-auto">
                   <svg
-                    className="w-6 h-6 text-gray-500 mr-2"
+                    className="w-10 h-10 text-gray-400 mb-3"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -331,17 +330,20 @@ export default function OrdersPageDashboard() {
                       strokeLinecap="round"
                       strokeLinejoin="round"
                       strokeWidth={2}
-                      d="M9 12h3m4 0h3M5 12h3m4 0h3m-6 4h.01M6 16h.01m6 0h.01M18 16h.01m-9 4h.01m-6-4h.01"
+                      d="M9 12h6M5 12h2m10 0h2m-6 4h.01m6 0h.01m-12 0h.01m6 4h.01"
                     />
                   </svg>
-                  <p className="text-gray-600">No orders found</p>
+                  <h3 className="text-lg font-semibold text-gray-700">
+                    No Orders Found
+                  </h3>
+                  <p className="text-sm text-gray-500 text-center mt-1">
+                    You haven’t placed any orders yet.
+                  </p>
                 </div>
               )}
             </div>
 
-            {orders.length === 0 ? (
-              <></>
-            ) : (
+            {orders && orders.length > 0 ? (
               <div className="space-y-6">
                 {orders.map((order, index) => (
                   <div
@@ -508,14 +510,16 @@ export default function OrdersPageDashboard() {
                   </div>
                 ))}
               </div>
+            ) : (
+              <></>
             )}
 
             <div className="mt-20">
               {discountOrder && discountOrder.length > 0 ? (
                 <>
-                  <div className="w-full bg-gray-100 p-4 rounded-md mb-4">
-                    <h2 className="text-2xl font-bold text-blue-800">
-                      Discount Orders:
+                  <div className="w-full bg-gradient-to-r from-blue-100 to-blue-50 p-5 rounded-xl mb-6 shadow-sm border border-blue-200">
+                    <h2 className="text-2xl sm:text-3xl font-bold text-blue-800 tracking-tight">
+                      Discount Orders
                     </h2>
                   </div>
 
@@ -709,9 +713,9 @@ export default function OrdersPageDashboard() {
                   </div>
                 </>
               ) : (
-                <div className="flex items-center justify-center mt-6 p-4 bg-gray-100 rounded-lg">
+                <div className="flex flex-col items-center justify-center mt-10 px-6 py-8 bg-white border border-gray-200 rounded-2xl shadow-sm w-full max-w-md mx-auto">
                   <svg
-                    className="w-6 h-6 text-gray-500 mr-2"
+                    className="w-10 h-10 text-gray-400 mb-3"
                     xmlns="http://www.w3.org/2000/svg"
                     fill="none"
                     viewBox="0 0 24 24"
@@ -724,7 +728,12 @@ export default function OrdersPageDashboard() {
                       d="M9 12h3m4 0h3M5 12h3m4 0h3m-6 4h.01M6 16h.01m6 0h.01M18 16h.01m-9 4h.01m-6-4h.01"
                     />
                   </svg>
-                  <p className="text-gray-600">No discount orders found.</p>
+                  <h3 className="text-lg font-semibold text-gray-700">
+                    No Discount Orders
+                  </h3>
+                  <p className="text-sm text-gray-500 text-center mt-1">
+                    You haven’t placed any discount-based orders yet.
+                  </p>
                 </div>
               )}
             </div>

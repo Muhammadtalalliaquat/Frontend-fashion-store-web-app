@@ -18,7 +18,7 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
 // import { FaSpinner } from "react-icons/fa";
-import FashionStoreLoader from "@/compoments/storeLOader";
+import FashionStoreLoader from "@/compoments/storeLoader";
 
 export default function ProductCartPage() {
   const dispatch = useDispatch();

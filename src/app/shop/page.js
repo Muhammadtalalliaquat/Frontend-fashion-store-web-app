@@ -8,7 +8,7 @@ import { useState, useEffect } from "react";
 import { getAllDiscountOffer } from "../../store/features/discountSlice";
 import { addCartItem } from "../../store/features/productCartSlice";
 import { LiaShoppingCartSolid } from "react-icons/lia";
-import FashionStoreLoader from "@/compoments/storeLOader";
+import FashionStoreLoader from "@/compoments/storeLoader";
 // import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
