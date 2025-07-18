@@ -92,12 +92,7 @@ export default function ShopPage() {
     <>
       <Navbar />
 
-      {loading && (
-        // <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
-        //   <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
-        // </div>
-        <FashionStoreLoader product={discount} />
-      )}
+      {loading && <FashionStoreLoader product={discount} />}
 
       <div className="container mx-auto p-4 mt-20 mb-30">
         <div className="bg-blue-500 text-white p-8 text-center mb-8 rounded-xl shadow-md animate__animated animate__fadeInDown">
