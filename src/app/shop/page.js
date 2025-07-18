@@ -1,14 +1,14 @@
 "use client";
 
-import Navbar from "../../compoments/navbar";
-import Footer from "../../compoments/footer";
+import Navbar from "../../components/navbar";
+import Footer from "../../components/footer";
 import Image from "next/image";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
 import { getAllDiscountOffer } from "../../store/features/discountSlice";
 import { addCartItem } from "../../store/features/productCartSlice";
 import { LiaShoppingCartSolid } from "react-icons/lia";
-import FashionStoreLoader from "../../compoments/storeLoader";
+import FashionStoreLoader from "../../components/storeLoader";
 // import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";

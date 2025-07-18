@@ -12,11 +12,11 @@ import {
   updateOrdersStatus,
 } from "../../store/features/multipleorderSlice";
 import Image from "next/image";
-import Navbar from "../../compoments/navbar";
+import Navbar from "../../components/navbar";
 // import Footer from "../../compoments/footer";
 // import { FaSpinner } from "react-icons/fa";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
-import FashionStoreLoader from "../../compoments/storeLoader";
+import FashionStoreLoader from "../../components/storeLoader";
 import { motion } from "framer-motion";
 
 export default function OrdersPageDashboard() {

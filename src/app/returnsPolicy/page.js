@@ -1,46 +1,45 @@
-
-import Navbar from "../../compoments/navbar";
+import Navbar from "../../components/navbar";
 import Link from "next/link";
 
 export default function ReturnPolicyPage() {
-    const returnsContent = {
-      title: "Return & Exchange Policy",
-      intro: `At Fashion store, we want you to be fully satisfied with your purchase. If for any reason you're not happy, you can return or exchange your items within 14 days of receiving them.`,
+  const returnsContent = {
+    title: "Return & Exchange Policy",
+    intro: `At Fashion store, we want you to be fully satisfied with your purchase. If for any reason you're not happy, you can return or exchange your items within 14 days of receiving them.`,
 
-      sections: [
-        {
-          heading: "Return Conditions",
-          type: "list",
-          items: [
-            "Items must be unused, unwashed, and in original condition.",
-            "Must include original tags and packaging.",
-            "Returns must be initiated within 14 days of delivery.",
-            "Final-sale or discounted items are not eligible for return.",
-          ],
-        },
-        {
-          heading: "How to Initiate a Return",
-          type: "ordered",
-          items: [
-            `Email us at support@fashionista.com with your order number and reason for return.`,
-            `We'll respond within 24–48 hours with instructions and a return shipping label if eligible.`,
-            "Package the item securely and send it back.",
-          ],
-        },
-        {
-          heading: "Refunds",
-          type: "paragraph",
-          content:
-            "Once your return is received and inspected, we’ll notify you of the approval or rejection. If approved, a refund will be issued to your original payment method within 7 business days.",
-        },
-        {
-          heading: "Need Help?",
-          type: "paragraph",
-          content:
-            "For questions or concerns, feel free to reach out at support@fashionista.com.",
-        },
-      ],
-    };
+    sections: [
+      {
+        heading: "Return Conditions",
+        type: "list",
+        items: [
+          "Items must be unused, unwashed, and in original condition.",
+          "Must include original tags and packaging.",
+          "Returns must be initiated within 14 days of delivery.",
+          "Final-sale or discounted items are not eligible for return.",
+        ],
+      },
+      {
+        heading: "How to Initiate a Return",
+        type: "ordered",
+        items: [
+          `Email us at support@fashionista.com with your order number and reason for return.`,
+          `We'll respond within 24–48 hours with instructions and a return shipping label if eligible.`,
+          "Package the item securely and send it back.",
+        ],
+      },
+      {
+        heading: "Refunds",
+        type: "paragraph",
+        content:
+          "Once your return is received and inspected, we’ll notify you of the approval or rejection. If approved, a refund will be issued to your original payment method within 7 business days.",
+      },
+      {
+        heading: "Need Help?",
+        type: "paragraph",
+        content:
+          "For questions or concerns, feel free to reach out at support@fashionista.com.",
+      },
+    ],
+  };
 
   return (
     <>

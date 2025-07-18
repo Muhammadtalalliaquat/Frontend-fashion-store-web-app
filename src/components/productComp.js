@@ -3,8 +3,8 @@
 import Image from "next/image";
 import { useEffect, useState, useRef } from "react";
 import { useSearchParams } from "next/navigation";
-import Navbar from "../compoments/navbar";
-import Footer from "../compoments/footer";
+import Navbar from "../components/navbar";
+import Footer from "../components/footer";
 import {
   ShoppingCartIcon,
   PencilSquareIcon,

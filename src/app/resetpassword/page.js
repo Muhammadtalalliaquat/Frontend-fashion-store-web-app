@@ -1,7 +1,5 @@
-import { Suspense } from 'react';
-import  ResetpasswordComponment from "../../compoments/resetpassword"
-
-
+import { Suspense } from "react";
+import ResetpasswordComponment from "../../components/resetpassword";
 
 export default function Resetpassword() {
   return (
@@ -10,4 +8,3 @@ export default function Resetpassword() {
     </Suspense>
   );
 }
-

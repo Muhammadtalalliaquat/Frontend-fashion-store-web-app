@@ -11,7 +11,7 @@ import { updateDiscountOrder } from "../../../store/features/discountSlice";
 import { useRouter } from "next/navigation";
 import withAdminCheck from "../../../HOC/withAuth";
 import { useParams } from "next/navigation";
-import Navbar from "../../../compoments/navbar";
+import Navbar from "../../../components/navbar";
 
 function ProductPage() {
   const params = useParams();

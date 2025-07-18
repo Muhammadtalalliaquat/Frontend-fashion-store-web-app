@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "../../compoments/navbar";
+import Navbar from "../../components/navbar";
 import { motion } from "framer-motion";
 import { createContact } from "../../store/features/contactSlice";
 import { createFeedback } from "../../store/features/feedbackSlice";
@@ -9,7 +9,7 @@ import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { toast, ToastContainer } from "react-toastify";
 import Link from "next/link";
-import Footer from "../../compoments/footer";
+import Footer from "../../components/footer";
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -28,7 +28,6 @@ export default function ContactPage() {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
   }, []);
-
 
   const handleAddConatcData = (e) => {
     e.preventDefault();

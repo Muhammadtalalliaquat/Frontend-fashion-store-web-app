@@ -9,8 +9,8 @@ import {
   removeReviews,
 } from "../store/features/productReviewSlice";
 import { formatDistanceToNow } from "date-fns";
-import Navbar from "../compoments/navbar";
-import Footer from "../compoments/footer";
+import Navbar from "../components/navbar";
+import Footer from "../components/footer";
 import { useDispatch } from "react-redux";
 import { Star, Loader, ChevronDown, ChevronUp } from "lucide-react";
 import { FcDeleteRow } from "react-icons/fc";

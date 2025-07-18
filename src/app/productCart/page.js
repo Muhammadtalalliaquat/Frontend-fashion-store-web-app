@@ -10,7 +10,7 @@ import {
 } from "../../store/features/productCartSlice";
 import Image from "next/image";
 import Link from "next/link";
-import Navbar from "../../compoments/navbar";
+import Navbar from "../../components/navbar";
 import { createMultipleOrders } from "../../store/features/multipleorderSlice";
 import {
   PencilSquareIcon,
@@ -18,7 +18,7 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
 // import { FaSpinner } from "react-icons/fa";
-import FashionStoreLoader from "../../compoments/storeLoader";
+import FashionStoreLoader from "../../components/storeLoader";
 
 export default function ProductCartPage() {
   const dispatch = useDispatch();

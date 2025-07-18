@@ -1,8 +1,5 @@
-
-import { Suspense } from 'react';
-import  EmailVerifyComponent from "../../compoments/EmailVerifyComponent"
-
-
+import { Suspense } from "react";
+import EmailVerifyComponent from "../../components/EmailVerifyComponent";
 
 export default function EmailVerificationPage() {
   return (
@@ -11,50 +8,6 @@ export default function EmailVerificationPage() {
     </Suspense>
   );
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // "use client";
 
@@ -84,14 +37,12 @@ export default function EmailVerificationPage() {
 //   // eslint-disable-next-line react-hooks/exhaustive-deps
 //   }, [dispatch, token]);
 
-  
 //   useEffect(() => {
 //     console.log(isVerified)
 //     if (isVerified) {
-//       router.push("/home"); 
+//       router.push("/home");
 //     }
 //   }, [isVerified, router]);
-
 
 //   return (
 //     <div className={styles.container}>
@@ -108,5 +59,3 @@ export default function EmailVerificationPage() {
 //     </div>
 //   );
 // }
-
-

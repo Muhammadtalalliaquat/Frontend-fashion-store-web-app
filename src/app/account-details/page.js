@@ -2,9 +2,9 @@
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { accountDetailsUpdate } from "../../compoments/authAction";
+import { accountDetailsUpdate } from "../../components/authAction";
 import { setErrorUpdate } from "../../store/features/AccountUpdateSlice";
-import Navbar from "../../compoments/navbar";
+import Navbar from "../../components/navbar";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import { FaUserCircle } from "react-icons/fa";
@@ -46,8 +46,8 @@ export default function AcountDetails() {
     }
   };
 
-  let cars = ["nisan" , "Calora" , "suzuki" , "Civic"]
-  console.log(cars.lastIndexOf(1))
+  let cars = ["nisan", "Calora", "suzuki", "Civic"];
+  console.log(cars.lastIndexOf(1));
 
   return (
     <>
@@ -57,7 +57,9 @@ export default function AcountDetails() {
         <div className="max-w-4xl mx-auto bg-white rounded-t-2xl shadow-md overflow-hidden">
           {/* Header */}
           <div className="bg-blue-800 px-6 py-5 sm:px-8">
-            <h1 className="text-white text-2xl font-semibold">Account Details</h1>
+            <h1 className="text-white text-2xl font-semibold">
+              Account Details
+            </h1>
           </div>
 
           <div className="mb-2 bg-white rounded-t-2xl shadow-lg p-6 border border-gray-200">
@@ -69,9 +71,7 @@ export default function AcountDetails() {
                 <h3 className="text-lg font-semibold text-gray-800">
                   {user?.userName}
                 </h3>
-                <p className="text-sm text-gray-500">
-                  {user?.email}
-                </p>
+                <p className="text-sm text-gray-500">{user?.email}</p>
               </div>
             </div>
 

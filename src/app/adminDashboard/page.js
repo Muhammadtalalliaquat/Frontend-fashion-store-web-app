@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "../../compoments/navbar";
+import Navbar from "../../components/navbar";
 import withAdminCheck from "../../HOC/withAuth";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
@@ -76,9 +76,7 @@ function AdminDashboard() {
                     <span className="font-medium">Email:</span> {item.email}
                   </p>
                   <p className="text-gray-700 bg-gray-100 p-3 rounded-lg border border-gray-200 mt-2">
-                    <span className="font-semibold text-red-800">
-                      Message:
-                    </span>{" "}
+                    <span className="font-semibold text-red-800">Message:</span>{" "}
                     {item.message}
                   </p>
                 </div>

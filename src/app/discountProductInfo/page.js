@@ -1,5 +1,4 @@
-
-import DiscountProductComp from "../../compoments/discuntedProductComp";
+import DiscountProductComp from "../../components/discuntedProductComp";
 import { Suspense } from "react";
 
 export default function DiscountProductInfo() {

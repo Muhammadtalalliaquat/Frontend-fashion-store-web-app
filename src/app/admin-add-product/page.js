@@ -6,7 +6,7 @@ import { createProduct } from "../../store/features/productSlice";
 import { createDiscountOffer } from "../../store/features/discountSlice";
 import { useRouter } from "next/navigation";
 import withAdminCheck from "../../HOC/withAuth";
-import Navbar from "../../compoments/navbar";
+import Navbar from "../../components/navbar";
 
 function AddProductPage() {
   const dispatch = useDispatch();

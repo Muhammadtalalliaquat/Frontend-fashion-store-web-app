@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { createOrder } from "../store/features/orderSlice";
 import { getAllReview } from "../store/features/productReviewSlice";
-import Navbar from "../compoments/navbar";
+import Navbar from "../components/navbar";
 import { useDispatch } from "react-redux";
 import Image from "next/image";
 

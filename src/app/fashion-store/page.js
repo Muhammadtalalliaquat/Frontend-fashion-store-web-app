@@ -1,6 +1,6 @@
 "use client";
 
-import Navbar from "../../compoments/navbar";
+import Navbar from "../../components/navbar";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getAllProducts } from "../../store/features/productSlice";
@@ -14,16 +14,16 @@ import Image from "next/image";
 import Link from "next/link";
 // import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
-import Footer from "../../compoments/footer";
-import ScrollTo from "../../compoments/scrolltotop";
+import Footer from "../../components/footer";
+import ScrollTo from "../../components/scrolltotop";
 import {
   PencilSquareIcon,
   TrashIcon,
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
 import { RiDoubleQuotesL } from "react-icons/ri";
-import FashionStoreLoader from "../../compoments/storeLoader";
-import CategoryCarousel from "@/compoments/heroSection";
+import FashionStoreLoader from "../../components/storeLoader";
+import CategoryCarousel from "@/components/heroSection";
 
 export default function MainDashboard() {
   const [products, setProducts] = useState([]);
