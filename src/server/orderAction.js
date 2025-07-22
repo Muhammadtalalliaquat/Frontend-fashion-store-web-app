@@ -1,21 +1,19 @@
 import axios from "axios";
 import { ApiRoutes } from "../constant/constant";
 
-
-
 export const fetchOrder = async () => {
   try {
-     const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token");
 
-     if (!token) {
-       console.error("Token is missing!");
-       return;
-     }
-     const response = await axios.get(`${ApiRoutes.getOrders}`, {
-       headers: {
-         Authorization: `Bearer ${token}`,
-       },
-     });
+    if (!token) {
+      console.error("Token is missing!");
+      return;
+    }
+    const response = await axios.get(`${ApiRoutes.getOrders}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
     // const response = await axios.get(`${ApiRoutes.getOrders}`);
     // console.log("Products fetched:", response.data);
     return response.data;
@@ -27,6 +25,18 @@ export const fetchOrder = async () => {
   }
 };
 
+export const fetchChartOrder = async () => {
+  try {
+    const response = await axios.get(`${ApiRoutes.getChartOrders}`);
+    // console.log("Products fetched:", response.data);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Failed to fetch Orders:",
+      error.response?.data || error.message
+    );
+  }
+};
 
 export const addOrder = async (orderData) => {
   try {
@@ -54,8 +64,6 @@ export const addOrder = async (orderData) => {
   }
 };
 
-
-
 export const updateOrderStatus = async (id, orderData) => {
   try {
     const token = localStorage.getItem("token");
@@ -65,7 +73,9 @@ export const updateOrderStatus = async (id, orderData) => {
       return;
     }
 
-    const response = await axios.put(`${ApiRoutes.updateOrder}/${id}`, orderData,
+    const response = await axios.put(
+      `${ApiRoutes.updateOrder}/${id}`,
+      orderData,
       {
         headers: {
           Authorization: `Bearer ${token}`,

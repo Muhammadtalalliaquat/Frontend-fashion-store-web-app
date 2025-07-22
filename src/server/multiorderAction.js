@@ -52,6 +52,19 @@ export const fetchAllOrders = async () => {
 };
 
 
+export const fetchChartOrders = async () => {
+  try {
+    const response = await axios.get(`${ApiRoutes.getAllChartMultipleOrders}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Failed to fetch Orders:",
+      error.response?.data || error.message
+    );
+  }
+};
+
+
 export const updateOrderStatus = async (id, orderData) => {
   try {
     const token = localStorage.getItem("token");

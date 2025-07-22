@@ -10,7 +10,10 @@ export const orderDiscountProduct = async (orderData) => {
       return;
     }
 
-    const response = await axios.post(ApiRoutes.placedDiscountsOrder, orderData, {
+    const response = await axios.post(
+      ApiRoutes.placedDiscountsOrder,
+      orderData,
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -48,6 +51,17 @@ export const fetchDiscountProduct = async () => {
   }
 };
 
+export const fetchChartDiscountProduct = async () => {
+  try {
+    const response = await axios.get(`${ApiRoutes.getAllSalesChartProducts}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Failed to fetch Orders:",
+      error.response?.data || error.message
+    );
+  }
+};
 
 export const updateDicountOrderStatus = async (id, orderData) => {
   try {
@@ -58,7 +72,10 @@ export const updateDicountOrderStatus = async (id, orderData) => {
       return;
     }
 
-    const response = await axios.put(`${ApiRoutes.updateDiscountOrder}/${id}`, orderData, {
+    const response = await axios.put(
+      `${ApiRoutes.updateDiscountOrder}/${id}`,
+      orderData,
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },

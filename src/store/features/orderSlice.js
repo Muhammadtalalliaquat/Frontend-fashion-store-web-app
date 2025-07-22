@@ -1,12 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchOrder,
+  fetchChartOrder,
   addOrder,
   updateOrderStatus,
 } from "../../server/orderAction";
 
 export const getAllOrders = createAsyncThunk("orders/fetch", async () => {
   const response = await fetchOrder();
+  console.log("API Response:", response);
+  return response;
+});
+
+export const getAllChartOrders = createAsyncThunk("orders/fetch", async () => {
+  const response = await fetchChartOrder();
   console.log("API Response:", response);
   return response;
 });

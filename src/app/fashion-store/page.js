@@ -24,6 +24,7 @@ import {
 import { RiDoubleQuotesL } from "react-icons/ri";
 import FashionStoreLoader from "../../components/storeLoader";
 import CategoryCarousel from "@/components/heroSection";
+import FashionStoreSalesChart from "@/components/productChart";
 
 export default function MainDashboard() {
   const [products, setProducts] = useState([]);
@@ -583,6 +584,8 @@ export default function MainDashboard() {
           )}
         </div>
       )}
+
+      <FashionStoreSalesChart />
 
       {!loading && (
         <section className="bg-gray-50 px-4 py-16">

@@ -198,9 +198,9 @@ function AddProductPage() {
               </form>
             ) : (
               <form onSubmit={handleSubmitDiscount} className="space-y-5">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                {/* <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
                   Add Discount Offer
-                </h2>
+                </h2> */}
 
                 {[
                   {

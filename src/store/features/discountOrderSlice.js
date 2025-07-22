@@ -1,12 +1,19 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   fetchDiscountProduct,
+  fetchChartDiscountProduct,
   orderDiscountProduct,
   updateDicountOrderStatus,
 } from "../../server/discountOfferOrderAction";
 
 export const getDiscountOfferOrder = createAsyncThunk("discountOrder/fetch", async () => {
   const response = await fetchDiscountProduct();
+  console.log("API Response:", response);
+  return response;
+});
+
+export const getDiscountChartOfferOrder = createAsyncThunk("discountOrder/fetch", async () => {
+  const response = await fetchChartDiscountProduct();
   console.log("API Response:", response);
   return response;
 });

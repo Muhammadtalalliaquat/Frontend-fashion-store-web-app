@@ -1,12 +1,20 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import {
   addMulitiOrders,
+  fetchChartOrders,
   fetchAllOrders,
   updateOrderStatus,
 } from "../../server/multiorderAction";
 
 export const getAllMultiplesOrders = createAsyncThunk("orders/fetch", async () => {
   const response = await fetchAllOrders();
+  console.log("API Response:", response);
+  return response;
+});
+
+
+export const getAllMultiplesChartOrders = createAsyncThunk("orders/fetch", async () => {
+  const response = await fetchChartOrders();
   console.log("API Response:", response);
   return response;
 });
