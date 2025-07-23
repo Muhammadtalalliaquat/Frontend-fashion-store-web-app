@@ -80,7 +80,7 @@ export default function ResetpasswordComponment() {
       />
 
       <div className="bg-white shadow-xl rounded-3xl p-8 w-full max-w-md animate-fade-in">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-6">
+        <h2 className="text-lg sm:text-2xl md:text-3xl text-center text-gray-800 mb-6">
           🔒 Reset Password
         </h2>
 

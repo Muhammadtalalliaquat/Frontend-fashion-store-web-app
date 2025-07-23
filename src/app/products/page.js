@@ -92,7 +92,7 @@ export default function Products() {
         product.name.toLowerCase().includes(searchTerm.toLowerCase())
     );
 
-    setSortedProducts(filtered); // update what's displayed
+    setSortedProducts(filtered);
   }, [products, category, searchTerm]);
 
   // const filteredProducts = products.filter(

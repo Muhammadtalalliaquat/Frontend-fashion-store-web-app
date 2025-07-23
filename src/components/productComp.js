@@ -312,17 +312,17 @@ export default function ProductDetails() {
                 <div className="mt-6 flex flex-col sm:flex-row gap-4">
                   <button
                     onClick={handleAddToCart}
-                    className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-indigo-700 transition"
+                    className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base rounded-lg shadow-md hover:bg-indigo-700 transition"
                   >
-                    <ShoppingCartIcon className="w-5 h-5" />
+                    <ShoppingCartIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                     Add to Cart
                   </button>
 
                   <button
                     onClick={handleAddOrder}
-                    className="flex items-center justify-center gap-2 bg-pink-600 text-white px-6 py-3 rounded-lg shadow-md hover:bg-pink-700 transition"
+                    className="flex-1 flex items-center justify-center gap-2 bg-pink-600 text-white px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base rounded-lg shadow-md hover:bg-pink-700 transition"
                   >
-                    <CreditCard className="w-5 h-5" />
+                    <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
                     Buy Now
                   </button>
                 </div>
@@ -334,21 +334,22 @@ export default function ProductDetails() {
             </div>
           </div>
           <div className="mt-8">
-            <h3 className="text-xl font-semibold text-gray-800">
+            <h3 className="text-base sm:text-xl font-semibold text-gray-800">
               Product Details
             </h3>
+
             <p className="mt-2 text-gray-600 leading-relaxed">{description}</p>
           </div>
 
           {user && (
             <div className="mt-8">
               <div className="flex justify-between items-center">
-                <h3 className="text-xl font-semibold text-gray-800">
+                <h3 className="text-base sm:text-xl font-semibold text-gray-800">
                   Customer Reviews
                 </h3>
                 <button
                   onClick={() => setShowAddReview(!showAddReview)}
-                  className="text-gray-400 font-semibold hover:text-gray-900 flex items-center"
+                  className="text-sm sm:text-lx text-gray-400 font-semibold hover:text-gray-900 flex items-center"
                 >
                   {showAddReview ? "Hide Review" : "Add Review"}
                   {showAddReview ? (
@@ -405,7 +406,7 @@ export default function ProductDetails() {
 
                     <button
                       type="submit"
-                      className="mt-4 bg-blue-400 font-semibold text-white py-2 px-4 rounded hover:bg-blue-500"
+                      className="mt-4 mb-4 bg-blue-400 font-semibold text-white py-2 px-4 rounded hover:bg-blue-500"
                       disabled={loading}
                     >
                       {loading ? "Submitting..." : "Submit Review"}
