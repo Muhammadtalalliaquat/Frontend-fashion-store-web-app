@@ -11,6 +11,7 @@ import contactReducer from "../store/features/contactSlice";
 import feedbackReducer from "../store/features/feedbackSlice";
 import subscribeReducer from "../store/features/subscribeSlice";
 import multipleOdersReducer from "../store/features/multipleorderSlice";
+import wishListReducer from "../store/features/wishListSlice";
 
 
 export const store = configureStore({
@@ -27,6 +28,7 @@ export const store = configureStore({
     feedBack: feedbackReducer,
     subscribe: subscribeReducer,
     orders: multipleOdersReducer,
+    wishlist: wishListReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware({ serializableCheck: false }),

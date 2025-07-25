@@ -1,8 +1,8 @@
-// const DEV_URL = `http://localhost:5000/`;
-const PROD_URL = `https://back-end-fashion-web-app-server.vercel.app/`;
+const DEV_URL = `http://localhost:5000/`;
+// const PROD_URL = `https://back-end-fashion-web-app-server.vercel.app/`;
 
-// export const BASIC_URL = DEV_URL;
-export const BASIC_URL = PROD_URL
+export const BASIC_URL = DEV_URL;
+// export const BASIC_URL = PROD_URL
 
 export const ApiRoutes = {
   login: BASIC_URL + `user/login`,
@@ -42,7 +42,8 @@ export const ApiRoutes = {
 
   placedDiscountsOrder: BASIC_URL + `saleDiscountsOrder/placeSaleDiscountOrder`,
   getDiscountOrder: BASIC_URL + `saleDiscountsOrder/getSalesOrders`,
-  getAllSalesChartProducts: BASIC_URL + `saleDiscountsOrder/getChartSalesOrders`,
+  getAllSalesChartProducts:
+    BASIC_URL + `saleDiscountsOrder/getChartSalesOrders`,
   updateDiscountOrder: BASIC_URL + `saleDiscountsOrder/updateDiscountOrder`,
 
   placedMultipleOrders: BASIC_URL + `multiorders/multiOrder`,
@@ -58,4 +59,8 @@ export const ApiRoutes = {
 
   addSubscribe: BASIC_URL + `Subscriber/addSubscribe`,
   getSubscribe: BASIC_URL + `Subscriber/getSubscribe`,
+
+  getWishList: BASIC_URL + `productWishList/getWishList`,
+  addWishList: BASIC_URL + `productWishList/addWishList`,
+  deleteWishList: BASIC_URL + `productWishList/remove`,
 };

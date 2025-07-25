@@ -8,6 +8,7 @@ import { Listbox } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import { addCartItem } from "../../store/features/productCartSlice";
+import { addWishListItem } from "../../store/features/wishListSlice";
 import FashionStoreLoader from "../../components/storeLoader";
 import Navbar from "../../components/navbar";
 import Footer from "../../components/footer";
@@ -15,9 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { TiArrowSortedUp } from "react-icons/ti";
 import { motion } from "framer-motion";
-// import { FaSpinner } from "react-icons/fa";
-// import { FaSortDown } from "react-icons/fa6";
-// import { FaSortDown, FaSortUp } from "react-icons/fa";
+import { AiOutlineHeart } from "react-icons/ai";
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -28,10 +27,44 @@ export default function Products() {
   const [quantities, setQuantities] = useState({});
   const [activePopupCart, setActivePopupCart] = useState(null);
   const [activePopup, setActivePopup] = useState(null);
+  const [wishListPopup, setWishListPopup] = useState(null);
+  const [error, setError] = useState("");
   const [sortedProducts, setSortedProducts] = useState([]);
   const [sortOrder, setSortOrder] = useState("desc");
   const [user, setUser] = useState(null);
   const router = useRouter();
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
+
+    if (error) {
+      const timer = setTimeout(() => setError(""), 3000);
+      return () => clearTimeout(timer);
+    }
+
+    dispatch(fetchAllProductShow())
+      .then((result) => {
+        console.log("API Response:", result.payload);
+        setProducts(result.payload.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err, error);
+        setError("Failed to load products.");
+        setLoading(false);
+      });
+  }, [dispatch, error]);
+
+  useEffect(() => {
+    const filtered = products.filter(
+      (product) =>
+        (category === "all" || product.category === category) &&
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    setSortedProducts(filtered);
+  }, [products, category, searchTerm]);
 
   const handleQuantityChange = (id, value) => {
     const num = Math.max(1, Number(value));
@@ -68,38 +101,39 @@ export default function Products() {
       });
   };
 
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    setUser(storedUser);
+  const handleAddToWishlist = (productId) => {
+    const selectedProduct = products.find(
+      (product) => product._id === productId
+    );
+    if (!selectedProduct) {
+      console.error("Product not found.");
+      return;
+    }
 
-    dispatch(fetchAllProductShow())
+    const productCartData = {
+      productId: selectedProduct._id,
+      name: selectedProduct.name,
+      price: selectedProduct.price,
+      category: selectedProduct.category,
+      description: selectedProduct.description,
+      image: selectedProduct.image,
+    };
+
+    dispatch(addWishListItem(productCartData))
       .then((result) => {
         console.log("API Response:", result.payload);
-        setProducts(result.payload.data);
-        setLoading(false);
+        const msg = result.payload?.msg;
+
+        if (msg) {
+          setError(msg);
+        }
+        // setWishlistItems(result.payload);
+        // router.push("/productCart");
       })
       .catch((err) => {
-        console.error("Fetch Error:", err, error);
-        setError("Failed to load products.");
-        setLoading(false);
+        console.error("Fetch Error:", err);
       });
-  }, [dispatch]);
-
-  useEffect(() => {
-    const filtered = products.filter(
-      (product) =>
-        (category === "all" || product.category === category) &&
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
-
-    setSortedProducts(filtered);
-  }, [products, category, searchTerm]);
-
-  // const filteredProducts = products.filter(
-  //   (product) =>
-  //     (category === "all" || product.category === category) &&
-  //     product.name.toLowerCase().includes(searchTerm.toLowerCase())
-  // );
+  };
 
   const toggleSortByPrice = () => {
     const sorted = [...sortedProducts].sort((a, b) => {
@@ -251,6 +285,62 @@ export default function Products() {
                           Cancel
                         </button>
                       </div>
+                    )}
+
+                    {wishListPopup === product._id && !user && (
+                      <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center px-3 z-[9999]">
+                        <div className="bg-white w-full max-w-sm sm:max-w-md p-4 sm:p-6  shadow-2xl relative">
+                          <button
+                            onClick={() => setWishListPopup(false)}
+                            className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
+                          >
+                            ×
+                          </button>
+
+                          <h2 className="font-medium text-gray-800 p-3 mb-3 text-center">
+                            You need to log in to add items to your wishlist
+                            item
+                          </h2>
+
+                          <div className="flex justify-center">
+                            <Link
+                              href="/login"
+                              className="bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition"
+                            >
+                              Go to Login
+                            </Link>
+                          </div>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* {wishListPopup === product._id && user && ( */}
+                    <div className="absolute top-2 left-4 z-40">
+                      <button
+                        className="bg-white text-red-500 hover:text-white hover:bg-red-500 transition-all duration-300 ease-in-out rounded-full p-2 opacity-60 sm:opacity-0 sm:group-hover:opacity-60"
+                        onClick={() => handleAddToWishlist(product._id)}
+                      >
+                        <AiOutlineHeart className="w-5 h-5" />
+                      </button>
+                    </div>
+
+                    {/* )} */}
+
+                    {error && (
+                      <p
+                        className={`fixed top-[110px] left-1/2 transform -translate-x-1/2 ${
+                          error.toLowerCase().includes("success") ||
+                          error.toLowerCase().includes("already in wishlist")
+                            ? "bg-blue-500"
+                            : "bg-red-400"
+                        } text-white px-4 py-2 rounded shadow-sm transition-all duration-500 ease-in-out ${
+                          error
+                            ? "opacity-100 translate-y-0"
+                            : "opacity-0 -translate-y-2"
+                        }`}
+                      >
+                        {error}
+                      </p>
                     )}
 
                     <div className="w-full h-44 sm:mb-2">
