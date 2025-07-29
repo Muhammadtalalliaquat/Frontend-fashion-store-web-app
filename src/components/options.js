@@ -32,32 +32,34 @@ export default function OptionsMenu() {
   return (
     <Menu as="div" className="relative inline-block text-left ml-3">
       <div>
-        <MenuButton className="inline-flex w-full items-center justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-blue-900 shadow-xs ring-1 ring-gray-300 hover:bg-gray-50">
+        <MenuButton className="inline-flex  items-center justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-blue-800 shadow-xs ring-1 ring-gray-300 hover:bg-gray-50">
           Menu
           <ChevronDownIcon
             aria-hidden="true"
-            className="ml-9 size-5 text-blue-900"
+            className="ml-9 size-5 text-blue-800"
           />
         </MenuButton>
       </div>
 
       <MenuItems
         transition
-        className="absolute left-0 sm:right-0 sm:left-auto z-10 mt-2 w-56 h-50 origin-top-left sm:origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 overflow-y-auto max-h-60 sm:max-h-80 focus:outline-none"
+        className="absolute left-0 sm:right-0 sm:left-auto z-10 mt-2 w-56 origin-top-left sm:origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 overflow-y-auto max-h-60 sm:max-h-80 focus:outline-none"
         // className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 overflow-y-auto max-h-60 sm:max-h-80 focus:outline-none"
         // className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black/5 transition focus:outline-hidden data-closed:scale-95 data-closed:opacity-0 data-enter:duration-100 data-enter:ease-out data-leave:duration-75 data-leave:ease-in"
       >
-        <div className="py-1">
-          <MenuItem>
-            <Link
-              href="/account-details"
-              className="flex items-center gap-2 font-semibold px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-gray-900"
-            >
-              <IoIosSettings size={18} className="text-gray-500" />
-              Account settings
-            </Link>
-          </MenuItem>
-        </div>
+        {user && (
+          <div className="py-1">
+            <MenuItem>
+              <Link
+                href="/account-details"
+                className="flex items-center gap-2 font-semibold px-4 py-2 text-sm text-gray-700 hover:bg-blue-100 hover:text-gray-900"
+              >
+                <IoIosSettings size={18} className="text-gray-500" />
+                Account settings
+              </Link>
+            </MenuItem>
+          </div>
+        )}
 
         <div className="py-1">
           <MenuItem>

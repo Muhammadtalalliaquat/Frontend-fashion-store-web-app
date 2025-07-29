@@ -87,14 +87,14 @@ function Navbar() {
       >
         {pathname !== "/fashion-store" && (
           <li onClick={handleNavigate} className="flex items-center gap-2">
-            {isMenuOpen && <GoHome className="w-5 h-5 text-blue-750" />}
+            {isMenuOpen && <GoHome className="w-4 h-4 text-blue-750" />}
             <span>Home</span>
           </li>
         )}
         {pathname !== "/products" && (
           <li className="flex items-center gap-2">
             <Link href="/products" className="flex items-center gap-2 w-full">
-              {isMenuOpen && <Package className="w-5 h-5 text-blue-750" />}
+              {isMenuOpen && <Package className="w-4 h-4 text-blue-750" />}
               {pathname !== "/products" && "products"}
             </Link>
           </li>
@@ -104,7 +104,7 @@ function Navbar() {
           <li className="flex items-center gap-2">
             <Link href="/shop" className="flex items-center gap-2 w-full">
               {isMenuOpen && (
-                <LiaShoppingBagSolid className="w-5 h-5 text-blue-750" />
+                <LiaShoppingBagSolid className="w-4 h-4 text-blue-750" />
               )}
               <span>Shop</span>
             </Link>
@@ -113,7 +113,7 @@ function Navbar() {
 
         {pathname !== "/contact" && (
           <li className="flex items-center gap-2">
-            {isMenuOpen && <RiContactsLine className="w-5 h-5 text-blue-750" />}
+            {isMenuOpen && <RiContactsLine className="w-4 h-4 text-blue-750" />}
             <Link className="w-full" href={"/contact"}>
               <span>Contact</span>
             </Link>
@@ -128,7 +128,7 @@ function Navbar() {
                 href="/admin-add-product"
                 className="flex items-center gap-2 w-full"
               >
-                <RiFunctionAddLine className="w-5 h-5 text-blue-750" />
+                <RiFunctionAddLine className="w-4 h-4 text-blue-750" />
                 <span>Add Product</span>
               </Link>
             </li>

@@ -287,21 +287,35 @@ export default function Products() {
                       </div>
                     )}
 
+                    <div className="absolute top-2 left-4 z-40">
+                      <button
+                        onClick={() => {
+                          if (!user) {
+                            setWishListPopup(product._id);
+                          } else {
+                            handleAddToWishlist(product._id);
+                          }
+                        }}
+                        className="bg-white text-red-500 hover:text-white hover:bg-red-400 
+                        transition-all duration-300 ease-in-out rounded-full p-2 
+                        opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
+                      >
+                        <AiOutlineHeart className="w-5 h-5" />
+                      </button>
+                    </div>
+
                     {wishListPopup === product._id && !user && (
                       <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center px-3 z-[9999]">
-                        <div className="bg-white w-full max-w-sm sm:max-w-md p-4 sm:p-6  shadow-2xl relative">
+                        <div className="bg-white w-full max-w-sm sm:max-w-md p-4 sm:p-6 shadow-2xl relative">
                           <button
                             onClick={() => setWishListPopup(false)}
                             className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-xl"
                           >
                             ×
                           </button>
-
                           <h2 className="font-medium text-gray-800 p-3 mb-3 text-center">
                             You need to log in to add items to your wishlist
-                            item
                           </h2>
-
                           <div className="flex justify-center">
                             <Link
                               href="/login"
@@ -314,30 +328,23 @@ export default function Products() {
                       </div>
                     )}
 
-                    {/* {wishListPopup === product._id && user && ( */}
-                    <div className="absolute top-2 left-4 z-40">
-                      <button
-                        className="bg-white text-red-500 hover:text-white hover:bg-red-500 transition-all duration-300 ease-in-out rounded-full p-2 opacity-60 sm:opacity-0 sm:group-hover:opacity-60"
-                        onClick={() => handleAddToWishlist(product._id)}
-                      >
-                        <AiOutlineHeart className="w-5 h-5" />
-                      </button>
-                    </div>
-
-                    {/* )} */}
-
                     {error && (
                       <p
-                        className={`fixed top-[110px] left-1/2 transform -translate-x-1/2 ${
+                        className={`fixed top-[110px] left-1/2 transform -translate-x-1/2 z-50
+                        ${
                           error.toLowerCase().includes("success") ||
                           error.toLowerCase().includes("already in wishlist")
                             ? "bg-blue-500"
                             : "bg-red-400"
-                        } text-white px-4 py-2 rounded shadow-sm transition-all duration-500 ease-in-out ${
+                        }
+                        text-white px-4 py-2 max-w-xs w-[90%] text-center rounded shadow-md
+                        transition-all duration-500 ease-in-out
+                        ${
                           error
                             ? "opacity-100 translate-y-0"
                             : "opacity-0 -translate-y-2"
-                        }`}
+                        }
+                      `}
                       >
                         {error}
                       </p>

@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { accountDetailsUpdate } from "../../components/authAction";
 import { setErrorUpdate } from "../../store/features/AccountUpdateSlice";
 import Navbar from "../../components/navbar";
+import WishlistComponent from "@/components/wishlistComp";
 import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 // import { FaUserCircle } from "react-icons/fa";
@@ -23,9 +24,7 @@ export default function AcountDetails() {
       setUser(storedUser);
       setUserName(storedUser.userName);
       setEmail(storedUser.email);
-      console.log(user);
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const handleSubmit = async (e) => {
@@ -46,16 +45,13 @@ export default function AcountDetails() {
     }
   };
 
-  let cars = ["nisan", "Calora", "suzuki", "Civic"];
-  console.log(cars.lastIndexOf(1));
 
   return (
     <>
       <Navbar />
 
       <div className="px-4 py-10 sm:px-6 lg:px-8 mt-20">
-        <div className="max-w-4xl mx-auto bg-white rounded-t-2xl shadow-md overflow-hidden">
-          {/* Header */}
+        <div className="max-w-7xl mx-auto bg-white rounded-t-2xl shadow-md overflow-hidden">
           <div className="bg-blue-800 px-6 py-5 sm:px-8">
             <h1 className="text-white text-2xl font-semibold">
               Account Details
@@ -86,7 +82,6 @@ export default function AcountDetails() {
             </div>
           </div>
 
-          {/* Form Section */}
           <div className="p-6 sm:p-7 space-y-6 bg-white shadow-md rounded-lg">
             <p className="text-sm text-blue-700 bg-blue-100 border border-blue-200 p-3 rounded-md">
               Manage your personal information
@@ -100,7 +95,6 @@ export default function AcountDetails() {
                   type="text"
                   value={userName}
                   onChange={(e) => setUserName(e.target.value)}
-                  // className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   className="peer w-full px-4 pt-4 pb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
                   placeholder="Enter name"
                 />
@@ -115,7 +109,6 @@ export default function AcountDetails() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   className="peer w-full px-4 pt-4 pb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
-                  // className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                   placeholder="you@example.com"
                 />
               </div>
@@ -130,7 +123,6 @@ export default function AcountDetails() {
                 value={password}
                 onChange={(e) => setPassword(e.target.value)}
                 className="peer w-full px-4 pt-4 pb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-100 focus:border-blue-500 outline-none transition-all"
-                // className="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-blue-500 focus:border-blue-500"
                 placeholder="••••••••"
               />
             </div>
@@ -148,96 +140,10 @@ export default function AcountDetails() {
               </button>
             </div>
           </div>
+          <WishlistComponent />
         </div>
         <ToastContainer />
       </div>
-
-      {/* <div className="flex items-center justify-center min-h-screen bg-gray-100">
-        <div className="w-full max-w-lg bg-white shadow-lg rounded-2xl overflow-hidden">
-          <div className="bg-gradient-to-r from-blue-500 to-indigo-500 p-6 text-white text-center">
-            <div className="flex items-center justify-center gap-4">
-              <FaUserCircle className="text-5xl bg-white text-gray-600 rounded-full p-2 shadow-md" />
-              <h2 className="text-3xl font-bold mb-2">Your Profile</h2>
-            </div>
-            <p className="text-lg mt-4">Manage your account details</p>
-          </div>
-
-          <div className="p-6">
-            <div className="mb-6 bg-gray-50 p-4 rounded-lg shadow-md">
-              <p className="text-lg font-normal text-gray-500">
-                Username:{" "}
-                <span className="font-bold text-green-700">
-                  {user?.userName || ""}
-                </span>
-              </p>
-              <p className="text-lg font-normal text-gray-500">
-                Email:{" "}
-                <span className="font-bold text-green-700">
-                  {user?.email || ""}
-                </span>
-              </p>
-            </div>
-
-            <h2 className="text-2xl font-bold mb-4 text-center text-gray-800">
-              Update Account
-            </h2>
-            {error && <p className="text-red-500 text-center mb-4">{error}</p>}
-
-            <form onSubmit={handleSubmit} className="space-y-4">
-              <div>
-                <label className="block font-medium text-gray-700">
-                  New Username
-                </label>
-                <input
-                  type="text"
-                  name="userName"
-                  value={userName}
-                  onChange={(e) => setUserName(e.target.value)}
-                  className="peer w-full px-4 pt-4 pb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                  placeholder="Enter your username"
-                />
-              </div>
-
-              <div>
-                <label className="block font-medium text-gray-700">
-                  New Email
-                </label>
-                <input
-                  type="email"
-                  name="email"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
-                  className="peer w-full px-4 pt-4 pb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                  placeholder="Enter your email"
-                />
-              </div>
-
-              <div>
-                <label className="block font-medium text-gray-700">
-                  New Password
-                </label>
-                <input
-                  type="password"
-                  name="password"
-                  value={password}
-                  onChange={(e) => setPassword(e.target.value)}
-                  className="peer w-full px-4 pt-4 pb-4 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 outline-none transition-all"
-                  placeholder="Enter new password"
-                />
-              </div>
-
-              <button
-                type="submit"
-                className="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg shadow-md transition duration-300"
-                disabled={loading}
-              >
-                {loading ? "Updating..." : "Update Account"}
-              </button>
-            </form>
-          </div>
-          <ToastContainer />
-        </div>
-      </div> */}
     </>
   );
 }
