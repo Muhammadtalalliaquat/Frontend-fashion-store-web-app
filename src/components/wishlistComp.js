@@ -1,18 +1,23 @@
 "use client";
 
-import { getAllWishList, removeWishListItem } from "../store/features/wishListSlice";
+import {
+  getAllWishList,
+  removeWishListItem,
+} from "../store/features/wishListSlice";
+import { addCartItem } from "../store/features/productCartSlice";
 import { useState, useEffect } from "react";
+import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { formatDistanceToNow } from "date-fns";
 import Image from "next/image";
-// import { useRouter } from "next/navigation";
 
 export default function WishlistComponent() {
   const [wishListData, setWishListData] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [quantity, setQuantity] = useState(1);
   const [user, setUser] = useState(null);
   const dispatch = useDispatch();
-  //   const router = useRouter();
+  const router = useRouter();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -49,6 +54,38 @@ export default function WishlistComponent() {
       .catch((err) => {
         console.error("Fetch Error:", err, error);
       });
+  };
+
+  const handleAddToCart = (productId) => {
+    const selectedWishlistItem = wishListData.products.find(
+      (item) => item.productId._id === productId
+    );
+    if (!selectedWishlistItem || !selectedWishlistItem.productId) {
+      console.error("Product not found in wishlist.");
+      setQuantity("");
+      return;
+    }
+
+    const selectedProduct = selectedWishlistItem.productId;
+
+    const productCartData = {
+      productId: selectedProduct._id,
+      name: selectedProduct.name,
+      price: selectedProduct.price,
+      category: selectedProduct.category,
+      description: selectedProduct.description,
+      image: selectedProduct.image,
+      quantity,
+    };
+
+    dispatch(addCartItem(productCartData)).then((result) => {
+      if (addCartItem.fulfilled.match(result)) {
+        router.push("/productCart");
+        console.log("cart item added:", result);
+      } else {
+        console.log("Failed to add item to cart. Please try again.");
+      }
+    });
   };
 
   return (
@@ -133,18 +170,15 @@ export default function WishlistComponent() {
                         </span>
                       </td>
                       <td className="text-sm text-gray-500">
-                        {item?.productId.createdAt
-                          ? formatDistanceToNow(
-                              new Date(item?.productId.createdAt),
-                              {
-                                addSuffix: true,
-                              }
-                            )
+                        {item?.addedAt
+                          ? formatDistanceToNow(new Date(item.addedAt), {
+                              addSuffix: true,
+                            })
                           : "Date not available"}
                       </td>
                       <td className="p-4">
                         <button
-                          //   onClick={() => handleDeleteWishlist(item.productId._id)}
+                          onClick={() => handleAddToCart(item.productId._id)}
                           className="bg-teal-600 hover:bg-teal-700 text-white text-sm px-4 py-2 rounded"
                         >
                           Add to cart
@@ -163,7 +197,12 @@ export default function WishlistComponent() {
                   key={item._id}
                   className="border rounded-lg p-4 shadow-sm relative"
                 >
-                  <button className="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl">
+                  <button
+                    onClick={() =>
+                      !user ? null : handleDeleteWishlist(item.productId._id)
+                    }
+                    className="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl"
+                  >
                     🗑
                   </button>
 
@@ -203,18 +242,18 @@ export default function WishlistComponent() {
                       )}
                     </p>
                     <p className="text-xs text-gray-400 mt-1">
-                      {item?.productId.createdAt
-                        ? formatDistanceToNow(
-                            new Date(item?.productId.createdAt),
-                            {
-                              addSuffix: true,
-                            }
-                          )
+                      {item?.addedAt
+                        ? formatDistanceToNow(new Date(item.addedAt), {
+                            addSuffix: true,
+                          })
                         : "Date not available"}
                     </p>
                   </div>
 
-                  <button className="w-full mt-4 bg-teal-600 hover:bg-teal-700 text-white text-sm py-2 rounded">
+                  <button
+                    onClick={() => handleAddToCart(item.productId._id)}
+                    className="w-full mt-4 bg-teal-600 hover:bg-teal-700 text-white text-sm py-2 rounded"
+                  >
                     Add to cart
                   </button>
                 </div>

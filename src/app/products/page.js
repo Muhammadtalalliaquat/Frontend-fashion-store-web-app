@@ -145,7 +145,7 @@ export default function Products() {
 
   const categories = [
     { name: "All Categories", value: "all" },
-    { name: "Jewelry", value: "Jewellery" },
+    { name: "Jewellery", value: "Jewellery" },
     { name: "Men's & Women's Watches", value: "Watch" },
   ];
 

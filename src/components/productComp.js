@@ -107,13 +107,6 @@ export default function ProductDetails() {
       .then((newReview) => {
         console.log("Review added successfully:", newReview.data);
 
-        // const reviewWithUser = {
-        //   ...newReview.data,
-        //   createdAt: newReview.data.createdAt || new Date().toISOString(),
-        // };
-
-        // console.log(reviewWithUser, "new review data here");
-
         setRating(0);
         setComment("");
 

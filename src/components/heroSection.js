@@ -31,7 +31,7 @@ export default function CategoryCarousel() {
   }, [dispatch]);
 
   return (
-    <section className="w-full w-full bg-gradient-to-br from-indigo-800 via-black to-indigo-900 text-white py-10 px-4 sm:px-25 relative overflow-hidden">
+    <section className="w-full w-full bg-gradient-to-br from-indigo-800 via-black to-indigo-900 text-white py-8 px-4 sm:px-25 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-full z-0">
         <div className="absolute w-72 h-72 bg-blue-400 opacity-20 rounded-full -top-20 -left-20 animate-ping"></div>
         <div className="absolute w-48 h-48 bg-purple-500 opacity-20 rounded-full top-1/2 left-1/2 animate-pulse"></div>
@@ -48,7 +48,7 @@ export default function CategoryCarousel() {
         >
           {products.map((item, index) => (
             <SwiperSlide key={index}>
-              <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mt-20 bg-white/5 backdrop-blur-sm shadow-2xl rounded-xl p-8 sm:p-20">
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mt-12 sm:mt-20 bg-white/5 backdrop-blur-sm shadow-2xl rounded-xl p-8 sm:p-20">
                 <div className="flex-1 text-center lg:text-left space-y-5">
                   <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight text-white">
                     Discover Your Fashion <br />
@@ -79,7 +79,7 @@ export default function CategoryCarousel() {
                   </button>
                 </div>
 
-                <div className="flex justify-center lg:justify-end">
+                <div className="flex justify-center lg:justify-end mb-3 sm:mb-0">
                   <Image
                     src={item.image}
                     alt={item.name}

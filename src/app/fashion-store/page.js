@@ -217,7 +217,7 @@ export default function MainDashboard() {
 
       {!loading && (
         <>
-          <div className="p-6 mt-16">
+          <div className="p-6 mt-6">
             <div className="mx-auto mb-8">
               <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-900 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">
                 Our Products
