@@ -16,7 +16,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { TiArrowSortedUp } from "react-icons/ti";
 import { motion } from "framer-motion";
-import { AiOutlineHeart } from "react-icons/ai";
+import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -28,6 +28,7 @@ export default function Products() {
   const [activePopupCart, setActivePopupCart] = useState(null);
   const [activePopup, setActivePopup] = useState(null);
   const [wishListPopup, setWishListPopup] = useState(null);
+  const [wishlistIds, setWishlistIds] = useState([]);
   const [error, setError] = useState("");
   const [sortedProducts, setSortedProducts] = useState([]);
   const [sortOrder, setSortOrder] = useState("desc");
@@ -122,12 +123,13 @@ export default function Products() {
     dispatch(addWishListItem(productCartData))
       .then((result) => {
         console.log("API Response:", result.payload);
-        const msg = result.payload?.msg;
 
+        const msg = result.payload?.msg;
         if (msg) {
           setError(msg);
+        } else {
+          setWishlistIds((prev) => [...prev, productId]);
         }
-        // setWishlistItems(result.payload);
         // router.push("/productCart");
       })
       .catch((err) => {
@@ -222,6 +224,7 @@ export default function Products() {
                   key={product._id}
                   className="group relative bg-white rounded-xl shadow-md p-4 hover:bg-gray-50 transition-all duration-300 flex flex-col items-center text-center"
                 >
+                  {wishlistIds.includes(product._id)}
                   <div className="relative group w-full max-w-sm pb-3 rounded-xl overflow-hidden shadow-lg border border-gray-200 p-2 sm:pb-4 pb-24 bg-cover bg-center bg-no-repeat">
                     <button
                       onClick={() => setActivePopupCart(product._id)}
@@ -288,7 +291,7 @@ export default function Products() {
                     )}
 
                     <div className="absolute top-2 left-4 z-30">
-                      <button
+                      {/* <button
                         onClick={() => {
                           if (!user) {
                             setWishListPopup(product._id);
@@ -301,6 +304,35 @@ export default function Products() {
                         opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
                       >
                         <AiOutlineHeart className="w-5 h-5" />
+                      </button> */}
+                      <button
+                        onClick={() => {
+                          if (!user) {
+                            setWishListPopup(product._id);
+                          } else {
+                            if (wishlistIds.includes(product._id)) {
+                              // Remove from wishlist
+                              setWishlistIds((prev) =>
+                                prev.filter((id) => id !== product._id)
+                              );
+                              // Optionally call API to remove from wishlist
+                            } else {
+                              handleAddToWishlist(product._id);
+                              setWishlistIds((prev) => [...prev, product._id]);
+                            }
+                          }
+                        }}
+                        className={`bg-white ${
+                          wishlistIds
+                            ? "text-red-600 hover:bg-red-600 hover:text-white"
+                            : "text-red-500 hover:bg-red-400 hover:text-white"
+                        } transition-all duration-300 ease-in-out rounded-full p-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100`}
+                      >
+                        {wishlistIds.includes(product._id) ? (
+                          <AiFillHeart className="w-5 h-5" />
+                        ) : (
+                          <AiOutlineHeart className="w-5 h-5" />
+                        )}
                       </button>
                     </div>
 

@@ -8,51 +8,54 @@ import Link from "next/link";
 export default function GetStarted() {
   return (
     <div
-      className="min-h-screen w-full bg-cover bg-center flex items-center justify-center"
+      className="min-h-screen w-full bg-cover bg-center flex items-center justify-center px-4"
       style={{ backgroundImage: 'url("/product-photos.jpg")' }}
     >
       <motion.div
         initial={{ opacity: 0, y: 30 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.8 }}
-        className="bg-white/10 backdrop-blur-lg rounded-xl shadow-2xl max-w-7xl w-full mx-4 md:mx-10 p-10 md:p-16 grid grid-cols-1 md:grid-cols-2 gap-12"
+        className="bg-white/10 backdrop-blur-lg rounded-2xl shadow-2xl w-full max-w-6xl p-6 sm:p-10 md:p-16 grid grid-cols-1 md:grid-cols-2 gap-10"
       >
-        <div className="flex flex-col justify-center space-y-6">
-          <h1 className="text-4xl md:text-6xl font-extrabold text-gray-200 leading-tight">
-            Discover Your <span className="text-blue-600">Signature Style</span>
+        {/* LEFT SECTION */}
+        <div className="flex flex-col justify-center text-center md:text-left space-y-6">
+          <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-gray-100 leading-tight">
+            Discover Your <span className="text-blue-500">Signature Style</span>
           </h1>
-          <p className="text-lg md:text-xl text-gray-200">
-            Explore premium fashion collections curated for modern trends.
-            Elevate your wardrobe today.
+          <p className="text-base sm:text-lg md:text-xl text-gray-200">
+            Explore premium collections curated for modern fashion. Elevate your
+            wardrobe today.
           </p>
-          <div className="flex gap-4">
+
+          <div className="flex flex-col sm:flex-row gap-4 w-full sm:w-auto">
             <Link
               href="/shop"
-              className="px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg bg-blue-600 text-white font-semibold rounded-xl shadow-md hover:bg-blue-700 transition duration-300"
+              className="w-full sm:w-auto sm:px-5 sm:py-3 px-3 py-2 text-base bg-blue-600 text-white font-semibold rounded-xl shadow hover:bg-blue-700 transition duration-300 text-center"
             >
               Shop Now
             </Link>
             <Link
               href="/login"
-              className="px-4 py-2 text-sm sm:px-6 sm:py-3 sm:text-lg border border-gray-300 text-white font-semibold rounded-xl shadow-md hover:bg-gray-100 hover:text-black transition duration-300"
+              className="w-full sm:w-auto sm:px-5 sm:py-3 px-3 py-2 text-base border border-white text-white font-semibold rounded-xl shadow hover:bg-white hover:text-black transition duration-300 text-center"
             >
               Join Us
             </Link>
           </div>
         </div>
 
+        {/* RIGHT SECTION */}
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9 }}
-          className="flex justify-center items-center"
+          className="hidden md:flex justify-center items-center"
         >
           <Image
             src="/fashion-store-logo.jpg"
             alt="Fashion Model"
-            width={500}
-            height={500}
-            className="rounded-lg"
+            width={400}
+            height={400}
+            className="rounded-xl w-full max-w-xs sm:max-w-md object-cover"
             priority
           />
         </motion.div>
