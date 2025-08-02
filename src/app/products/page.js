@@ -101,8 +101,8 @@ export default function Products() {
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
-      });
-    router.push("/productCart");
+      })
+      .finally(() => router.push("/productCart"));
   };
 
   const handleAddToWishlist = (productId) => {

@@ -90,15 +90,8 @@ export default function ProductDetails() {
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
-      });
-    router.push("/productCart");
-    // dispatch(addCartItem(productCartData)).then((result) => {
-    //   if (addCartItem.fulfilled.match(result)) {
-    //     router.push("/productCart");
-    //   } else {
-    //     console.log("Failed to add item to cart. Please try again.");
-    //   }
-    // })
+      })
+      .finally(() => router.push("/productCart"));
   };
 
   const handleAddReview = (e) => {

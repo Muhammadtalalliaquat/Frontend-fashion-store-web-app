@@ -83,8 +83,8 @@ export default function ShopPage() {
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
-      });
-    router.push("/productCart");
+      })
+      .finally(() => router.push("/productCart"));
   };
 
   return (
