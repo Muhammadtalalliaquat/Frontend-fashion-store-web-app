@@ -62,7 +62,7 @@ export default function MainDashboard() {
       .catch((err) => {
         console.error("Fetch Error:", err, error);
         setError("Failed to load products.");
-        setLoading(false);
+        setLoading(true);
       });
 
     dispatch(getDiscountOffer())
@@ -74,7 +74,7 @@ export default function MainDashboard() {
       .catch((err) => {
         console.error("Fetch Error:", err, error);
         setError("Failed to load products.");
-        setLoading(false);
+        setLoading(true);
       });
 
     dispatch(getAllFeedback())
@@ -86,7 +86,7 @@ export default function MainDashboard() {
       .catch((err) => {
         console.error("Fetch Error:", err, error);
         setError("Failed to load feedbacks.");
-        setLoading(false);
+        setLoading(true);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
@@ -243,7 +243,6 @@ export default function MainDashboard() {
                     }}
                     className="block"
                   >
-                    {/* View Details */}
                     <div
                       // key={product._id}
                       className="bg-white shadow-lg  p-5 flex flex-col items-center text-center transition-transform duration-300 hover:scale-98 hover:shadow-xl border border-gray-200 group relative"
@@ -258,16 +257,7 @@ export default function MainDashboard() {
                           : "Out of Stock"}
                       </span>
 
-                      {/* <div className="relative opacity-100 group-hover:opacity-60 w-44 h-44 overflow-hidden rounded-lg border-b-2 border-gray-300 pb-2">
-                      <Image
-                        src={product.image}
-                        alt="Product"
-                        width={176}
-                        height={176}
-                        className="object-cover w-full h-full rounded-lg transition-all duration-300"
-                        priority
-                      />
-                    </div> */}
+                    
                       <div className="relative opacity-100 group-hover:opacity-60 w-full sm:w-40 md:w-44 h-40 sm:h-44 overflow-hidden rounded-lg border-b-2 border-gray-300 pb-2">
                         <Image
                           src={product.image}
@@ -366,7 +356,6 @@ export default function MainDashboard() {
                       </div>
                     )}
 
-                    {/* Image section */}
                     <div className="w-full md:w-1/2">
                       <Image
                         src={item.image}
@@ -378,7 +367,6 @@ export default function MainDashboard() {
                       />
                     </div>
 
-                    {/* Details section */}
                     <div className="w-full md:w-1/2 space-y-3 text-center md:text-left flex flex-col items-center md:items-start">
                       <h3 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900">
                         {item.name}
@@ -429,7 +417,6 @@ export default function MainDashboard() {
               ))}
             </div>
 
-            {/* Navigation buttons */}
             <button
               onClick={prevSlide}
               className="absolute left-2 md:left-4 top-1/2 bg-gradient-to-r from-yellow-400 via-yellow-500 to-yellow-600 transform -translate-y-1/2 bg-white text-black p-2 rounded-full shadow hover:bg-blue-500 hover:text-white transition"

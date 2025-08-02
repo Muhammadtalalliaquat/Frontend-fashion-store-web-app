@@ -9,7 +9,6 @@ import { getAllDiscountOffer } from "../../store/features/discountSlice";
 import { addCartItem } from "../../store/features/productCartSlice";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import FashionStoreLoader from "../../components/storeLoader";
-// import { FaSpinner } from "react-icons/fa";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
@@ -81,11 +80,11 @@ export default function ShopPage() {
     dispatch(addCartItem(productCartData))
       .then((result) => {
         console.log("API Response:", result.payload);
-        router.push("/productCart");
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
       });
+    router.push("/productCart");
   };
 
   return (

@@ -39,11 +39,6 @@ export default function Products() {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
 
-    if (error) {
-      const timer = setTimeout(() => setError(""), 3000);
-      return () => clearTimeout(timer);
-    }
-
     dispatch(fetchAllProductShow())
       .then((result) => {
         console.log("API Response:", result.payload);
@@ -55,7 +50,8 @@ export default function Products() {
         setError("Failed to load products.");
         setLoading(false);
       });
-  }, [dispatch, error]);
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [dispatch]);
 
   useEffect(() => {
     const filtered = products.filter(
@@ -66,6 +62,13 @@ export default function Products() {
 
     setSortedProducts(filtered);
   }, [products, category, searchTerm]);
+
+  useEffect(() => {
+    if (error) {
+      const timer = setTimeout(() => setError(""), 3000);
+      return () => clearTimeout(timer);
+    }
+  }, [error]);
 
   const handleQuantityChange = (id, value) => {
     const num = Math.max(1, Number(value));
@@ -95,21 +98,16 @@ export default function Products() {
     dispatch(addCartItem(productCartData))
       .then((result) => {
         console.log("API Response:", result.payload);
-        router.push("/productCart");
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
       });
+    router.push("/productCart");
   };
 
   const handleAddToWishlist = (productId) => {
-    const selectedProduct = products.find(
-      (product) => product._id === productId
-    );
-    if (!selectedProduct) {
-      console.error("Product not found.");
-      return;
-    }
+    const selectedProduct = products.find((p) => p._id === productId);
+    if (!selectedProduct) return console.error("Product not found.");
 
     const productCartData = {
       productId: selectedProduct._id,
@@ -122,19 +120,30 @@ export default function Products() {
 
     dispatch(addWishListItem(productCartData))
       .then((result) => {
-        console.log("API Response:", result.payload);
-
         const msg = result.payload?.msg;
         if (msg) {
           setError(msg);
         } else {
-          setWishlistIds((prev) => [...prev, productId]);
+          setWishlistIds((prev) =>
+            prev.includes(productId) ? prev : [...prev, productId]
+          );
         }
-        // router.push("/productCart");
       })
-      .catch((err) => {
-        console.error("Fetch Error:", err);
-      });
+      .catch((err) => console.error("Fetch Error:", err));
+  };
+
+  const handleWishlistToggle = (productId) => {
+    if (!user) {
+      setWishListPopup(productId);
+      return;
+    }
+
+    if (wishlistIds.includes(productId)) {
+      setWishlistIds((prev) => prev.filter((id) => id !== productId));
+    } else {
+      handleAddToWishlist(productId);
+      setWishlistIds((prev) => [...prev, productId]);
+    }
   };
 
   const toggleSortByPrice = () => {
@@ -291,39 +300,10 @@ export default function Products() {
                     )}
 
                     <div className="absolute top-2 left-4 z-30">
-                      {/* <button
-                        onClick={() => {
-                          if (!user) {
-                            setWishListPopup(product._id);
-                          } else {
-                            handleAddToWishlist(product._id);
-                          }
-                        }}
-                        className="bg-white text-red-500 hover:text-white hover:bg-red-400 
-                        transition-all duration-300 ease-in-out rounded-full p-2 
-                        opacity-100 sm:opacity-0 sm:group-hover:opacity-100"
-                      >
-                        <AiOutlineHeart className="w-5 h-5" />
-                      </button> */}
                       <button
-                        onClick={() => {
-                          if (!user) {
-                            setWishListPopup(product._id);
-                          } else {
-                            if (wishlistIds.includes(product._id)) {
-                              // Remove from wishlist
-                              setWishlistIds((prev) =>
-                                prev.filter((id) => id !== product._id)
-                              );
-                              // Optionally call API to remove from wishlist
-                            } else {
-                              handleAddToWishlist(product._id);
-                              setWishlistIds((prev) => [...prev, product._id]);
-                            }
-                          }
-                        }}
+                        onClick={() => handleWishlistToggle(product._id)}
                         className={`bg-white ${
-                          wishlistIds
+                          wishlistIds.includes(product._id)
                             ? "text-red-600 hover:bg-red-600 hover:text-white"
                             : "text-red-500 hover:bg-red-400 hover:text-white"
                         } transition-all duration-300 ease-in-out rounded-full p-2 opacity-100 sm:opacity-0 sm:group-hover:opacity-100`}

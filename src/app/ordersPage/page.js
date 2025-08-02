@@ -14,7 +14,6 @@ import {
 import Image from "next/image";
 import Navbar from "../../components/navbar";
 // import Footer from "../../compoments/footer";
-// import { FaSpinner } from "react-icons/fa";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import FashionStoreLoader from "../../components/storeLoader";
 import { motion } from "framer-motion";
@@ -27,6 +26,44 @@ export default function OrdersPageDashboard() {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [openOrderId, setOpenOrderId] = useState(null);
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
+
+    dispatch(getAllOrders())
+      .then((result) => {
+        console.log("API Response:", result.payload);
+        setOrderList(result.payload.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+        setLoading(false);
+      });
+
+    dispatch(getAllMultiplesOrders())
+      .then((result) => {
+        console.log("API Response:", result.payload);
+        setOrder(result.payload.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+        setLoading(false);
+      });
+
+    dispatch(getDiscountOfferOrder())
+      .then((result) => {
+        console.log("API Response:", result.payload);
+        setDiscountOrder(result.payload.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+        setLoading(false);
+      });
+  }, [dispatch]);
 
   const toggleDropdown = (orderId) => {
     setOpenOrderId((prev) => (prev === orderId ? null : orderId));
@@ -101,54 +138,11 @@ export default function OrdersPageDashboard() {
       });
   };
 
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    setUser(storedUser);
-
-    dispatch(getAllOrders())
-      .then((result) => {
-        console.log("API Response:", result.payload);
-        setOrderList(result.payload.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch Error:", err);
-        setLoading(false);
-      });
-
-    dispatch(getAllMultiplesOrders())
-      .then((result) => {
-        console.log("API Response:", result.payload);
-        setOrder(result.payload.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch Error:", err);
-        setLoading(false);
-      });
-
-    dispatch(getDiscountOfferOrder())
-      .then((result) => {
-        console.log("API Response:", result.payload);
-        setDiscountOrder(result.payload.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch Error:", err);
-        setLoading(false);
-      });
-  }, [dispatch]);
-
   return (
     <>
       <Navbar />
 
-      {loading && (
-        // <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
-        //   <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
-        // </div>
-        <FashionStoreLoader order={true} />
-      )}
+      {loading && <FashionStoreLoader order={true} />}
 
       {!loading ? (
         <>

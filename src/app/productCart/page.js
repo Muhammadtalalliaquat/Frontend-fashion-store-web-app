@@ -17,7 +17,6 @@ import {
   TrashIcon,
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
-// import { FaSpinner } from "react-icons/fa";
 import FashionStoreLoader from "../../components/storeLoader";
 
 export default function ProductCartPage() {
@@ -40,17 +39,7 @@ export default function ProductCartPage() {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-
-  useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    setUser(storedUser);
-
-    if (errorMsg) {
-      const timer = setTimeout(() => setErrorMsg(""), 13000);
-      return () => clearTimeout(timer);
-    }
-  }, [errorMsg]);
-
+  
   useEffect(() => {
     dispatch(getAllCart())
       .then((result) => {
@@ -66,6 +55,17 @@ export default function ProductCartPage() {
 
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
+
+  useEffect(() => {
+    const storedUser = JSON.parse(localStorage.getItem("user"));
+    setUser(storedUser);
+
+    if (errorMsg) {
+      const timer = setTimeout(() => setErrorMsg(""), 13000);
+      return () => clearTimeout(timer);
+    }
+  }, [errorMsg]);
+
 
   const selectedCartItems = selectedItems;
 
@@ -244,7 +244,7 @@ export default function ProductCartPage() {
                       )}
                     </div>
 
-                    <div className="flex flex-row sm:flex-row items-center gap-4  sm:gap-5 w-full sm:w-auto flex-wrap">
+                    <div className="flex flex-row sm:flex-row items-center gap-4 sm:gap-5 w-full sm:w-auto flex-wrap">
                       <input
                         type="checkbox"
                         checked={selectedItems.some((i) => i._id === item._id)}
@@ -269,19 +269,15 @@ export default function ProductCartPage() {
                         height={80}
                         className="rounded-lg object-cover shadow-md w-20 h-20 sm:w-[90px] sm:h-[90px]"
                       />
-                      <div className="text-center sm:text-left max-w-xs overflow-hidden">
-                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 truncate">
+                      <div className="flex flex-col flex-1 min-w-0">
+                        <h3 className="text-base sm:text-lg font-semibold text-gray-900 break-words whitespace-normal">
                           {item.productId?.name}
                         </h3>
-                        <p className="text-sm sm:text-base text-gray-600 truncate">
+
+                        <p className="text-sm sm:text-base text-gray-600 line-clamp-1 whitespace-nowrap overflow-hidden text-ellipsis">
                           {item.productId?.SalesCategory ||
                             item.productId?.category}
                         </p>
-
-                        {/* Optional multiline description with clamp */}
-                        {/* <p className="text-sm text-gray-600 line-clamp-2 sm:line-clamp-1 break-words">
-    {item.productId?.offerDescription || item.productId?.description}
-  </p> */}
 
                         <p className="text-sm sm:text-base mt-1 font-medium text-indigo-600">
                           $

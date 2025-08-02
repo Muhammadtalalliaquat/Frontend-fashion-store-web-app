@@ -9,6 +9,7 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import { formatDistanceToNow } from "date-fns";
+import { FcDeleteRow } from "react-icons/fc";
 import Image from "next/image";
 
 export default function WishlistComponent() {
@@ -36,23 +37,26 @@ export default function WishlistComponent() {
   }, [dispatch]);
 
   const handleDeleteWishlist = (productId) => {
-    console.log(productId, "id here:");
+    if (!productId || typeof productId !== "string") {
+      console.error("Invalid product ID:", productId);
+      return;
+    }
     dispatch(removeWishListItem(productId))
       .then((result) => {
-        console.log("API Response:", result.payload);
-        dispatch(getAllWishList())
-          .then((result) => {
-            console.log("API Response DATAT HERE:", result.payload);
-            setWishListData(result.payload.data);
-            setLoading(false);
-          })
-          .catch((err) => {
-            console.error("Fetch Error:", err, error);
-            setLoading(false);
-          });
+        console.log("Removed:", result.payload);
+        setWishListData((prev) => {
+          if (!prev?.products || !Array.isArray(prev.products)) return prev;
+
+          return {
+            ...prev,
+            products: prev.products.filter(
+              (item) => item.productId._id !== productId
+            ),
+          };
+        });
       })
       .catch((err) => {
-        console.error("Fetch Error:", err, error);
+        console.error("Remove Wishlist Error:", err);
       });
   };
 
@@ -78,14 +82,14 @@ export default function WishlistComponent() {
       quantity,
     };
 
-    dispatch(addCartItem(productCartData)).then((result) => {
-      if (addCartItem.fulfilled.match(result)) {
-        router.push("/productCart");
-        console.log("cart item added:", result);
-      } else {
-        console.log("Failed to add item to cart. Please try again.");
-      }
-    });
+    dispatch(addCartItem(productCartData))
+      .then((result) => {
+        console.log("API Response:", result.payload);
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+      });
+    router.push("/productCart");
   };
 
   return (
@@ -131,9 +135,12 @@ export default function WishlistComponent() {
                               ? null
                               : handleDeleteWishlist(item.productId._id)
                           }
-                          className="text-gray-400 hover:text-red-500 text-xl"
+                          title="Delete wishlist item"
+                          className="cursor-pointer text-gray-400 hover:text-red-500"
                         >
-                          🗑
+                          {/* <abbr title="delete wishlist item"> */}
+                          <FcDeleteRow size={20} />
+                          {/* </abbr> */}
                         </button>
                       </td>
                       <td className="p-4 flex items-center gap-4">
@@ -203,7 +210,7 @@ export default function WishlistComponent() {
                     }
                     className="absolute top-3 right-3 text-gray-400 hover:text-red-500 text-xl"
                   >
-                    🗑
+                    <FcDeleteRow size={20} />
                   </button>
 
                   <div className="flex items-center gap-4">
