@@ -151,7 +151,7 @@ export default function OrdersPageDashboard() {
               Orders
             </h1>
 
-            <div className="grid gap-6">
+            <div className="grid gap-4">
               {orderList && orderList.length > 0 ? (
                 orderList.map((order) => (
                   <div
@@ -279,7 +279,7 @@ export default function OrdersPageDashboard() {
                       </p>
                     </div>
 
-                    <div className="grid sm:grid-cols-2 gap-4 mb-4">
+                    <div className="grid sm:grid-cols-2 gap-4 mb-4 sm:mb-0">
                       {order.products.map((item) => (
                         <div
                           key={item._id}
@@ -342,7 +342,7 @@ export default function OrdersPageDashboard() {
                 {orders.map((order, index) => (
                   <div
                     key={order._id || index}
-                    className="border border-gray-200 rounded-xl p-6 shadow-lg bg-white"
+                    className="border border-gray-200 mt-4 p-6 shadow-lg bg-white"
                   >
                     <div className="flex justify-between items-start mb-4">
                       <div>
@@ -473,7 +473,7 @@ export default function OrdersPageDashboard() {
                         {order.products.map((prod, i) => (
                           <div
                             key={prod.productId?._id || i}
-                            className="border rounded-lg p-3 bg-gray-50 flex gap-4 items-center"
+                            className="border  p-3 bg-gray-50 flex gap-4 items-center"
                           >
                             {prod.image ? (
                               <Image
@@ -508,10 +508,10 @@ export default function OrdersPageDashboard() {
               <></>
             )}
 
-            <div className="mt-20">
+            <div className="mt-10">
               {discountOrder && discountOrder.length > 0 ? (
                 <>
-                  <div className="w-full bg-gradient-to-r from-blue-100 to-blue-50 p-5 rounded-xl mb-6 shadow-sm border border-blue-200">
+                  <div className="w-full bg-gradient-to-r from-blue-100 to-blue-50 p-5 mb-6 shadow-sm border border-blue-200">
                     <h2 className="text-2xl sm:text-3xl font-bold text-blue-800 tracking-tight">
                       Discount Orders
                     </h2>

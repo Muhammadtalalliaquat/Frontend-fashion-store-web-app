@@ -217,8 +217,8 @@ export default function MainDashboard() {
 
       {!loading && (
         <>
-          <div className="p-6 mt-6">
-            <div className="mx-auto mb-8">
+          <div className="p-6 bg-gray-50">
+            <div className="mx-auto mb-6 mt-2">
               <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-900 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">
                 Our Products
               </h2>
@@ -257,7 +257,6 @@ export default function MainDashboard() {
                           : "Out of Stock"}
                       </span>
 
-                    
                       <div className="relative opacity-100 group-hover:opacity-60 w-full sm:w-40 md:w-44 h-40 sm:h-44 overflow-hidden rounded-lg border-b-2 border-gray-300 pb-2">
                         <Image
                           src={product.image}
@@ -310,7 +309,7 @@ export default function MainDashboard() {
 
       {/* Sales Discount Offers Section */}
       {!loading && (
-        <div className="w-full py-8 relative overflow-hidden">
+        <div className="w-full bg-white py-8 relative overflow-hidden">
           <div className="w-full max-w-screen-sm mx-auto mb-8 px-4">
             <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-900 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">
               🏷️ Sales Discount Offers
@@ -324,7 +323,7 @@ export default function MainDashboard() {
             >
               {discount.map((item, i) => (
                 <div key={i} className="min-w-full px-4 flex-shrink-10">
-                  <div className="relative bg-white  border border-gray-200 p-6 shadow-lg mx-auto max-w-5xl flex flex-col md:flex-row items-center md:items-start gap-8 overflow-hidden">
+                  <div className="relative bg-gray-50  border border-gray-200 p-6 shadow-lg mx-auto max-w-5xl flex flex-col md:flex-row items-center md:items-start gap-8 overflow-hidden">
                     {/* Admin actions */}
                     {user?.isAdmin && (
                       <div className="absolute top-4 right-4">

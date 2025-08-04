@@ -69,42 +69,6 @@ export default function ContactPage() {
       });
   };
 
-  // const handleAddConatcData = (e) => {
-  //   e.preventDefault();
-
-  //   const contactData = {
-  //     firstName,
-  //     lastName,
-  //     email,
-  //     message,
-  //   };
-
-  //   setIsSubmitting(true);
-
-  //   dispatch(createContact(contactData))
-  //     .then((result) => {
-  //       console.log("API Response:", result.payload);
-  //        const message = result.payload?.msg;
-  //        if (message) {
-  //          setErrorMessage(message);
-  //        }
-  //       setFirstName("");
-  //       setLastName("");
-  //       setEmail("");
-  //       setMessage("");
-  //       setIsSubmitting(false);
-  //       toast.success("Successfully send message.", {
-  //         position: "bottom-right",
-  //         autoClose: 3000,
-  //       });
-  //       // router.push("/fashion-store");
-  //     })
-  //     .catch((err) => {
-  //       console.error("Fetch Error:", err);
-  //       setIsSubmitting(false);
-  //     });
-  // };
-
   const handleAddFeedbackData = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
@@ -118,24 +82,25 @@ export default function ContactPage() {
         // }
         setFeedBackMessage("");
         setIsSubmitting(false);
-        router.push("/fashion-store");
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
-        setIsSubmitting(false);
+      })
+      .finally(() => {
+        router.push("/fashion-store");
       });
   };
 
   return (
     <>
       <Navbar />
-      <div className="min-h-screen flex items-center justify-center bg-gray-5  sm:p-12 mt-10 md:mt-18">
+      <div className="min-h-screen flex items-center justify-center bg-white max-w-7xl w-full mx-auto sm:p-12 mt-10 md:mt-18">
         <ToastContainer />
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
           transition={{ duration: 0.8 }}
-          className="backdrop-blur-lg  max-w-7xl w-full mx-4 md:mx-10 p-10 md:p-2 grid grid-cols-1 md:grid-cols-2 gap-12"
+          className="backdrop-blur-lg max-w-7xl w-full mx-4 md:mx-10 p-10 md:p-2 grid grid-cols-1 md:grid-cols-2 gap-12"
         >
           <div className="text-left mb-10">
             <h1 className="text-lg md:text-2xl font-bold text-gray-900">

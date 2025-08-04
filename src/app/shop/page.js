@@ -94,9 +94,17 @@ export default function ShopPage() {
       {loading && <FashionStoreLoader product={discount} />}
 
       <div className="container mx-auto p-4 mt-20 mb-30">
-        <div className="bg-blue-500 text-white p-8 text-center mb-8 rounded-xl shadow-md animate__animated animate__fadeInDown">
+        {/* <div className="bg-blue-500 text-white p-8 text-center mb-8 rounded-xl shadow-md animate__animated animate__fadeInDown">
           <h1 className="text-3xl font-bold mb-2">Popular Gift Collections</h1>
           <p className="text-lg">Select your favorite product now on sale</p>
+        </div> */}
+        <div className="bg-gradient-to-r from-blue-600 to-indigo-600 mb-10 text-white px-6 py-10 text-center rounded-2xl shadow-lg animate__animated animate__fadeInDown">
+          <h1 className="text-3xl md:text-5xl font-extrabold mb-4 tracking-tight">
+            Popular Gift Collections
+          </h1>
+          <p className="text-lg md:text-xl font-medium opacity-90">
+            Select your favorite product now on sale
+          </p>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
