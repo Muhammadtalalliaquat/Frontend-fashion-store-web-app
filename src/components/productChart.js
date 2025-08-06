@@ -28,7 +28,6 @@ export default function DiscountOrderChart() {
         const countProducts = (orders) => {
           orders.forEach((order) => {
             order.products.forEach((item) => {
-              console.log("product data here is:", item.name);
               const name =
                 item.name || item.productId?.name || "Unknown Product";
               const quantity = item.quantity || 1;

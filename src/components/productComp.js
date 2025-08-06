@@ -43,13 +43,16 @@ export default function ProductDetails() {
   const [user, setUser] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [reviews, setReviews] = useState([]);
-  const [error, setError] = useState(null);
+  const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
   const [rating, setRating] = useState(0);
   const [comment, setComment] = useState("");
   const dispatch = useDispatch();
   const [showAddReview, setShowAddReview] = useState(false);
   const [contentHeight, setContentHeight] = useState(0);
+  const [previewImage, setPreviewImage] = useState(null);
+  const [images, setImages] = useState("");
+
   const contentRef = useRef(null);
 
   const handleStarClick = (value) => {
@@ -97,11 +100,20 @@ export default function ProductDetails() {
   const handleAddReview = (e) => {
     e.preventDefault();
 
-    const productReviewData = {
-      productId,
-      rating,
-      comment,
-    };
+    if (!rating) {
+      setError("Please add a product rating");
+      // alert("Please add a product rating");
+      return;
+    }
+
+    const productReviewData = new FormData();
+    productReviewData.append("productId", productId);
+    productReviewData.append("rating", rating);
+    productReviewData.append("comment", comment);
+
+    if (images) {
+      productReviewData.append("image", images);
+    }
 
     dispatch(addProductReview(productReviewData))
       .unwrap()
@@ -118,8 +130,8 @@ export default function ProductDetails() {
             // setLoading(false);
           })
           .catch((err) => {
-            console.error("Fetch Error:", err, error);
-            setError("Failed to load products.");
+            console.error("Fetch Error:", err);
+            // setError("Failed to load products.");
             // setLoading(false);
           });
       })
@@ -184,7 +196,7 @@ export default function ProductDetails() {
       })
       .catch((err) => {
         console.error("Fetch Error:", err, error);
-        setError("Failed to load products.");
+        // setError("Failed to load products.");
         setLoading(false);
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -194,7 +206,12 @@ export default function ProductDetails() {
     if (contentRef.current) {
       setContentHeight(contentRef.current.scrollHeight);
     }
-  }, [showAddReview]);
+
+    if (error) {
+      const timer = setTimeout(() => setError(""), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [showAddReview, error]);
 
   return (
     <>
@@ -398,9 +415,45 @@ export default function ProductDetails() {
                       required
                     />
 
+                    <div className="mb-2 mt-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Upload Product Image
+                      </label>
+
+                      <label
+                        htmlFor="uploadImage"
+                        className="w-full flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-lg p-6 bg-gray-50 text-gray-600 cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-8 w-8 mb-2 text-gray-500"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12v8m0 0l-3-3m3 3l3-3M4 8h16"
+                          />
+                        </svg>
+                        <span className="text-sm">Click to upload image</span>
+                      </label>
+
+                      <input
+                        id="uploadImage"
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        onChange={(e) => setImages(e.target.files[0])}
+                        className="hidden"
+                      />
+                    </div>
+
                     <button
                       type="submit"
-                      className="mt-4 mb-4 bg-blue-400 font-semibold text-white py-2 px-4 rounded hover:bg-blue-500"
+                      className="w-full sm:w-auto mt-4 mb-4 bg-blue-400 font-semibold text-white py-2 px-4 rounded hover:bg-blue-500 text-sm sm:text-base"
                       disabled={loading}
                     >
                       {loading ? "Submitting..." : "Submit Review"}
@@ -408,6 +461,11 @@ export default function ProductDetails() {
                   </form>
                 )}
               </motion.div>
+              {error && (
+                <p className="fixed top-[110px] left-1/2 transform -translate-x-1/2 bg-red-100 text-red-700 px-4 py-2 rounded shadow-md border border-red-300 animate-fade-in">
+                  {error}
+                </p>
+              )}
             </div>
           )}
 
@@ -429,14 +487,15 @@ export default function ProductDetails() {
                   {reviews.map((review, index) => (
                     <div
                       key={index + review._id}
-                      className="p-4  shadow-sm bg-gray-100"
+                      className="p-4 mb-4 bg-gray-50 rounded-lg shadow"
                     >
-                      <div className="flex items-center justify-between">
+                      {/* Header */}
+                      <div className="flex justify-between items-center mb-2">
                         <h4 className="font-semibold text-gray-900 flex items-center">
-                          <span className="text-blue-600 font-bold">
+                          <span className="text-blue-600 text-base sm:text-lg md:text-lg font-bold">
                             {review.userId?.userName || "Anonymous"}
                           </span>
-                          <span className="text-gray-500 ml-2 text-sm">
+                          <span className="ml-2 text-sm text-gray-500">
                             ({index + 1})
                           </span>
                         </h4>
@@ -445,13 +504,10 @@ export default function ProductDetails() {
                             {review.rating}
                             <Star className="w-5 h-5 ml-1 fill-yellow-500 stroke-none" />
                           </span>
-
-                          {user?.isAdmin === true && (
+                          {user?.isAdmin && (
                             <button
                               onClick={() => handleRemoveReviews(review._id)}
-                              type="button"
-                              className="ml-4 p-2 rounded-full bg-red-100 hover:bg-red-200 text-red-600 transition-all"
-                              disabled={loading}
+                              className="ml-4 p-2 bg-red-100 hover:bg-red-200 text-red-600 rounded-full"
                             >
                               {loading ? (
                                 "Deleting..."
@@ -463,9 +519,36 @@ export default function ProductDetails() {
                         </div>
                       </div>
 
-                      <p className="mt-2 text-gray-700">{review.comment}</p>
+                      {/* Comment */}
+                      <div className="flex items-center flex-wrap gap-2 mb-2 text-gray-700">
+                        <p>{review.comment}</p>
 
-                      <p className="mt-1 text-gray-500 text-sm">
+                        {review.image && (
+                          <button
+                            onClick={() => setPreviewImage(review.image)}
+                            className="text-sm text-blue-600 font-medium hover:underline flex items-center gap-1"
+                          >
+                            <span>View Image</span>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M15 10l4.553 2.276A1 1 0 0120 13.118V17a2 2 0 01-2 2H6a2 2 0 01-2-2v-3.882a1 1 0 01.447-.842L9 10m6 0V5a3 3 0 10-6 0v5m6 0H9"
+                              />
+                            </svg>
+                          </button>
+                        )}
+                      </div>
+
+                      {/* Timestamp */}
+                      <p className="mt-2 text-sm text-gray-500">
                         {review.createdAt
                           ? formatDistanceToNow(new Date(review.createdAt), {
                               addSuffix: true,
@@ -473,12 +556,93 @@ export default function ProductDetails() {
                           : "Date not available"}
                       </p>
                     </div>
+
+                    // <div
+                    //   key={index + review._id}
+                    //   className="p-4  shadow-sm bg-gray-100"
+                    // >
+                    //   <div className="flex items-center justify-between">
+                    //     <h4 className="font-semibold text-gray-900 flex items-center">
+                    //       <span className="text-blue-600 font-bold">
+                    //         {review.userId?.userName || "Anonymous"}
+                    //       </span>
+                    //       <span className="text-gray-500 ml-2 text-sm">
+                    //         ({index + 1})
+                    //       </span>
+                    //     </h4>
+                    //     <div className="flex items-center">
+                    //       <span className="text-yellow-600 font-bold flex items-center">
+                    //         {review.rating}
+                    //         <Star className="w-5 h-5 ml-1 fill-yellow-500 stroke-none" />
+                    //       </span>
+
+                    //       {user?.isAdmin === true && (
+                    //         <button
+                    //           onClick={() => handleRemoveReviews(review._id)}
+                    //           type="button"
+                    //           className="ml-4 p-2 rounded-full bg-red-100 hover:bg-red-200 text-red-600 transition-all"
+                    //           disabled={loading}
+                    //         >
+                    //           {loading ? (
+                    //             "Deleting..."
+                    //           ) : (
+                    //             <FcDeleteRow size={20} />
+                    //           )}
+                    //         </button>
+                    //       )}
+                    //     </div>
+                    //   </div>
+
+                    //   <p className="mt-2 text-gray-700">{review.comment}</p>
+
+                    //   <Image
+                    //     src={review.image}
+                    //     alt={review.image}
+                    //     width={200}
+                    //     height={200}
+                    //     // layout="fill"
+                    //     // objectFit="cover"
+                    //     className="rounded-lg"
+                    //     priority
+                    //   />
+
+                    //   <p className="mt-1 text-gray-500 text-sm">
+                    //     {review.createdAt
+                    //       ? formatDistanceToNow(new Date(review.createdAt), {
+                    //           addSuffix: true,
+                    //         })
+                    //       : "Date not available"}
+                    //   </p>
+                    // </div>
                   ))}
                 </div>
               ) : (
                 <p className="mt-2 text-gray-500 text-center">
                   No reviews yet. Be the first to review!
                 </p>
+              )}
+
+              {previewImage && (
+                <div
+                  className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center px-4"
+                  onClick={() => setPreviewImage(null)}
+                >
+                  <div className="">
+                    <Image
+                      src={previewImage}
+                      alt="Full Preview"
+                      width={800}
+                      height={800}
+                      className="rounded-lg object-contain max-w-[90vw] max-h-[90vh]"
+                    />
+                    {/* <button
+                      onClick={() => setPreviewImage(null)}
+                      className="absolute top-2 right-2 text-black text-2xl font-bold"
+                    >
+                      ✕
+                    </button> */}
+                  </div>
+                </div>
               )}
             </div>
           )}
