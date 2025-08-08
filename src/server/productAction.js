@@ -39,6 +39,21 @@ export const fetchAllProducts = async () => {
   }
 };
 
+// export const fetchOnePageProductsShow = async () => {
+//   try {
+//     const response = await axios.get(
+//       `${ApiRoutes.getProductOnePageShow}`
+//     );
+//     return response.data;
+//   } catch (error) {
+//     console.error(
+//       "Failed to fetch products:",
+//       error.response?.data || error.message
+//     );
+//   }
+// };
+
+
 export const addProduct = async (productData) => {
     try {
         const token = localStorage.getItem("token");

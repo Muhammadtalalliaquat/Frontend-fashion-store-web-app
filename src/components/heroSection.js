@@ -80,16 +80,17 @@ export default function CategoryCarousel() {
                 </div>
 
                 <div className="flex justify-center lg:justify-end mb-3 sm:mb-0">
-                  <Image
-                    src={item.image}
-                    alt={item.name}
-                    width={500}
-                    height={500}
-                    priority
-                    quality={100}
-                    // sizes="(max-width: 768px) 90vw, 400px"
-                    className="rounded-2xl shadow-xl w-full max-w-[400px] object-cover shadow-2xl animate-fadeInUp"
-                  />
+                  <div className="w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px] rounded-2xl shadow-xl overflow-hidden">
+                    <Image
+                      src={item.image}
+                      alt={item.name}
+                      width={400}
+                      height={400}
+                      priority
+                      quality={100}
+                      className="object-cover w-full h-full"
+                    />
+                  </div>
                 </div>
               </div>
             </SwiperSlide>

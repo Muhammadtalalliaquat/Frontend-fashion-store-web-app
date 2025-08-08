@@ -15,6 +15,7 @@ export const ApiRoutes = {
   getProduct: BASIC_URL + `admin`,
   getHeroProducts: BASIC_URL + `admin/heroSectionProducts`,
   getAllProducts: BASIC_URL + `admin/allProducts`,
+  // getProductOnePageShow: BASIC_URL + `admin/onepageproductshow`,
   addProduct: BASIC_URL + `admin/addProdcuts`,
   editProduct: BASIC_URL + `admin/edit`,
   deleteProduct: BASIC_URL + `admin/delete`,

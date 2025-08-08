@@ -3,6 +3,7 @@ import {
   fetchHeroProducts,
   fetchProducts,
   fetchAllProducts,
+  // fetchOnePageProductsShow,
   addProduct,
   editProduct,
   deleteProduct,
@@ -27,6 +28,15 @@ export const fetchAllProductShow = createAsyncThunk("products/fetch", async () =
     return response;
   }
 );
+
+// export const getProductsFetchSizeShow = createAsyncThunk(
+//   "products/fetch",
+//   async () => {
+//     const response = await fetchOnePageProductsShow();
+//     console.log("API Response:", response);
+//     return response;
+//   }
+// );
 
 export const createProduct = createAsyncThunk("products/add", async (productData) => {
     const response = await addProduct(productData);

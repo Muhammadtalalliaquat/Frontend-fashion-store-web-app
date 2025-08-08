@@ -3,7 +3,10 @@
 import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { fetchAllProductShow } from "../../store/features/productSlice";
+import {
+  fetchAllProductShow,
+  // getProductsFetchSizeShow,
+} from "../../store/features/productSlice";
 import { Listbox } from "@headlessui/react";
 import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { LiaShoppingCartSolid } from "react-icons/lia";
@@ -35,6 +38,11 @@ export default function Products() {
   const [user, setUser] = useState(null);
   const router = useRouter();
 
+  // const [loadingMsg, setLoadingMsg] = useState(true);
+  // const [errorMsg, setErrorMsg] = useState("");
+  // const [page, setPage] = useState(1);
+  // const [hasMore, setHasMore] = useState(true);
+
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
@@ -50,7 +58,7 @@ export default function Products() {
         setError("Failed to load products.");
         setLoading(false);
       });
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
   useEffect(() => {
@@ -160,6 +168,44 @@ export default function Products() {
     { name: "Men's & Women's Watches", value: "Watch" },
   ];
 
+  // const loadProducts = (pageNum) => {
+  //   setLoadingMsg(true);
+  //   setErrorMsg("");
+
+  //   dispatch(fetchAllProductShow({ page: pageNum }))
+  //     .then((result) => {
+  //       const newProducts = result.payload?.data || [];
+
+  //       if (newProducts.length === 0) {
+  //         setHasMore(false);
+  //       } else {
+  //         setProducts((prev) => {
+  //           const merged = [...prev, ...newProducts];
+  //           return merged.filter(
+  //             (p, i, self) => i === self.findIndex((obj) => obj._id === p._id)
+  //           );
+  //         });
+  //       }
+
+  //       setLoadingMsg(false);
+  //     })
+  //     .catch(() => {
+  //       setErrorMsg("Failed to load products. Please try again.");
+  //       setLoadingMsg(false);
+  //     });
+  // };
+
+  // const handleLoadMore = () => {
+  //   const nextPage = page + 1;
+  //   setPage(nextPage);
+  //   loadProducts(nextPage);
+  // };
+
+  // useEffect(() => {
+  //   loadProducts(1); // first load
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, []);
+
   return (
     <>
       <Navbar />
@@ -228,9 +274,9 @@ export default function Products() {
             <p className="text-center text-gray-500">No products found.</p>
           ) : (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {sortedProducts.map((product) => (
+              {sortedProducts.map((product, index) => (
                 <div
-                  key={product._id}
+                  key={product._id + index}
                   className="group relative bg-white rounded-xl shadow-md p-4 hover:bg-gray-50 transition-all duration-300 flex flex-col items-center text-center"
                 >
                   {wishlistIds.includes(product._id)}
@@ -481,6 +527,26 @@ export default function Products() {
             </div>
           )}
         </div>
+
+        {/* {!hasMore && !loadingMsg && (
+          <p className="text-center text-gray-500 mt-4">
+            No more products to load.
+          </p>
+        )}
+
+        {errorMsg && <p className="text-center text-red-500">{errorMsg}</p>}
+
+        {hasMore && loadingMsg && (
+          <div className="text-center mt-6">
+            <button
+              onClick={handleLoadMore}
+              className="px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+            >
+              Load More
+            </button>
+          </div>
+        )} */}
+        
       </section>
 
       <Footer />

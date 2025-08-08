@@ -269,16 +269,37 @@ export default function ProductDetails() {
             </div>
           </div>
           <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 ">
-            <div className="relative w-full h-96 border-r border-r-gray-500 p-4">
-              <Image
-                src={image}
-                alt={name}
-                layout="fill"
-                objectFit="cover"
-                className="rounded-lg"
-                priority
-              />
-            </div>
+            {image && (
+              <div
+                onClick={() => setPreviewImage(image)}
+                className="relative w-full h-96 border-r border-r-gray-500 p-4"
+              >
+                <Image
+                  src={image}
+                  alt={name}
+                  layout="fill"
+                  objectFit="cover"
+                  className="rounded-lg cursor-pointer"
+                  priority
+                />
+              </div>
+            )}
+            {previewImage && (
+              <div
+                className="fixed inset-0 bg-black/150 backdrop-blur-sm z-[9999] flex items-center justify-center px-4"
+                onClick={() => setPreviewImage(null)}
+              >
+                <div className="">
+                  <Image
+                    src={previewImage}
+                    alt="Full Preview"
+                    width={800}
+                    height={800}
+                    className="rounded-lg object-contain max-w-[90vw] max-h-[90vh]"
+                  />
+                </div>
+              </div>
+            )}
 
             <div className="space-y-4">
               <p className="text-lg sm:text-2xl md:text-2xl font-semibold text-gray-700">
