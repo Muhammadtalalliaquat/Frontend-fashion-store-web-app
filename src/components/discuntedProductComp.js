@@ -31,6 +31,8 @@ export default function DiscountProductComp() {
   const [lastName, setLastName] = useState("");
   const [posterCode, setPostercode] = useState(0);
   const [errorMsg, setErrorMsg] = useState("");
+  const [error, setError] = useState("");
+
   const [address, setAddress] = useState("");
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
@@ -41,6 +43,8 @@ export default function DiscountProductComp() {
   const [showAddReview, setShowAddReview] = useState(false);
   const [reviews, setReviews] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [images, setImages] = useState("");
+  const [previewImage, setPreviewImage] = useState(null);
   const [contentHeight, setContentHeight] = useState(0);
   const contentRef = useRef(null);
   const dispatch = useDispatch();
@@ -64,13 +68,14 @@ export default function DiscountProductComp() {
         console.error("Fetch Error:", err, error);
         setLoading(false);
       });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch, errorMsg, productId]);
 
   useEffect(() => {
     if (contentRef.current) {
       setContentHeight(contentRef.current.scrollHeight);
     }
-  }, [showAddReview]);
+  }, [showAddReview, error]);
 
   const handleAddSalediscountOrderPlace = (e) => {
     e.preventDefault();
@@ -113,11 +118,25 @@ export default function DiscountProductComp() {
   const handleAddReview = (e) => {
     e.preventDefault();
 
-    const productReviewData = {
-      productId,
-      rating,
-      comment,
-    };
+    // const productReviewData = {
+    //   productId,
+    //   rating,
+    //   comment,
+    // };
+
+    if (!rating) {
+      setError("Please add a product rating");
+      return;
+    }
+
+    const productReviewData = new FormData();
+    productReviewData.append("productId", productId);
+    productReviewData.append("rating", rating);
+    productReviewData.append("comment", comment);
+
+    if (images) {
+      productReviewData.append("image", images);
+    }
 
     dispatch(addProductReview(productReviewData))
       .unwrap()
@@ -173,7 +192,7 @@ export default function DiscountProductComp() {
     <>
       <Navbar />
 
-      <div className="max-w-7xl mx-auto p-6 md:p-10  rounded-lg  grid grid-cols-1 lg:grid-cols-3 gap-10 mt-20">
+      <div className="max-w-7xl mx-auto p-6 md:p-10 bg-gray-100 rounded-lg  grid grid-cols-1 lg:grid-cols-3 gap-10 mt-20">
         <div className="lg:col-span-2">
           <h2 className="text-2xl font-semibold mb-6">Contact Information</h2>
 
@@ -279,7 +298,7 @@ export default function DiscountProductComp() {
                 </div> */}
         </div>
 
-        <div className="border border-gray-200 rounded p-6 bg-gray-50">
+        <div className="border border-gray-200 shadow-sm rounded p-6 bg-gray-50">
           <div className="flex items-center mb-4">
             <Image
               src={image}
@@ -334,13 +353,13 @@ export default function DiscountProductComp() {
           {user && (
             <div className="mt-2">
               <div className="flex justify-between items-center">
-                <h3 className="text-sm md:text-lg lg:text-xl font-semibold text-gray-800">
+                <h3 className="text-base sm:text-xl font-semibold text-gray-800">
                   Customer Reviews
                 </h3>
 
                 <button
                   onClick={() => setShowAddReview(!showAddReview)}
-                  className="text-sm md:text-lg font-semibold text-gray-800 hover:text-gray-900 flex items-center"
+                  className="text-sm sm:text-lx text-gray-400 font-semibold hover:text-gray-900 flex items-center"
                 >
                   {showAddReview ? "Hide Review" : "Add Review"}
                   {showAddReview ? (
@@ -390,14 +409,51 @@ export default function DiscountProductComp() {
                     <textarea
                       value={comment}
                       onChange={(e) => setComment(e.target.value)}
-                      className="w-full px-4 py-3 mt-2  border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-800 transition"
+                      className="w-full px-4 py-3 mt-2  border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-400 transition"
                       placeholder="Write your review here..."
                       required
                     />
 
+                    <div className="mb-2 mt-2">
+                      <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Upload Product Image
+                      </label>
+
+                      <label
+                        htmlFor="uploadImage"
+                        className="w-full flex flex-col items-center justify-center border-2 border-dashed border-gray-400 rounded-lg p-6 bg-gray-50 text-gray-600 cursor-pointer hover:border-blue-500 hover:bg-blue-50 transition"
+                      >
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          className="h-8 w-8 mb-2 text-gray-500"
+                          fill="none"
+                          viewBox="0 0 24 24"
+                          stroke="currentColor"
+                          strokeWidth={2}
+                        >
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d="M4 16v1a2 2 0 002 2h12a2 2 0 002-2v-1M12 12v8m0 0l-3-3m3 3l3-3M4 8h16"
+                          />
+                        </svg>
+                        <span className="text-sm">Click to upload image</span>
+                      </label>
+
+                      <input
+                        id="uploadImage"
+                        type="file"
+                        name="image"
+                        accept="image/*"
+                        onChange={(e) => setImages(e.target.files[0])}
+                        className="hidden"
+                      />
+                    </div>
+
                     <button
                       type="submit"
-                      className="mt-4 bg-blue-700 font-semibold text-white text-sm md:text-sm lg:text-sm py-2 px-4 rounded hover:bg-blue-800"
+                      className="w-full sm:w-auto mt-4 mb-4 bg-blue-400 font-semibold text-white py-2 px-4 rounded hover:bg-blue-500 text-sm sm:text-base"
+                      // className="mt-4 bg-blue-700 font-semibold text-white text-sm md:text-sm lg:text-sm py-2 px-4 rounded hover:bg-blue-800"
                       disabled={loading}
                     >
                       {loading ? "Submitting..." : "Submit Review"}
@@ -405,6 +461,11 @@ export default function DiscountProductComp() {
                   </form>
                 )}
               </motion.div>
+              {error && (
+                <p className="fixed top-[110px] left-1/2 transform -translate-x-1/2 bg-red-100 text-red-700 px-4 py-2 rounded shadow-md border border-red-300 animate-fade-in">
+                  {error}
+                </p>
+              )}
             </div>
           )}
 
@@ -460,7 +521,32 @@ export default function DiscountProductComp() {
                         </div>
                       </div>
 
-                      <p className="mt-2 text-gray-700">{review.comment}</p>
+                      <div className="flex items-center flex-wrap gap-2 mb-2 text-gray-700">
+                        <p>{review.comment}</p>
+
+                        {review.image && (
+                          <button
+                            onClick={() => setPreviewImage(review.image)}
+                            className="text-sm text-blue-600 font-medium hover:underline flex items-center gap-1"
+                          >
+                            <span>View Image</span>
+                            <svg
+                              xmlns="http://www.w3.org/2000/svg"
+                              className="h-4 w-4"
+                              fill="none"
+                              viewBox="0 0 24 24"
+                              stroke="currentColor"
+                              strokeWidth={2}
+                            >
+                              <path
+                                strokeLinecap="round"
+                                strokeLinejoin="round"
+                                d="M15 10l4.553 2.276A1 1 0 0120 13.118V17a2 2 0 01-2 2H6a2 2 0 01-2-2v-3.882a1 1 0 01.447-.842L9 10m6 0V5a3 3 0 10-6 0v5m6 0H9"
+                              />
+                            </svg>
+                          </button>
+                        )}
+                      </div>
 
                       {/* 🕒 Display Time Ago */}
                       <p className="mt-1 text-gray-500 text-sm">
@@ -477,6 +563,23 @@ export default function DiscountProductComp() {
                 <p className="mt-2 text-gray-500 text-center">
                   No reviews yet. Be the first to review!
                 </p>
+              )}
+
+              {previewImage && (
+                <div
+                  className="fixed inset-0 bg-black/50 backdrop-blur-sm z-[9999] flex items-center justify-center px-4"
+                  onClick={() => setPreviewImage(null)}
+                >
+                  <div className="">
+                    <Image
+                      src={previewImage}
+                      alt="Full Preview"
+                      width={800}
+                      height={800}
+                      className="rounded-lg object-contain max-w-[90vw] max-h-[90vh]"
+                    />
+                  </div>
+                </div>
               )}
             </div>
           )}

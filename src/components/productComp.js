@@ -28,6 +28,7 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { FcDeleteRow } from "react-icons/fc";
 import { Suspense } from "react";
+import RatingBadge from "@/components/RatingBadge";
 
 export default function ProductDetails() {
   const router = useRouter();
@@ -102,7 +103,6 @@ export default function ProductDetails() {
 
     if (!rating) {
       setError("Please add a product rating");
-      // alert("Please add a product rating");
       return;
     }
 
@@ -213,6 +213,14 @@ export default function ProductDetails() {
     }
   }, [showAddReview, error]);
 
+  const overallRating =
+    reviews.length > 0
+      ? (
+          reviews.reduce((acc, review) => acc + Number(review.rating), 0) /
+          reviews.length
+        ).toFixed(1)
+      : 0;
+
   return (
     <>
       <Suspense>
@@ -316,10 +324,13 @@ export default function ProductDetails() {
                 {stock > 0 ? `In Stock (${stock} available)` : "Out of Stock"}
               </p>
 
-              <div className="flex items-center">
-                <span className="ml-2 text-sm text-gray-600">
-                  ({reviews.length}{" "}
-                  {reviews.length === 1 ? "Review" : "Reviews"})
+              <div className="inline-flex items-center px-3 py-1 rounded-full bg-gray-100 text-gray-700 text-sm font-medium shadow-sm">
+                <span className="mr-2 text-sm font-semibold mt-1">
+                  {reviews.length}{" "}
+                  <span className="text-xs">
+                    {" "}
+                    {reviews.length === 1 ? "Review" : "Reviews"}
+                  </span>
                 </span>
               </div>
 
@@ -373,12 +384,15 @@ export default function ProductDetails() {
             <p className="mt-2 text-gray-600 leading-relaxed">{description}</p>
           </div>
 
+          <RatingBadge rating={overallRating} />
+
           {user && (
             <div className="mt-8">
               <div className="flex justify-between items-center">
                 <h3 className="text-base sm:text-xl font-semibold text-gray-800">
                   Customer Reviews
                 </h3>
+
                 <button
                   onClick={() => setShowAddReview(!showAddReview)}
                   className="text-sm sm:text-lx text-gray-400 font-semibold hover:text-gray-900 flex items-center"
