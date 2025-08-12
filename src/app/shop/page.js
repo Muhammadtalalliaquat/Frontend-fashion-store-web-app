@@ -20,7 +20,7 @@ export default function ShopPage() {
   const dispatch = useDispatch();
   const [category, setCategory] = useState("all");
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [previewImage, setPreviewImage] = useState(null);
   const [quantities, setQuantities] = useState({});
   const [activePopupCart, setActivePopupCart] = useState(null);
   const [activePopup, setActivePopup] = useState(null);
@@ -109,7 +109,7 @@ export default function ShopPage() {
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
           <div className="md:col-span-1">
-            <div className=" p-4 space-y-3">
+            <div className=" p-4 space-y-3 bg-gray-100">
               <h2 className="text-xl font-semibold mb-2">Filters</h2>
               <input
                 type="text"
@@ -166,7 +166,7 @@ export default function ShopPage() {
                 {filteredProducts.map((item) => (
                   <div
                     key={item._id}
-                    className="group rounded-xl p-6 shadow hover:shadow-lg transition duration-300 border border-gray-200 hover:border-blue-500"
+                    className="group rounded-xl p-6 shadow hover:shadow-lg transition duration-300 bg-gray-100 border border-gray-200 hover:border-blue-500"
                   >
                     <motion.div
                       initial={{ opacity: 0 }}
@@ -302,13 +302,44 @@ export default function ShopPage() {
                         {/* </div> */}
                       </div>
 
-                      <Image
-                        width={500}
-                        height={500}
-                        src={item.image}
-                        alt={item.image}
-                        className="w-full h-60 object-cover rounded-lg mb-4"
-                      />
+                      {item.image && (
+                        <div className="mb-4">
+                          <button
+                            onClick={() => setPreviewImage(item.image)}
+                            className="group block w-full"
+                          >
+                            <abbr title="View Image" className="block">
+                              <Image
+                                width={500}
+                                height={500}
+                                src={item.image}
+                                alt={item.image}
+                                className="w-full h-60 object-cover cursor-pointer rounded-lg shadow-md group-hover:opacity-90 transition"
+                              />
+                            </abbr>
+                          </button>
+                        </div>
+                      )}
+
+                      {previewImage && (
+                        <div
+                          className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[9999] flex items-center justify-center p-4"
+                          onClick={() => setPreviewImage(null)}
+                        >
+                          <div
+                            className="bg-white rounded-lg p-2 shadow-lg max-w-[95vw] max-h-[95vh]"
+                            onClick={(e) => e.stopPropagation()}
+                          >
+                            <Image
+                              src={previewImage}
+                              alt="Full Preview"
+                              width={800}
+                              height={800}
+                              className="rounded-lg object-contain w-full h-auto max-h-[85vh]"
+                            />
+                          </div>
+                        </div>
+                      )}
 
                       <div className="flex justify-between items-center mb-2">
                         <p className="text-gray-700 text-lg font-semibold">

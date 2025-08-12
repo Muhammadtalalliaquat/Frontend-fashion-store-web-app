@@ -71,7 +71,7 @@ export default function ProductDetails() {
     try {
       const result = await dispatch(removeProduct(productId));
       console.log("Product deleted successfully:", result);
-      router.push("/adminDashboard");
+      router.push("/fashion-store");
     } catch (error) {
       console.error("Error deleting product:", error);
     }
