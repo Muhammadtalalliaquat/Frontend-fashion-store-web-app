@@ -78,7 +78,7 @@ export default function WishlistComponent() {
       price: selectedProduct.price,
       category: selectedProduct.category,
       description: selectedProduct.description,
-      image: selectedProduct.image,
+      image: selectedProduct.images,
       quantity,
     };
 
@@ -145,7 +145,7 @@ export default function WishlistComponent() {
                       </td>
                       <td className="p-4 flex items-center gap-4">
                         <Image
-                          src={item.productId.image || "/placeholder.png"}
+                          src={item.productId.images[0] || "/placeholder.png"}
                           alt={item.productId.name || "product image"}
                           width={48}
                           height={48}
@@ -215,7 +215,7 @@ export default function WishlistComponent() {
 
                   <div className="flex items-center gap-4">
                     <Image
-                      src={item.productId.image || "/placeholder.png"}
+                      src={item.productId.images[0] || "/placeholder.png"}
                       alt={item.productId.name || "product image"}
                       width={60}
                       height={60}

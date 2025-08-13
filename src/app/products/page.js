@@ -409,14 +409,24 @@ export default function Products() {
                     )}
 
                     <div className="w-full h-44 sm:mb-2">
-                      <Image
+                      {/* <Image
                         src={product.image}
                         alt="Product"
                         width={300}
                         height={176}
                         className="w-full h-full object-contain rounded-lg"
                         priority
-                      />
+                      /> */}
+                      {product.images?.length > 0 && (
+                        <Image
+                          src={product.images[0]}
+                          alt={product.name}
+                          width={176}
+                          height={176}
+                          className="object-contain sm:object-cover w-full h-full rounded-lg transition-all duration-300"
+                          priority
+                        />
+                      )}
                     </div>
                     <h2 className="text-lg font-semibold text-gray-800 mb-1">
                       {product.name}
@@ -465,7 +475,8 @@ export default function Products() {
                             category: product.category,
                             stock: product.stock.toString(),
                             description: product.description,
-                            image: product.image,
+                            image: JSON.stringify(product.images || []),
+                            // image: product.images,
                           }).toString();
                           router.push(`/productDetails?${queryString}`);
                         }}
@@ -546,7 +557,6 @@ export default function Products() {
             </button>
           </div>
         )} */}
-        
       </section>
 
       <Footer />

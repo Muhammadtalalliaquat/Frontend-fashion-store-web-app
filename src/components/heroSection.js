@@ -81,7 +81,7 @@ export default function CategoryCarousel() {
 
                 <div className="flex justify-center lg:justify-end mb-3 sm:mb-0">
                   <div className="w-[250px] h-[250px] sm:w-[300px] sm:h-[300px] lg:w-[400px] lg:h-[400px] rounded-2xl shadow-xl overflow-hidden">
-                    <Image
+                    {/* <Image
                       src={item.image}
                       alt={item.name}
                       width={400}
@@ -89,6 +89,15 @@ export default function CategoryCarousel() {
                       priority
                       quality={100}
                       className="object-cover w-full h-full"
+                    /> */}
+                    <Image
+                      key={item._id}
+                      src={item.images[0]}
+                      alt={item.name}
+                      width={176}
+                      height={176}
+                      className="object-cover w-full h-full rounded-lg transition-all duration-300"
+                      priority
                     />
                   </div>
                 </div>

@@ -238,7 +238,8 @@ export default function MainDashboard() {
                         category: product.category,
                         stock: product.stock,
                         description: product.description,
-                        image: product.image,
+                        // image: product.images,
+                        image: JSON.stringify(product.images || []),
                       },
                     }}
                     className="block"
@@ -258,14 +259,23 @@ export default function MainDashboard() {
                       </span>
 
                       <div className="relative opacity-100 group-hover:opacity-60 w-full sm:w-40 md:w-44 h-40 sm:h-44 overflow-hidden rounded-lg border-b-2 border-gray-300 pb-2">
-                        <Image
+                        {/* <Image
                           src={product.image}
                           alt="Product"
                           width={176}
                           height={176}
                           className="object-cover w-full h-full rounded-lg transition-all duration-300"
                           priority
-                        />
+                        /> */}
+                        {product.images?.length > 0 && (
+                          <Image
+                            src={product.images[0]}
+                            alt={product.name}
+                            width={176}
+                            height={176}
+                            className="object-cover w-full h-full rounded-lg transition-all duration-300"
+                          />
+                        )}
                       </div>
 
                       <h3 className="text-sm sm:text-base md:text-lg font-semibold text-gray-800 mt-1">

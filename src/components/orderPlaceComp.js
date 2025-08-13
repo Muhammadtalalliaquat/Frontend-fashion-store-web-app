@@ -14,7 +14,9 @@ export default function PlaceOrderComp() {
   const name = searchParams.get("name");
   const price = searchParams.get("price");
   const quantity = searchParams.get("quantity");
-  const image = searchParams.get("image");
+  // const image = searchParams.get("image");
+  const imageParam = searchParams.get("image");
+  const image = imageParam ? JSON.parse(imageParam) : [];
   const productId = searchParams.get("productId");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [firstName, setFirstName] = useState("");
@@ -194,18 +196,26 @@ export default function PlaceOrderComp() {
           )}
         </div>
 
-        <div className="border border-gray-200 shadow-sm rounded p-6 bg-gray-50">
-          <div className="flex items-center mb-4">
-            <Image
-              src={image}
-              alt={name}
-              width={80}
-              height={80}
-              className="rounded mr-4"
-            />
-            <div>
-              <h3 className="text-sm font-semibold">{name}</h3>
-              <p className="text-sm text-gray-500">Qty: {quantity}</p>
+        <div
+          className="border border-gray-200 shadow-sm rounded p-6 bg-gray-50"
+          // className="border border-gray-200 shadow-sm rounded-lg p-6 bg-white max-w-lg mx-auto"
+        >
+          <div className="flex flex-col sm:flex-row sm:items-center gap-6 mb-6">
+            {image.length > 0 && (
+              <div className="w-[280px] h-[280px] sm:w-[200px] sm:h-[200px] flex items-center justify-center border rounded-lg bg-gray-50 overflow-hidden">
+                <Image
+                  src={image[0]}
+                  alt={name}
+                  width={280}
+                  height={280}
+                  className="object-cover"
+                />
+              </div>
+            )}
+
+            <div className="flex flex-col justify-between">
+              <h3 className="text-lg font-semibold text-gray-800">{name}</h3>
+              <p className="text-sm text-gray-500 mt-1">Quantity: {quantity}</p>
             </div>
           </div>
 

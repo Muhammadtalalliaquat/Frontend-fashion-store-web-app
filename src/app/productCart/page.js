@@ -263,7 +263,12 @@ export default function ProductCartPage() {
                       />
 
                       <Image
-                        src={item.productId?.image || "/fallback-image.jpg"}
+                        src={
+                          Array.isArray(item.productId?.images) &&
+                          item.productId.images.length > 0
+                            ? item.productId.images[0]
+                            : item.productId?.image
+                        }
                         alt={item.productId?.name || "Product Image"}
                         width={80}
                         height={80}

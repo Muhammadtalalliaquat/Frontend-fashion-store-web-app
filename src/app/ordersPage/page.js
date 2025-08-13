@@ -286,7 +286,7 @@ export default function OrdersPageDashboard() {
                           className="flex items-center gap-4 border p-3 rounded-lg bg-gray-50"
                         >
                           <Image
-                            src={item.productId.image}
+                            src={item.productId.images[0]}
                             alt={item.productId.name}
                             width={90}
                             height={90}

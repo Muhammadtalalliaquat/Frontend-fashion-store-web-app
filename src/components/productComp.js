@@ -29,6 +29,10 @@ import Link from "next/link";
 import { FcDeleteRow } from "react-icons/fc";
 import { Suspense } from "react";
 import RatingBadge from "@/components/RatingBadge";
+import { Swiper, SwiperSlide } from "swiper/react";
+import "swiper/css";
+import "swiper/css/navigation";
+import { Navigation, Pagination } from "swiper/modules";
 
 export default function ProductDetails() {
   const router = useRouter();
@@ -39,7 +43,10 @@ export default function ProductDetails() {
   const category = searchParams.get("category");
   const stock = searchParams.get("stock");
   const description = searchParams.get("description");
-  const image = searchParams.get("image");
+  // const image = searchParams.get("image");
+  const imageParam = searchParams.get("image");
+  const image = imageParam ? JSON.parse(imageParam) : [];
+
   const [quantity, setQuantity] = useState(1);
   const [user, setUser] = useState(null);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -52,7 +59,7 @@ export default function ProductDetails() {
   const [showAddReview, setShowAddReview] = useState(false);
   const [contentHeight, setContentHeight] = useState(0);
   const [previewImage, setPreviewImage] = useState(null);
-  const [images, setImages] = useState("");
+  const [imagesReview, setImagesReview] = useState("");
 
   const contentRef = useRef(null);
 
@@ -111,8 +118,8 @@ export default function ProductDetails() {
     productReviewData.append("rating", rating);
     productReviewData.append("comment", comment);
 
-    if (images) {
-      productReviewData.append("image", images);
+    if (imagesReview) {
+      productReviewData.append("image", imagesReview);
     }
 
     dispatch(addProductReview(productReviewData))
@@ -167,7 +174,8 @@ export default function ProductDetails() {
       stock,
       quantity,
       description,
-      image,
+      image: JSON.stringify(image),
+      // image,
     }).toString();
 
     router.push(`/placeOrder?${queryString}`);
@@ -276,14 +284,59 @@ export default function ProductDetails() {
               </div>
             </div>
           </div>
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6 ">
-            {image && (
+
+          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+            {image && image.length > 0 && (
+              <div className="relative w-full max-w-xl">
+                <Swiper
+                  spaceBetween={40}
+                  slidesPerView={1}
+                  pagination={{ clickable: true }}
+                  modules={[Navigation, Pagination]}
+                  className="relative z-10"
+                >
+                  {image.map((img, idx) => (
+                    <SwiperSlide key={idx}>
+                      <div
+                        onClick={() => setPreviewImage(img)}
+                        className="relative w-full h-[400px] md:h-[500px] rounded-lg overflow-hidden cursor-pointer"
+                      >
+                        <Image
+                          src={img}
+                          alt={`${name} - ${idx + 1}`}
+                          layout="fill"
+                          objectFit="cover"
+                          className="rounded-lg cursor-pointer"
+                          priority
+                        />
+                      </div>
+                    </SwiperSlide>
+                  ))}
+                </Swiper>
+              </div>
+            )}
+
+            {previewImage && (
+              <div
+                className="fixed inset-0 bg-black/80 backdrop-blur-sm z-[9999] flex items-center justify-center px-4"
+                onClick={() => setPreviewImage(null)}
+              >
+                <Image
+                  src={previewImage}
+                  alt="Full Preview"
+                  width={800}
+                  height={800}
+                  className="rounded-lg object-contain max-w-[90vw] max-h-[90vh]"
+                />
+              </div>
+            )}
+            {/* {image && (
               <div
                 onClick={() => setPreviewImage(image)}
                 className="relative w-full h-96 border-r border-r-gray-500 p-4"
               >
                 <Image
-                  src={image}
+                  src={image[0]}
                   alt={name}
                   layout="fill"
                   objectFit="cover"
@@ -307,7 +360,7 @@ export default function ProductDetails() {
                   />
                 </div>
               </div>
-            )}
+            )} */}
 
             <div className="space-y-4">
               <p className="text-lg sm:text-2xl md:text-2xl font-semibold text-gray-700">
@@ -481,7 +534,7 @@ export default function ProductDetails() {
                         type="file"
                         name="image"
                         accept="image/*"
-                        onChange={(e) => setImages(e.target.files[0])}
+                        onChange={(e) => setImagesReview(e.target.files[0])}
                         className="hidden"
                       />
                     </div>
