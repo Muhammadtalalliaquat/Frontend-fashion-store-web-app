@@ -9,7 +9,7 @@ export default function RatingBadge({ rating = 0 }) {
   const pct = Math.max(0, Math.min(100, (rating / 5) * 100));
 
   return (
-    <div className="flex items-center space-x-4 py-3">
+    <div className="flex items-center space-x-4 py-4">
       {/* Left: stars + numeric */}
       <div className="flex flex-col">
         <div className="flex items-center space-x-2">

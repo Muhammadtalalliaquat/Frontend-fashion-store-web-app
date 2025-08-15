@@ -515,7 +515,7 @@ export default function Products() {
                                 category: product.category,
                                 stock: product.stock.toString(),
                                 description: product.description,
-                                image: product.image,
+                                image: JSON.stringify(product.images || []),
                                 quantity: quantity.toString(),
                               }).toString();
                               router.push(`/placeOrder?${queryString}`);

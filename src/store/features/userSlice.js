@@ -1,7 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 
-
-
 const initialState = {
   user: null,
   token: null,
@@ -20,8 +18,7 @@ export const userSlice = createSlice({
       state.token = action.payload.token;
       state.isAuthenticated = action.payload.isAuthenticated;
       state.error = null;
-      state.emailVerifed =  action.payload.verifiedEmail || false; 
-
+      state.emailVerifed = action.payload.verifiedEmail || false;
     },
     clearUser: (state) => {
       state.user = null;
@@ -32,7 +29,6 @@ export const userSlice = createSlice({
       state.emailVerifed = action.payload.verifiedEmail;
       state.emailVerifedMsg = "Your email has been verified!";
       state.isAuthenticated = action.payload.isAuthenticated;
-
     },
     // setSuccess: (state) => {
     //   state.emailVerifed = true;

@@ -175,7 +175,6 @@ export default function ProductDetails() {
       quantity,
       description,
       image: JSON.stringify(image),
-      // image,
     }).toString();
 
     router.push(`/placeOrder?${queryString}`);
@@ -234,8 +233,8 @@ export default function ProductDetails() {
       <Suspense>
         <Navbar />
 
-        <div className="max-w-4xl mx-auto p-6 mt-18 sm:mt-20 md:mt-32 mb-30 lg:mt-30 bg-white rounded-lg shadow-lg border border-gray-300">
-          <div className="flex justify-between items-center">
+        <div className="max-w-6xl mx-auto mt-18 sm:mt-20 md:mt-32 mb-30 lg:mt-30 bg-white rounded-lg shadow-lg border border-gray-200">
+          <div className="max-w-9xl mx-auto p-6 flex justify-between items-center p-6 sm:p-7 shadow-md">
             <div className="w-full flex items-center justify-between">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-900 flex-shrink-0">
                 {name}
@@ -285,7 +284,7 @@ export default function ProductDetails() {
             </div>
           </div>
 
-          <div className="mt-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="mt-1 grid grid-cols-1 md:grid-cols-2 gap-6 p-6 bg-gray-100">
             {image && image.length > 0 && (
               <div className="relative w-full max-w-xl">
                 <Swiper
@@ -416,7 +415,14 @@ export default function ProductDetails() {
 
                   <button
                     onClick={handleAddOrder}
-                    className="flex-1 flex items-center justify-center gap-2 bg-pink-600 text-white px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base rounded-lg shadow-md hover:bg-pink-700 transition"
+                    disabled={stock <= 0}
+                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base rounded-lg shadow-md transition 
+                    ${
+                      stock > 0
+                        ? "bg-pink-600 text-white hover:bg-pink-700"
+                        : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                    }`}
+                    // className="flex-1 flex items-center justify-center gap-2 bg-pink-600 text-white px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base rounded-lg shadow-md hover:bg-pink-700 transition"
                   >
                     <CreditCard className="w-4 h-4 sm:w-5 sm:h-5" />
                     Buy Now
@@ -429,18 +435,17 @@ export default function ProductDetails() {
               )}
             </div>
           </div>
-          <div className="mt-8">
+          <div className=" mb-2 p-6 sm:p-7 space-y-6 bg-gray-100 shadow-md">
             <h3 className="text-base sm:text-xl font-semibold text-gray-800">
               Product Details
             </h3>
 
             <p className="mt-2 text-gray-600 leading-relaxed">{description}</p>
+            <RatingBadge rating={overallRating} />
           </div>
 
-          <RatingBadge rating={overallRating} />
-
           {user && (
-            <div className="mt-8">
+            <div className="mt-2 p-6 sm:p-7 bg-white shadow-md">
               <div className="flex justify-between items-center">
                 <h3 className="text-base sm:text-xl font-semibold text-gray-800">
                   Customer Reviews
@@ -557,19 +562,13 @@ export default function ProductDetails() {
             </div>
           )}
 
-          {/* Reviews Section */}
-
           {loading ? (
-            <div className="mt-4 flex justify-center items-center text-gray-600">
-              <Loader className="w-6 h-6 animate-spin text-yellow-500" />
+            <div className="mt-5 mb-2 flex justify-center items-center text-gray-600">
+              <Loader className="w-6 h-16 animate-spin text-yellow-500" />
               <p className="ml-2">Loading reviews...</p>
             </div>
           ) : (
-            <div className="mt-8">
-              {/* <h3 className="text-xl font-semibold text-gray-800">
-              Customer Reviews
-            </h3> */}
-
+            <div className="p-5">
               {reviews.length > 0 ? (
                 <div className="mt-4 space-y-4">
                   {reviews.map((review, index) => (
@@ -577,7 +576,6 @@ export default function ProductDetails() {
                       key={index + review._id}
                       className="p-4 mb-4 bg-gray-50 rounded-lg shadow"
                     >
-                      {/* Header */}
                       <div className="flex justify-between items-center mb-2">
                         <h4 className="font-semibold text-gray-900 flex items-center">
                           <span className="text-blue-600 text-base sm:text-lg md:text-lg font-bold">
@@ -607,7 +605,6 @@ export default function ProductDetails() {
                         </div>
                       </div>
 
-                      {/* Comment */}
                       <div className="flex items-center flex-wrap gap-2 mb-2 text-gray-700">
                         <p>{review.comment}</p>
 
@@ -635,7 +632,6 @@ export default function ProductDetails() {
                         )}
                       </div>
 
-                      {/* Timestamp */}
                       <p className="mt-2 text-sm text-gray-500">
                         {review.createdAt
                           ? formatDistanceToNow(new Date(review.createdAt), {
@@ -644,64 +640,6 @@ export default function ProductDetails() {
                           : "Date not available"}
                       </p>
                     </div>
-
-                    // <div
-                    //   key={index + review._id}
-                    //   className="p-4  shadow-sm bg-gray-100"
-                    // >
-                    //   <div className="flex items-center justify-between">
-                    //     <h4 className="font-semibold text-gray-900 flex items-center">
-                    //       <span className="text-blue-600 font-bold">
-                    //         {review.userId?.userName || "Anonymous"}
-                    //       </span>
-                    //       <span className="text-gray-500 ml-2 text-sm">
-                    //         ({index + 1})
-                    //       </span>
-                    //     </h4>
-                    //     <div className="flex items-center">
-                    //       <span className="text-yellow-600 font-bold flex items-center">
-                    //         {review.rating}
-                    //         <Star className="w-5 h-5 ml-1 fill-yellow-500 stroke-none" />
-                    //       </span>
-
-                    //       {user?.isAdmin === true && (
-                    //         <button
-                    //           onClick={() => handleRemoveReviews(review._id)}
-                    //           type="button"
-                    //           className="ml-4 p-2 rounded-full bg-red-100 hover:bg-red-200 text-red-600 transition-all"
-                    //           disabled={loading}
-                    //         >
-                    //           {loading ? (
-                    //             "Deleting..."
-                    //           ) : (
-                    //             <FcDeleteRow size={20} />
-                    //           )}
-                    //         </button>
-                    //       )}
-                    //     </div>
-                    //   </div>
-
-                    //   <p className="mt-2 text-gray-700">{review.comment}</p>
-
-                    //   <Image
-                    //     src={review.image}
-                    //     alt={review.image}
-                    //     width={200}
-                    //     height={200}
-                    //     // layout="fill"
-                    //     // objectFit="cover"
-                    //     className="rounded-lg"
-                    //     priority
-                    //   />
-
-                    //   <p className="mt-1 text-gray-500 text-sm">
-                    //     {review.createdAt
-                    //       ? formatDistanceToNow(new Date(review.createdAt), {
-                    //           addSuffix: true,
-                    //         })
-                    //       : "Date not available"}
-                    //   </p>
-                    // </div>
                   ))}
                 </div>
               ) : (
@@ -723,12 +661,6 @@ export default function ProductDetails() {
                       height={800}
                       className="rounded-lg object-contain max-w-[90vw] max-h-[90vh]"
                     />
-                    {/* <button
-                      onClick={() => setPreviewImage(null)}
-                      className="absolute top-2 right-2 text-black text-2xl font-bold"
-                    >
-                      ✕
-                    </button> */}
                   </div>
                 </div>
               )}
