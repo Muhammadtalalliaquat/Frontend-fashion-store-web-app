@@ -38,9 +38,12 @@ function AddProductPage() {
     formData.append("category", category);
     formData.append("description", description);
     formData.append("stock", stock.toString());
-    if (image) {
-      formData.append("image", image);
-    }
+    formData.append("image", image);
+    // if (image.length > 0) {
+    //   image.forEach((img) => {
+    //     formData.append("image", img);
+    //   });
+    // }
 
     console.log("Product Data:", formData);
     setIsSubmitting(true);
@@ -276,6 +279,7 @@ function AddProductPage() {
                   <input
                     type="file"
                     name="image"
+                    // onChange={(e) => setImage(Array.from(e.target.files))}
                     onChange={(e) => setImage(e.target.files[0])}
                     className="w-full bg-gray-100 border border-dashed border-gray-400 rounded-lg p-3 flex justify-center items-center cursor-pointer hover:border-green-400 transition"
                     required

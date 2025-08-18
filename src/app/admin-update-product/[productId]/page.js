@@ -13,7 +13,7 @@ import withAdminCheck from "../../../HOC/withAuth";
 import { useParams } from "next/navigation";
 import Navbar from "../../../components/navbar";
 
-function ProductPage() {
+function ProductUpdateForm() {
   const params = useParams();
   const productId = params?.productId;
 
@@ -75,6 +75,11 @@ function ProductPage() {
     formData.append("description", description);
     formData.append("stock", stock);
     formData.append("image", image);
+    // if (image.length > 0) {
+    //   image.forEach((img) => {
+    //     formData.append("image", img);
+    //   });
+    // }
 
     console.log("Product Data:", formData);
     setIsSubmitting(true);
@@ -328,6 +333,7 @@ function ProductPage() {
                   <input
                     type="file"
                     onChange={(e) => setImage(e.target.files[0])}
+                    // onChange={(e) => setImage(Array.from(e.target.files))}
                     className="w-full bg-gray-100 border border-dashed border-gray-400 rounded-lg p-3 flex justify-center items-center cursor-pointer hover:border-green-400 transition"
                     required
                   />
@@ -428,4 +434,4 @@ function ProductPage() {
   );
 }
 
-export default withAdminCheck(ProductPage);
+export default withAdminCheck(ProductUpdateForm);

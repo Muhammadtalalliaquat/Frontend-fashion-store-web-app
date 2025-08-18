@@ -147,9 +147,10 @@ export default function WishlistComponent() {
                         <Image
                           src={item.productId.images[0] || "/placeholder.png"}
                           alt={item.productId.name || "product image"}
-                          width={48}
-                          height={48}
+                          width={78}
+                          height={78}
                           className="object-cover border rounded"
+                          priority
                         />
                         <span>{item?.productId?.name}</span>
                       </td>

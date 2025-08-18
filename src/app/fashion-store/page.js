@@ -271,8 +271,8 @@ export default function MainDashboard() {
                           <Image
                             src={product.images[0]}
                             alt={product.name}
-                            width={176}
-                            height={176}
+                            width={400}
+                            height={400}
                             className="object-cover w-full h-full rounded-lg transition-all duration-300"
                           />
                         )}

@@ -94,8 +94,8 @@ export default function CategoryCarousel() {
                       key={item._id}
                       src={item.images[0]}
                       alt={item.name}
-                      width={176}
-                      height={176}
+                      width={400}
+                      height={400}
                       className="object-cover w-full h-full rounded-lg transition-all duration-300"
                       priority
                     />
