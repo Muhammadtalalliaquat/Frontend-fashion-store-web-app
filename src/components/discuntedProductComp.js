@@ -13,6 +13,7 @@ import Navbar from "../components/navbar";
 import Footer from "../components/footer";
 import { useDispatch } from "react-redux";
 import { Star, Loader, ChevronDown, ChevronUp } from "lucide-react";
+import RatingBadge from "@/components/RatingBadge";
 import { FcDeleteRow } from "react-icons/fc";
 import { FaStar } from "react-icons/fa";
 import { motion } from "framer-motion";
@@ -188,6 +189,15 @@ export default function DiscountProductComp() {
       console.error("Error deleting review product:", error);
     }
   };
+
+  const overallRating =
+    reviews.length > 0
+      ? (
+          reviews.reduce((acc, review) => acc + Number(review.rating), 0) /
+          reviews.length
+        ).toFixed(1)
+      : 0;
+
   return (
     <>
       <Navbar />
@@ -346,6 +356,10 @@ export default function DiscountProductComp() {
               <span className="mr-2">🚚</span>
               <span>Free fast shipping Pakistan</span>
             </div>
+          </div>
+
+          <div className="pt-7 sm:pt-23">
+            <RatingBadge rating={overallRating} />
           </div>
         </div>
 
