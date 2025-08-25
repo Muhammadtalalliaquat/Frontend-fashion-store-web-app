@@ -137,11 +137,14 @@ function ProductUpdateForm() {
     <>
       <Navbar />
 
-      <div className="min-h-screen flex items-center justify-center p-6">
+      <div className="flex items-center justify-center p-6">
         <div
-          className={`w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden ${
-            activeTab === "discount" ? "mt-20" : ""
-          }`}
+          className={`w-full mx-auto bg-white rounded-3xl shadow-lg overflow-hidden 
+      sm:max-w-2xl md:max-w-3xl lg:max-w-5xl xl:max-w-4xl
+      ${activeTab === "discount" ? "mt-20" : "mt-20"}`}
+          // className={`w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-lg overflow-hidden ${
+          //   activeTab === "discount" ? "mt-20" : ""
+          // }`}
           // className="w-full max-w-4xl mx-auto bg-white rounded-3xl shadow-2xl overflow-hidden"
         >
           {/* Tabs */}
@@ -251,9 +254,9 @@ function ProductUpdateForm() {
               </form>
             ) : (
               <form onSubmit={handleSubmitUpdateDiscount} className="space-y-5">
-                <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
+                {/* <h2 className="text-2xl font-bold text-gray-800 mb-6 text-center">
                   Update Discount Offer
-                </h2>
+                </h2> */}
                 {[
                   {
                     label: "Product Name",

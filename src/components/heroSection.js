@@ -31,7 +31,7 @@ export default function CategoryCarousel() {
   }, [dispatch]);
 
   return (
-    <section className="w-full w-full bg-gradient-to-br from-indigo-800 via-black to-indigo-900 text-white py-8 px-4 sm:px-25 relative overflow-hidden">
+    <section className="w-full bg-gradient-to-br from-indigo-800 via-black to-indigo-900 text-white py-8 px-4 md:px-12 lg:px-24 relative overflow-hidden">
       <div className="absolute top-0 left-0 w-full h-full z-0">
         <div className="absolute w-72 h-72 bg-blue-400 opacity-20 rounded-full -top-20 -left-20 animate-ping"></div>
         <div className="absolute w-48 h-48 bg-purple-500 opacity-20 rounded-full top-1/2 left-1/2 animate-pulse"></div>
