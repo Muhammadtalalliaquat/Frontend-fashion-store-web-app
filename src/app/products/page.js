@@ -485,11 +485,37 @@ export default function Products() {
                       </button>
 
                       <button
+                        type="button"
                         onClick={() => setActivePopup(product._id)}
-                        className="bg-green-600/80 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm backdrop-blur-md w-36"
+                        disabled={product.stock <= 0}
+                        title={
+                          product.stock <= 0
+                            ? "Not available in stock"
+                            : "Buy Now"
+                        }
+                        className={`px-4 py-2 rounded-md text-sm backdrop-blur-md w-36 
+                        ${
+                          product.stock > 0
+                            ? "bg-green-600 text-white hover:bg-green-700"
+                            : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                        }`}
+                      >
+                        {product.stock > 0 ? "Buy Now" : "Out of Stock"}
+                      </button>
+
+                      {/* <button
+                        onClick={() => setActivePopup(product._id)}
+                        disabled={product.stock <= 0}
+                        className={`bg-green-600/80 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm backdrop-blur-md w-36 
+                    ${
+                      product.stock > 0
+                        ? "bg-green-600 text-white hover:bg-green-700"
+                        : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                    }`}
+                        // className="bg-green-600/80 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm backdrop-blur-md w-36"
                       >
                         Buy Now
-                      </button>
+                      </button> */}
 
                       {activePopup === product._id && user && (
                         <div className="absolute bottom-14 bg-white shadow-lg rounded-lg p-4 z-30 w-40 flex flex-col items-center">

@@ -375,12 +375,31 @@ export default function ShopPage() {
                         {item.offerTitle}
                       </p>
                       <button
+                        type="button"
+                        onClick={() => setActivePopup(item._id)}
+                        disabled={item.inStock <= 0}
+                        title={
+                          item.inStock <= 0
+                            ? "Not available in stock"
+                            : "Order Now"
+                        }
+                        className={`w-full py-2 rounded-full font-bold text-sm transition-colors duration-200
+                          ${
+                            item.inStock > 0
+                              ? "bg-blue-600 text-white hover:bg-blue-700"
+                              : "bg-gray-400 text-gray-200 cursor-not-allowed"
+                          }`}
+                      >
+                        {item.inStock > 0 ? "Buy Now" : "Out of Stock"}
+                      </button>
+
+                      {/* <button
                         // className="bg-blue-500 font-bold text-white w-full py-2 rounded-full hover:bg-blue-600"
                         className="bg-blue-500 font-bold text-white w-full py-1.5 text-sm rounded-lg hover:bg-blue-600 sm:py-2 sm:text-base"
                         onClick={() => setActivePopup(item._id)}
                       >
                         Buy it now
-                      </button>
+                      </button> */}
 
                       {/* <button
                         className="bg-blue-600/80 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm backdrop-blur-md w-36"

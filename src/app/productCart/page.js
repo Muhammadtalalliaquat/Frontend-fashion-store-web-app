@@ -39,7 +39,7 @@ export default function ProductCartPage() {
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
-  
+
   useEffect(() => {
     dispatch(getAllCart())
       .then((result) => {
@@ -65,7 +65,6 @@ export default function ProductCartPage() {
       return () => clearTimeout(timer);
     }
   }, [errorMsg]);
-
 
   const selectedCartItems = selectedItems;
 
@@ -248,6 +247,10 @@ export default function ProductCartPage() {
                       <input
                         type="checkbox"
                         checked={selectedItems.some((i) => i._id === item._id)}
+                        disabled={
+                          item.productId.stock <= 0 ||
+                          item.productId.inStock <= 0
+                        }
                         onChange={(e) => {
                           const isChecked = e.target.checked;
 
@@ -257,9 +260,16 @@ export default function ProductCartPage() {
                               : prev.filter((i) => i._id !== item._id)
                           );
 
-                          console.log("Selected Item:", item);
+                          console.log("Selected Item:", item.productId.stock);
                         }}
-                        className="h-4 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
+                        className={`h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500
+                        ${
+                          item.productId.stock <= 0 ||
+                          item.productId.inStockstock <= 0
+                            ? "cursor-not-allowed opacity-50"
+                            : "bg-gray-100"
+                        }`}
+                        // className="h-4 w-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500"
                       />
 
                       <Image
@@ -289,6 +299,12 @@ export default function ProductCartPage() {
                           {(item.productId?.discountPrice ||
                             item.productId?.price) * item.quantity}
                         </p>
+                        {(item.productId.stock <= 0 ||
+                          item.productId.inStockstock <= 0) && (
+                          <span className="text-red-500 text-xs font-semibold">
+                            Out of Stock
+                          </span>
+                        )}
                       </div>
                     </div>
 
