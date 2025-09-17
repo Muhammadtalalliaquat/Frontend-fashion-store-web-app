@@ -7,9 +7,24 @@ import { createFeedback } from "../../store/features/feedbackSlice";
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { toast, ToastContainer } from "react-toastify";
-import Link from "next/link";
+import { toast } from "react-toastify";
+// import Link from "next/link";
 import Footer from "../../components/footer";
+
+import {
+  Box,
+  Grid,
+  Typography,
+  TextField,
+  Button,
+  Paper,
+  CircularProgress,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Link,
+} from "@mui/material";
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
@@ -21,13 +36,21 @@ export default function ContactPage() {
   const [feedBackMessage, setFeedBackMessage] = useState("");
   const [user, setUser] = useState(null);
   const [activePopup, setActivePopup] = useState(null);
+  const [mounted, setMounted] = useState(false);
+
   const dispatch = useDispatch();
   const router = useRouter();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
+    setMounted(true);
   }, []);
+
+   if (!mounted) {
+     // SSR ke dauraan kuch render mat karo
+     return null;
+   }
 
   const handleAddConatcData = (e) => {
     e.preventDefault();
@@ -94,7 +117,196 @@ export default function ContactPage() {
   return (
     <>
       <Navbar />
-      <div className="min-h-screen flex items-center justify-center bg-white max-w-7xl w-full mx-auto sm:p-12 mt-10 md:mt-18">
+
+      <Box
+        sx={{
+          minHeight: "100vh",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          // bgcolor: "white",
+          px: { xs: 2, sm: 6 },
+          mt: { xs: 0, md: 0 },
+          pt: { xs: 5, md: 6 },
+          pb: { xs: 10, md: 10 },
+        }}
+      >
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.8 }}
+          style={{ width: "100%", maxWidth: "1200px" }}
+        >
+          <Paper
+            elevation={3}
+            sx={{
+              p: { xs: 3, sm: 6 },
+              borderRadius: 2,
+              backdropFilter: "blur(12px)",
+            }}
+          >
+            <Grid container spacing={6}>
+              {/* Left: Contact Form */}
+              <Grid item xs={12} md={6}>
+                <Typography variant="h5" fontWeight="bold" gutterBottom>
+                  Contact Us
+                </Typography>
+                <Typography variant="body1" color="text.secondary" mb={3}>
+                  We would love to hear from you! Whether you have a question,
+                  feedback, or need assistance, feel free to reach out. Our team
+                  is here to help you with anything you need.
+                </Typography>
+
+                <Box
+                  component="form"
+                  onSubmit={handleAddConatcData}
+                  sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+                >
+                  <Grid container spacing={2}>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        label="First Name"
+                        value={firstName}
+                        onChange={(e) => setFirstName(e.target.value)}
+                        required
+                      />
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <TextField
+                        fullWidth
+                        label="Last Name"
+                        value={lastName}
+                        onChange={(e) => setLastName(e.target.value)}
+                        required
+                      />
+                    </Grid>
+                  </Grid>
+
+                  <TextField
+                    fullWidth
+                    type="email"
+                    label="Email Address"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    error={Boolean(errormessage)}
+                    helperText={errormessage}
+                  />
+
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={5}
+                    label="Message"
+                    value={message}
+                    onChange={(e) => setMessage(e.target.value)}
+                    required
+                  />
+
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    sx={{
+                      bgcolor: "black",
+                      "&:hover": { bgcolor: "grey.900" },
+                    }}
+                    onClick={() => {
+                      if (!user) setActivePopup(true);
+                    }}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <CircularProgress size={24} sx={{ color: "white" }} />
+                    ) : (
+                      "Send Message"
+                    )}
+                  </Button>
+                </Box>
+              </Grid>
+
+              {/* Right: Feedback Form */}
+              <Grid item xs={12} md={6}>
+                <Typography variant="h5" fontWeight="bold" gutterBottom>
+                  Website Feedback
+                </Typography>
+                <Typography variant="body1" color="text.secondary" mb={3}>
+                  We would love to hear your thoughts about our website.
+                </Typography>
+
+                <Box
+                  component="form"
+                  onSubmit={handleAddFeedbackData}
+                  sx={{ display: "flex", flexDirection: "column", gap: 3 }}
+                >
+                  <TextField
+                    fullWidth
+                    multiline
+                    rows={5}
+                    label="Your Feedback"
+                    value={feedBackMessage}
+                    onChange={(e) => setFeedBackMessage(e.target.value)}
+                    required
+                    helperText="Your feedback helps us improve!"
+                  />
+
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    size="large"
+                    sx={{
+                      bgcolor: "primary.main",
+                      "&:hover": { bgcolor: "primary.dark" },
+                    }}
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <CircularProgress size={24} sx={{ color: "white" }} />
+                    ) : (
+                      "Submit Feedback"
+                    )}
+                  </Button>
+                </Box>
+              </Grid>
+            </Grid>
+
+            {/* Footer */}
+            <Box mt={6} textAlign="center">
+              <Typography variant="body2" color="text.secondary">
+                Need help? Email us at{" "}
+                <Link
+                  href="mailto:support@fashionstore.com"
+                  underline="hover"
+                  color="black"
+                  fontWeight="medium"
+                >
+                  support@fashionstore.com
+                </Link>
+              </Typography>
+            </Box>
+          </Paper>
+        </motion.div>
+
+        {/* Popup (Login Required) */}
+        <Dialog open={activePopup} onClose={() => setActivePopup(false)}>
+          <DialogTitle>You need to log in</DialogTitle>
+          <DialogContent>
+            <Typography>You need to log in to contact our team.</Typography>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={() => setActivePopup(false)}>Cancel</Button>
+            <Button
+              variant="contained"
+              href="/login"
+              sx={{ bgcolor: "primary.main" }}
+            >
+              Go to Login
+            </Button>
+          </DialogActions>
+        </Dialog>
+      </Box>
+      {/* <div className="min-h-screen flex items-center justify-center bg-white max-w-7xl w-full mx-auto sm:p-12 mt-10 md:mt-18">
         <ToastContainer />
         <motion.div
           initial={{ opacity: 0 }}
@@ -277,7 +489,7 @@ export default function ContactPage() {
             </Link>
           </div>
         </motion.div>
-      </div>
+      </div> */}
 
       <Footer />
     </>

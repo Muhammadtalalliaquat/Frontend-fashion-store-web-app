@@ -39,7 +39,7 @@ function AdminDashboard() {
       ) : contact.length > 0 ? (
         <div className="min-h-screen bg-gray-50 p-6">
           {/* Header */}
-          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-6 shadow-md mb-6 mt-20">
+          <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-6 shadow-md mb-6 mt-7">
             <h1 className="text-2xl sm:text-2xl font-bold text-grey-300">
               Customer Issue Dashboard
             </h1>

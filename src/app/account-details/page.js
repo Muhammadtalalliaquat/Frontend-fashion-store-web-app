@@ -49,7 +49,7 @@ export default function AcountDetails() {
     <>
       <Navbar />
 
-      <div className="px-4 py-10 sm:px-6 lg:px-8 mt-20">
+      <div className="px-4 py-10 sm:px-6 lg:px-8 mt-7">
         <div className="max-w-7xl mx-auto bg-white rounded-t-2xl shadow-md overflow-hidden">
           <div className="bg-blue-800 px-6 py-5 sm:px-8">
             <h1 className="text-white text-2xl font-semibold">

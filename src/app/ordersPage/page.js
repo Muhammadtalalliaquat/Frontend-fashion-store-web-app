@@ -17,6 +17,8 @@ import Navbar from "../../components/navbar";
 import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import FashionStoreLoader from "../../components/storeLoader";
 import { motion } from "framer-motion";
+import { Card , Typography, Box } from "@mui/material";
+
 
 export default function OrdersPageDashboard() {
   const [orderList, setOrderList] = useState();
@@ -147,9 +149,66 @@ export default function OrdersPageDashboard() {
       {!loading ? (
         <>
           <div className="p-6 max-w-5xl mx-auto">
-            <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
+            {/* <h1 className="text-3xl font-bold mb-6 text-center text-gray-800">
               Orders
-            </h1>
+            </h1> */}
+
+            <Card
+              elevation={4}
+              sx={{
+                display: "flex",
+                flexDirection: { xs: "column", sm: "row" },
+                justifyContent: "space-between",
+                alignItems: { xs: "flex-start", sm: "center" },
+                p: 2,
+                borderRadius: 1,
+                position: "relative",
+                overflow: "hidden",
+                mb: 5,
+                background: "linear-gradient(135deg, #f9fafb, #ffffff)",
+                border: "1px solid",
+                borderColor: "grey.200",
+              }}
+            >
+              {/* Left accent bar */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  left: 0,
+                  top: 0,
+                  bottom: 0,
+                  width: "6px",
+                  bgcolor: "primary.main",
+                  borderTopLeftRadius: 12,
+                  borderBottomLeftRadius: 12,
+                }}
+              />
+
+              {/* Text Content */}
+              <Box sx={{ pl: 2 }}>
+                <Typography
+                  variant="h4"
+                  sx={{
+                    fontWeight: 800,
+                    color: "text.primary",
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  Orders History
+                </Typography>
+
+                <Typography
+                  variant="body2"
+                  sx={{
+                    mt: 1,
+                    color: "text.secondary",
+                    fontWeight: 500,
+                  }}
+                >
+                  Track all your latest orders status with ease
+                </Typography>
+              </Box>
+            </Card>
 
             <div className="grid gap-4">
               {orderList && orderList.length > 0 ? (

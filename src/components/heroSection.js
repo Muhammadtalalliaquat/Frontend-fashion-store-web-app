@@ -48,7 +48,7 @@ export default function CategoryCarousel() {
         >
           {products.map((item, index) => (
             <SwiperSlide key={index}>
-              <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mt-12 sm:mt-20 bg-white/5 backdrop-blur-sm shadow-2xl rounded-xl p-8 sm:p-20">
+              <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mt-2 sm:mt-2 bg-white/5 backdrop-blur-sm shadow-2xl rounded-xl p-8 sm:p-20">
                 <div className="flex-1 text-center lg:text-left space-y-5">
                   <h1 className="text-4xl sm:text-5xl font-extrabold leading-tight text-white">
                     Discover Your Fashion <br />

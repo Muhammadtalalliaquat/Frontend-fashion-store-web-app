@@ -18,6 +18,7 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
 import FashionStoreLoader from "../../components/storeLoader";
+import { Card, Typography } from "@mui/material";
 
 export default function ProductCartPage() {
   const dispatch = useDispatch();
@@ -184,17 +185,48 @@ export default function ProductCartPage() {
       <Navbar />
 
       {loading ? (
-        // <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75">
-        //   <FaSpinner className="animate-spin text-3xl sm:text-3xl md:text-5xl text-blue-500" />
-        // </div>
         <FashionStoreLoader cart={true} />
       ) : (
         <div className="max-w-4xl mx-auto p-4 sm:p-6">
           {carts && carts.length > 0 ? (
             <>
-              <h2 className="text-2xl sm:text-3xl font-semibold text-gray-800 mb-6 text-center sm:text-left">
-                Your Cart
-              </h2>
+              <Card
+                elevation={2}
+                sx={{
+                  display: "flex",
+                  flexDirection: { xs: "column", sm: "row" },
+                  justifyContent: "space-between",
+                  alignItems: { xs: "flex-start", sm: "center" },
+                  p: 3,
+                  borderRadius: 1,
+                  border: "1px solid",
+                  borderColor: "grey.200",
+                  mb: 4,
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: "600",
+                    color: "text.primary",
+                    letterSpacing: 0.5,
+                  }}
+                >
+                  Your Cart
+                </Typography>
+
+                <Typography
+                  variant="body2"
+                  sx={{
+                    mt: { xs: 2, sm: 0 },
+                    color: "text.secondary",
+                    textAlign: { xs: "left", sm: "right" },
+                    fontWeight: 500,
+                  }}
+                >
+                  Review items before checkout
+                </Typography>
+              </Card>
 
               {carts
                 .filter((item) => item.productId)

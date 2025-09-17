@@ -20,6 +20,8 @@ import Link from "next/link";
 import { TiArrowSortedUp } from "react-icons/ti";
 import { motion } from "framer-motion";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { Card } from "@mui/material";
+
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -211,9 +213,21 @@ export default function Products() {
       <Navbar />
       <section className="px-6 py-10 bg-gray-100 min-h-screen">
         <div className="max-w-7xl mx-auto">
-          <div className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl font-bold text-gray-800">All Products</h1>
-          </div>
+         
+          <Card
+            elevation={2}
+            className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6"
+          >
+            <h1 className="text-3xl font-extrabold text-gray-800 tracking-tight">
+              All Products
+            </h1>
+
+            <span className="text-sm text-gray-500 mt-3 sm:mt-0 sm:text-right">
+              <span className="font-medium text-gray-700">
+                Manage and explore all listed products
+              </span>
+            </span>
+          </Card>
 
           <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
             <button

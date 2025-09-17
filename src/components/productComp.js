@@ -233,7 +233,7 @@ export default function ProductDetails() {
       <Suspense>
         <Navbar />
 
-        <div className="max-w-6xl mx-auto mt-18 sm:mt-20 md:mt-32 mb-30 lg:mt-30 bg-white rounded-lg shadow-lg border border-gray-200">
+        <div className="max-w-6xl mx-auto mt-10 sm:mt-20 md:mt-32 mb-30 lg:mt-20 bg-white rounded-lg shadow-lg border border-gray-200">
           <div className="max-w-9xl mx-auto p-6 flex justify-between items-center p-6 sm:p-7 shadow-md">
             <div className="w-full flex items-center justify-between">
               <h2 className="text-xl sm:text-2xl md:text-3xl font-semibold text-gray-900 flex-shrink-0">
