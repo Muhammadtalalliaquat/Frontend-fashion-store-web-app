@@ -4,6 +4,7 @@ import Link from "next/link";
 import { createSubscribe } from "../store/features/subscribeSlice";
 import { useDispatch } from "react-redux";
 import { useState, useEffect } from "react";
+import { Snackbar, Alert } from "@mui/material";
 
 export default function Footer() {
   const [isSubscribed, setIsSubscribed] = useState(null);
@@ -27,7 +28,8 @@ export default function Footer() {
         } else if (message?.includes("subscribed")) {
           setIsSubscribed(true);
           setMessage("You have been subscribed.");
-        } if (message?.toLowerCase().includes("already")) {
+        }
+        if (message?.toLowerCase().includes("already")) {
           setMessage("You are already subscribed.");
         }
 
@@ -41,14 +43,12 @@ export default function Footer() {
       });
   };
 
-
   useEffect(() => {
     if (message) {
       const timer = setTimeout(() => setMessage(""), 3000);
       return () => clearTimeout(timer);
     }
   }, [message]);
-
 
   const footerData = {
     brand: {
@@ -73,21 +73,21 @@ export default function Footer() {
 
   return (
     <>
-      <footer className="bg-gray-900 text-white px-6 py-6 pt-16">
+      <footer className="bg-blue-900 text-white px-6 py-6 pt-16">
         <div className="max-w-7xl mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
             <h2 className="text-xl font-bold mb-2">{footerData.brand.name}</h2>
-            <p className="text-sm text-gray-400">
+            <p className="text-sm text-gray-300">
               {footerData.brand.description}
             </p>
           </div>
 
           <div>
             <h3 className="font-semibold mb-3">Quick Links</h3>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm text-gray-300">
               {footerData.quickLinks.map((link, index) => (
                 <li key={index}>
-                  <a className="hover:text-pink-600" href={link.href}>
+                  <a className="hover:text-blue-400" href={link.href}>
                     {link.name}
                   </a>
                 </li>
@@ -97,10 +97,10 @@ export default function Footer() {
 
           <div>
             <h3 className="font-semibold mb-3">Customer Support</h3>
-            <ul className="space-y-2 text-sm text-gray-400">
+            <ul className="space-y-2 text-sm text-gray-300">
               {footerData.supportLinks.map((link, index) => (
                 <li key={index}>
-                  <Link className="hover:text-pink-600" href={link.href}>
+                  <Link className="hover:text-blue-400" href={link.href}>
                     {link.name}
                   </Link>
                 </li>
@@ -110,7 +110,7 @@ export default function Footer() {
 
           <div>
             <h3 className="font-semibold mb-3">Subscribe</h3>
-            <p className="text-sm text-gray-400 mb-2">
+            <p className="text-sm text-gray-300 mb-2">
               Get the latest offers & updates.
             </p>
             <form onSubmit={addHandelSubscribe} className="relative">
@@ -124,13 +124,27 @@ export default function Footer() {
               />
               <button
                 type="submit"
-                className="w-full bg-pink-600 hover:bg-pink-700 text-white py-2 rounded"
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white py-2 rounded"
               >
                 {isSubscribed ? "Unsubscribe" : "Subscribe"}
               </button>
 
-              {/* Popup message */}
-              {message && (
+              <Snackbar
+                open={!!message}
+                autoHideDuration={3000}
+                onClose={() => setMessage("")}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              >
+                <Alert
+                  severity="success"
+                  variant="filled"
+                  sx={{ width: "100%" }}
+                >
+                  {message}
+                </Alert>
+              </Snackbar>
+
+              {/* {message && (
                 <div
                   className={`fixed top-[110px] left-1/2 transform -translate-x-1/2 bg-pink-500 text-white px-4 py-2 rounded shadow-lg transition-all duration-500 ${
                     message
@@ -140,13 +154,12 @@ export default function Footer() {
                 >
                   {message}
                 </div>
-              )}
+              )} */}
             </form>
           </div>
         </div>
 
-        {/* Bottom */}
-        <div className="mt-10 border-t border-gray-700 pt-6 text-center text-sm text-gray-500">
+        <div className="mt-10 border-t border-gray-400 pt-6 text-center text-sm text-gray-300">
           © {footerData.brand.year} {footerData.brand.name}. All rights
           reserved.
         </div>

@@ -95,7 +95,7 @@ function AddProductPage() {
           // }`}
           className={`w-full mx-auto bg-white rounded-3xl shadow-lg overflow-hidden 
       sm:max-w-2xl md:max-w-3xl lg:max-w-5xl xl:max-w-4xl
-      ${activeTab === "discount" ? "mt-20" : "mt-20"}`}
+      ${activeTab === "discount" ? "mt-10" : "mt-10"}`}
         >
           {/* Tabs */}
           <div className="flex bg-gray-100 border-b relative z-0">
