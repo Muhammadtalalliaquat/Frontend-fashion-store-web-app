@@ -1,3 +1,5 @@
+"use client";
+
 import Navbar from "../../components/navbar";
 import {
   Box,
@@ -7,7 +9,6 @@ import {
   ListItem,
   ListItemText,
 } from "@mui/material";
-
 
 export default function shippingInfoPage() {
   // const shippingContent = {
@@ -39,7 +40,6 @@ export default function shippingInfoPage() {
   //     },
   //   ],
   // };
-
 
   const shippingContent = {
     title: "Shipping Information",
