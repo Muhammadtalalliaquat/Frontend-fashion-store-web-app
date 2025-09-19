@@ -18,7 +18,22 @@ import {
   EllipsisVerticalIcon,
 } from "@heroicons/react/24/solid";
 import FashionStoreLoader from "../../components/storeLoader";
-import { Card, Typography } from "@mui/material";
+import {
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  TextField,
+  Button,
+  Grid,
+  IconButton,
+  CircularProgress,
+  Card,
+  Typography,
+  Snackbar,
+  Alert,
+} from "@mui/material";
+import CloseIcon from "@mui/icons-material/Close";
 
 export default function ProductCartPage() {
   const dispatch = useDispatch();
@@ -39,6 +54,8 @@ export default function ProductCartPage() {
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [errormessage, setErrorMessage] = useState("");
+
   const router = useRouter();
 
   useEffect(() => {
@@ -62,7 +79,7 @@ export default function ProductCartPage() {
     setUser(storedUser);
 
     if (errorMsg) {
-      const timer = setTimeout(() => setErrorMsg(""), 13000);
+      const timer = setTimeout(() => setErrorMsg(""), 3000);
       return () => clearTimeout(timer);
     }
   }, [errorMsg]);
@@ -139,7 +156,7 @@ export default function ProductCartPage() {
     e.preventDefault();
 
     if (selectedItems.length === 0) {
-      alert("Please select at least one product.");
+      setErrorMsg("Please select at least one product.");
       return;
     }
 
@@ -164,15 +181,54 @@ export default function ProductCartPage() {
 
     dispatch(createMultipleOrders(orderFormData))
       .then((result) => {
-        const message = result.payload?.msg;
-        if (message) {
-          setErrorMsg(message);
-          if (message.toLowerCase().includes("placed")) {
-            setActivePopup(null);
-            router.push("/ordersPage");
+        const { error, msg } = result.payload || {};
+
+        if (error) {
+          if (Array.isArray(msg)) {
+            const fieldErrors = {};
+
+            msg.forEach((m) => {
+              const lower = m.toLowerCase();
+
+              if (lower.includes("first name")) fieldErrors.firstName = m;
+              else if (lower.includes("last name")) fieldErrors.lastName = m;
+              else if (lower.includes("email")) fieldErrors.email = m;
+              else if (lower.includes("city")) fieldErrors.city = m;
+              else if (lower.includes("poster code"))
+                fieldErrors.posterCode = m;
+              else if (lower.includes("phone")) fieldErrors.phone = m;
+              else if (lower.includes("address")) fieldErrors.address = m;
+              else fieldErrors.general = m;
+              console.log(lower, "here");
+            });
+
+            setErrorMsg(fieldErrors);
+          } else {
+            setErrorMsg({ general: msg || "Something went wrong" });
           }
+
+          setIsSubmitting(false);
+          return;
+        } else {
+          const message = msg || "Order placed successfully.";
+
+          if (message) {
+            setErrorMessage(message);
+            if (message.toLowerCase().includes("placed")) {
+              setActivePopup(null);
+              router.push("/ordersPage");
+            }
+          }
+
+          setEmail("");
+          setFirstName("");
+          setLastName("");
+          setCity("");
+          setPostercode("");
+          setPhone("");
+          setAddress("");
+          setIsSubmitting(false);
         }
-        setIsSubmitting(false);
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
@@ -377,7 +433,7 @@ export default function ProductCartPage() {
               <button
                 onClick={() => {
                   if (selectedItems.length === 0) {
-                    alert("Please select at least one product.");
+                    setErrorMsg("Please select at least one product.");
                     return;
                   }
 
@@ -415,7 +471,7 @@ export default function ProductCartPage() {
                 </div>
               )}
 
-              {activePopup && user && (
+              {/* {activePopup && user && (
                 <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-[9999]">
                   <form
                     className="bg-white w-full max-w-md p-7 rounded-lg shadow-2xl relative"
@@ -510,23 +566,161 @@ export default function ProductCartPage() {
                     </button>
                   </form>
                 </div>
-              )}
-              {errorMsg && (
-                <p
-                  className={`fixed top-[110px] left-1/2 transform -translate-x-1/2 ${
-                    errorMsg.toLowerCase().includes("success") ||
-                    errorMsg.toLowerCase().includes("placed")
-                      ? "bg-green-500"
-                      : "bg-red-500"
-                  } text-white px-4 py-2 rounded shadow-lg transition-all duration-500 ${
-                    errorMsg
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 -translate-y-2"
-                  }`}
+              )} */}
+              {activePopup && user && (
+                <Dialog
+                  open={Boolean(activePopup)}
+                  onClose={() => setActivePopup(null)}
+                  fullWidth
+                  maxWidth="sm"
                 >
-                  {errorMsg}
-                </p>
+                  <DialogTitle sx={{ fontWeight: "bold" }}>
+                    Place Your Order
+                    <IconButton
+                      onClick={() => setActivePopup(null)}
+                      sx={{ position: "absolute", right: 8, top: 8 }}
+                    >
+                      <CloseIcon />
+                    </IconButton>
+                  </DialogTitle>
+
+                  <form onSubmit={(e) => handlePlaceOrders(e, selectedItems)}>
+                    <DialogContent dividers>
+                      <TextField
+                        fullWidth
+                        type="email"
+                        label="Email"
+                        value={email}
+                        onChange={(e) => setEmail(e.target.value)}
+                        margin="normal"
+                        // required
+                        error={Boolean(errorMsg.email)}
+                        helperText={errorMsg.email}
+                      />
+
+                      <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                          <TextField
+                            fullWidth
+                            label="First Name"
+                            value={firstName}
+                            onChange={(e) => setFirstName(e.target.value)}
+                            margin="normal"
+                            // required
+                            error={Boolean(errorMsg.firstName)}
+                            helperText={errorMsg.firstName}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <TextField
+                            fullWidth
+                            label="Last Name"
+                            value={lastName}
+                            onChange={(e) => setLastName(e.target.value)}
+                            margin="normal"
+                            // required
+                            error={Boolean(errorMsg.lastName)}
+                            helperText={errorMsg.lastName}
+                          />
+                        </Grid>
+                      </Grid>
+
+                      <TextField
+                        fullWidth
+                        label="Address"
+                        value={address}
+                        onChange={(e) => setAddress(e.target.value)}
+                        margin="normal"
+                        // required
+                        error={Boolean(errorMsg.address)}
+                        helperText={errorMsg.address}
+                      />
+
+                      <Grid container spacing={2}>
+                        <Grid item xs={12} sm={6}>
+                          <TextField
+                            fullWidth
+                            label="City"
+                            value={city}
+                            onChange={(e) => setCity(e.target.value)}
+                            margin="normal"
+                            // required
+                            error={Boolean(errorMsg.city)}
+                            helperText={errorMsg.city}
+                          />
+                        </Grid>
+                        <Grid item xs={12} sm={6}>
+                          <TextField
+                            fullWidth
+                            type="number"
+                            label="Postcode"
+                            value={posterCode}
+                            onChange={(e) => setPostercode(e.target.value)}
+                            margin="normal"
+                            // required
+                            error={Boolean(errorMsg.posterCode)}
+                            helperText={errorMsg.posterCode}
+                          />
+                        </Grid>
+                      </Grid>
+
+                      <TextField
+                        fullWidth
+                        label="Phone"
+                        value={phone}
+                        onChange={(e) => setPhone(e.target.value)}
+                        margin="normal"
+                        // required
+                        error={Boolean(errorMsg.phone)}
+                        helperText={errorMsg.phone}
+                      />
+                    </DialogContent>
+
+                    <DialogActions>
+                      <Button
+                        onClick={() => setActivePopup(null)}
+                        color="secondary"
+                        variant="outlined"
+                      >
+                        Cancel
+                      </Button>
+                      <Button
+                        type="submit"
+                        disabled={isSubmitting}
+                        variant="contained"
+                        color="primary"
+                        startIcon={
+                          isSubmitting && (
+                            <CircularProgress size={18} color="inherit" />
+                          )
+                        }
+                      >
+                        {isSubmitting ? "Placing..." : "Place Order"}
+                      </Button>
+                    </DialogActions>
+                  </form>
+                </Dialog>
               )}
+              <Snackbar
+                open={Boolean(errormessage)}
+                autoHideDuration={4000}
+                onClose={() => setErrorMsg(null)}
+                anchorOrigin={{ vertical: "top", horizontal: "center" }}
+              >
+                <Alert
+                  onClose={() => setErrorMsg(null)}
+                  severity={
+                    errormessage?.toLowerCase().includes("success") ||
+                    errormessage?.toLowerCase().includes("placed")
+                      ? "success"
+                      : "error"
+                  }
+                  variant="filled"
+                  sx={{ width: "100%" }}
+                >
+                  {errormessage}
+                </Alert>
+              </Snackbar>
 
               {selectedCartItems.length > 0 && (
                 <div className="mt-6 p-4 rounded-xl border border-gray-200 bg-gray-50 text-right">

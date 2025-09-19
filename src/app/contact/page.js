@@ -4,10 +4,12 @@ import Navbar from "../../components/navbar";
 import { motion } from "framer-motion";
 import { createContact } from "../../store/features/contactSlice";
 import { createFeedback } from "../../store/features/feedbackSlice";
+import { toast, ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+// import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+// import { toast } from "react-toastify";
 // import Link from "next/link";
 import Footer from "../../components/footer";
 
@@ -33,13 +35,14 @@ export default function ContactPage() {
   const [email, setEmail] = useState("");
   const [message, setMessage] = useState("");
   const [errormessage, setErrorMessage] = useState("");
+  const [error, setError] = useState("");
   const [feedBackMessage, setFeedBackMessage] = useState("");
   const [user, setUser] = useState(null);
   const [activePopup, setActivePopup] = useState(null);
   const [mounted, setMounted] = useState(false);
 
   const dispatch = useDispatch();
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -68,8 +71,29 @@ export default function ContactPage() {
       .then((result) => {
         const { error, msg } = result.payload || {};
 
+        // if (error) {
+        //   setErrorMessage(msg || "Something went wrong.");
+        //   setIsSubmitting(false);
+        //   return;
+        // }
+
         if (error) {
-          setErrorMessage(msg || "Something went wrong.");
+          // Agar backend array bheje
+          if ((msg)) {
+            const fieldErrors = {};
+            msg.forEach((m) => {
+              if (m.toLowerCase().includes("first name"))
+                fieldErrors.firstName = m;
+              if (m.toLowerCase().includes("last name"))
+                fieldErrors.lastName = m;
+              if (m.toLowerCase().includes("email")) fieldErrors.email = m;
+              if (m.toLowerCase().includes("message")) fieldErrors.message = m;
+            });
+            setErrorMessage(fieldErrors);
+          } else {
+            setErrorMessage({ general: msg });
+          }
+
           setIsSubmitting(false);
           return;
         }
@@ -95,29 +119,49 @@ export default function ContactPage() {
   const handleAddFeedbackData = (e) => {
     e.preventDefault();
     setIsSubmitting(true);
+    setErrorMessage(""); 
 
     dispatch(createFeedback({ feedBackMessage }))
       .then((result) => {
         console.log("API Response:", result.payload);
-        // const message = result.payload?.msg;
-        // if (message) {
-        //   setErrorMessage(message);
-        // }
+
+        const { error, msg } = result.payload || {};
+
+        if (error) {
+          setError(msg || "Something went wrong. Please try again.");
+          setIsSubmitting(false);
+          return;
+        }
+
+        toast.success("Feedback submitted successfully!", {
+          position: "bottom-right",
+        });
         setFeedBackMessage("");
         setIsSubmitting(false);
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
-      })
-      .finally(() => {
-        router.push("/fashion-store");
+        setErrorMessage("An unexpected error occurred.");
+        setIsSubmitting(false);
       });
   };
+
 
   return (
     <>
       <Navbar />
-
+      <ToastContainer
+        position="bottom-right"
+        autoClose={3000}
+        hideProgressBar={false}
+        newestOnTop
+        closeOnClick
+        rtl={false}
+        pauseOnFocusLoss
+        draggable
+        pauseOnHover
+        theme="colored"
+      />
       <Box
         sx={{
           minHeight: "100vh",
@@ -169,7 +213,9 @@ export default function ContactPage() {
                         label="First Name"
                         value={firstName}
                         onChange={(e) => setFirstName(e.target.value)}
-                        required
+                        error={Boolean(errormessage.firstName)}
+                        helperText={errormessage.firstName}
+                        // required
                       />
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -178,7 +224,9 @@ export default function ContactPage() {
                         label="Last Name"
                         value={lastName}
                         onChange={(e) => setLastName(e.target.value)}
-                        required
+                        error={Boolean(errormessage.lastName)}
+                        helperText={errormessage.lastName}
+                        // required
                       />
                     </Grid>
                   </Grid>
@@ -189,9 +237,9 @@ export default function ContactPage() {
                     label="Email Address"
                     value={email}
                     onChange={(e) => setEmail(e.target.value)}
-                    required
-                    error={Boolean(errormessage)}
-                    helperText={errormessage}
+                    error={Boolean(errormessage.email)}
+                    helperText={errormessage.email}
+                    // required
                   />
 
                   <TextField
@@ -201,7 +249,9 @@ export default function ContactPage() {
                     label="Message"
                     value={message}
                     onChange={(e) => setMessage(e.target.value)}
-                    required
+                    error={Boolean(errormessage.message)}
+                    helperText={errormessage.message}
+                    // required
                   />
 
                   <Button
@@ -224,6 +274,11 @@ export default function ContactPage() {
                     )}
                   </Button>
                 </Box>
+                {errormessage.general && (
+                  <Typography color="error" variant="body2" sx={{ mt: 1 }}>
+                    {errors.general}
+                  </Typography>
+                )}
               </Grid>
 
               {/* Right: Feedback Form */}
@@ -247,8 +302,8 @@ export default function ContactPage() {
                     label="Your Feedback"
                     value={feedBackMessage}
                     onChange={(e) => setFeedBackMessage(e.target.value)}
-                    required
-                    helperText="Your feedback helps us improve!"
+                    error={Boolean(error)}
+                    helperText={error || "Your feedback helps us improve!"}
                   />
 
                   <Button
@@ -260,6 +315,9 @@ export default function ContactPage() {
                       "&:hover": { bgcolor: "primary.dark" },
                     }}
                     disabled={isSubmitting}
+                    onClick={() => {
+                      if (!user) setActivePopup(true);
+                    }}
                   >
                     {isSubmitting ? (
                       <CircularProgress size={24} sx={{ color: "white" }} />
