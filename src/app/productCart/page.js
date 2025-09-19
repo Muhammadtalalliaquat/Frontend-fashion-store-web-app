@@ -78,11 +78,11 @@ export default function ProductCartPage() {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
 
-    if (errorMsg) {
-      const timer = setTimeout(() => setErrorMsg(""), 3000);
-      return () => clearTimeout(timer);
-    }
-  }, [errorMsg]);
+    // if (errormessage) {
+    //   const timer = setTimeout(() => setErrorMessage(""), 3000);
+    //   return () => clearTimeout(timer);
+    // }
+  }, []);
 
   const selectedCartItems = selectedItems;
 
@@ -155,10 +155,10 @@ export default function ProductCartPage() {
   const handlePlaceOrders = (e) => {
     e.preventDefault();
 
-    if (selectedItems.length === 0) {
-      setErrorMsg("Please select at least one product.");
-      return;
-    }
+    // if (selectedItems.length === 0) {
+    //   setErrorMessage("Please select at least one product.");
+    //   return;
+    // }
 
     const formattedProducts = selectedItems.map((item) => ({
       productId: item.productId._id,
@@ -433,7 +433,7 @@ export default function ProductCartPage() {
               <button
                 onClick={() => {
                   if (selectedItems.length === 0) {
-                    setErrorMsg("Please select at least one product.");
+                    setErrorMessage("Please select at least one product.");
                     return;
                   }
 
@@ -703,12 +703,12 @@ export default function ProductCartPage() {
               )}
               <Snackbar
                 open={Boolean(errormessage)}
-                autoHideDuration={4000}
-                onClose={() => setErrorMsg(null)}
+                autoHideDuration={3000}
+                onClose={() => setErrorMessage(null)}
                 anchorOrigin={{ vertical: "top", horizontal: "center" }}
               >
                 <Alert
-                  onClose={() => setErrorMsg(null)}
+                  onClose={() => setErrorMessage(null)}
                   severity={
                     errormessage?.toLowerCase().includes("success") ||
                     errormessage?.toLowerCase().includes("placed")
