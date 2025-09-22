@@ -8,7 +8,7 @@ import {
   getDiscountOffer,
   removeDicountProduct,
 } from "../../store/features/discountSlice";
-import { createDiscountOfferOrder } from "../../store/features/discountOrderSlice";
+// import { createDiscountOfferOrder } from "../../store/features/discountOrderSlice";
 import { getAllFeedback } from "../../store/features/feedbackSlice";
 import Image from "next/image";
 import Link from "next/link";
@@ -25,8 +25,22 @@ import { RiDoubleQuotesL } from "react-icons/ri";
 import FashionStoreLoader from "../../components/storeLoader";
 import CategoryCarousel from "@/components/heroSection";
 import FashionStoreSalesChart from "@/components/productChart";
+import {
+  Box,
+  TextField,
+  Button,
+  Dialog,
+  DialogTitle,
+  IconButton,
+  DialogContent,
+  DialogActions,
+  // Link,
+} from "@mui/material";
+import { ArrowBack, ArrowForward } from "@mui/icons-material";
+
 
 export default function MainDashboard() {
+  const [quantities, setQuantities] = useState({});
   const [products, setProducts] = useState([]);
   const [discount, setDiscount] = useState([]);
   const [feddBack, setFeedBack] = useState([]);
@@ -34,18 +48,18 @@ export default function MainDashboard() {
   const [current, setCurrent] = useState(0);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [posterCode, setPostercode] = useState(0);
-  const [errorMsg, setErrorMsg] = useState("");
-  const [address, setAddress] = useState("");
-  const [city, setCity] = useState("");
-  const [phone, setPhone] = useState("");
-  const [email, setEmail] = useState("");
+  // const [firstName, setFirstName] = useState("");
+  // const [lastName, setLastName] = useState("");
+  // const [posterCode, setPostercode] = useState(0);
+  // const [errorMsg, setErrorMsg] = useState("");
+  // const [address, setAddress] = useState("");
+  // const [city, setCity] = useState("");
+  // const [phone, setPhone] = useState("");
+  // const [email, setEmail] = useState("");
+  // const [isSubmitting, setIsSubmitting] = useState(false);
   const [currentFeedback, setCurrentFeedback] = useState(0);
   const [activePopup, setActivePopup] = useState(null);
   const [openOrderId, setOpenOrderId] = useState(null);
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const router = useRouter();
   const dispatch = useDispatch();
 
@@ -95,6 +109,11 @@ export default function MainDashboard() {
     setOpenOrderId((prev) => (prev === orderId ? null : orderId));
   };
 
+  const handleQuantityChange = (id, value) => {
+    const num = Math.max(1, Number(value));
+    setQuantities((prev) => ({ ...prev, [id]: num }));
+  };
+
   const maxVisible = 1;
   const feddBackmaxVisible = 1;
 
@@ -120,44 +139,40 @@ export default function MainDashboard() {
     );
   };
 
-  const handleAddSalediscountOrderPlace = (e, productId) => {
-    e.preventDefault();
+  // const handleAddSalediscountOrderPlace = (e, productId) => {
+  //   e.preventDefault();
 
-    const orderFormData = {
-      // country,
-      // city,
-      // area,
-      // productId,
-      email,
-      firstName,
-      lastName,
-      city,
-      posterCode,
-      phone,
-      address,
-      productId,
-    };
+  //   const orderFormData = {
+  //     email,
+  //     firstName,
+  //     lastName,
+  //     city,
+  //     posterCode,
+  //     phone,
+  //     address,
+  //     productId,
+  //   };
 
-    console.log("Sending Order Data:", orderFormData);
+  //   console.log("Sending Order Data:", orderFormData);
 
-    dispatch(createDiscountOfferOrder(orderFormData))
-      .then((result) => {
-        // console.log("API Response:", result.payload);
-        // router.push("/ordersPage");
-        const message = result.payload?.msg;
-        if (message) {
-          setErrorMsg(message);
-          if (message.toLowerCase().includes("placed")) {
-            router.push("/ordersPage");
-          }
-        }
-        setIsSubmitting(false);
-      })
-      .catch((err) => {
-        console.error("Fetch Error:", err);
-        setIsSubmitting(false);
-      });
-  };
+  //   dispatch(createDiscountOfferOrder(orderFormData))
+  //     .then((result) => {
+  //       // console.log("API Response:", result.payload);
+  //       // router.push("/ordersPage");
+  //       const message = result.payload?.msg;
+  //       if (message) {
+  //         setErrorMsg(message);
+  //         if (message.toLowerCase().includes("placed")) {
+  //           // router.push("/ordersPage");
+  //         }
+  //       }
+  //       setIsSubmitting(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Fetch Error:", err);
+  //       setIsSubmitting(false);
+  //     });
+  // };
 
   const handleDeleteDiscountOffer = async (orderId) => {
     if (!orderId) {
@@ -365,6 +380,74 @@ export default function MainDashboard() {
                       </div>
                     )}
 
+                    {activePopup === item._id && user && (
+                      <Dialog
+                        open={true}
+                        onClose={() => setActivePopup(null)}
+                        fullWidth
+                        maxWidth="xs"
+                      >
+                        <DialogTitle>Select Quantity</DialogTitle>
+                        <DialogContent>
+                          <Box
+                            display="flex"
+                            flexDirection="column"
+                            alignItems="center"
+                            mt={1}
+                          >
+                            <TextField
+                              type="number"
+                              label="Quantity"
+                              size="small"
+                              inputProps={{
+                                min: 1,
+                                max: item.inStock,
+                              }}
+                              value={quantities[item._id] || 1}
+                              onChange={(e) =>
+                                handleQuantityChange(item._id, e.target.value)
+                              }
+                              sx={{ width: "100px", mb: 2 }}
+                            />
+                          </Box>
+                        </DialogContent>
+                        <DialogActions
+                          sx={{ flexDirection: "column", gap: 1, px: 3, pb: 2 }}
+                        >
+                          <Button
+                            variant="contained"
+                            fullWidth
+                            onClick={() => {
+                              const quantity = quantities[item._id] || 1;
+                              const queryString = new URLSearchParams({
+                                productId: item._id,
+                                name: item.name,
+                                price: item.discountPrice.toString(),
+                                category: item.SalesCategory,
+                                stock: item.inStock.toString(),
+                                description: item.offerTitle,
+                                image: item.image,
+                                quantity: quantity.toString(),
+                              }).toString();
+                              router.push(
+                                `/discountProductInfo?${queryString}`
+                              );
+                            }}
+                          >
+                            Confirm
+                          </Button>
+                          <Button
+                            variant="text"
+                            color="inherit"
+                            onClick={() => setActivePopup(null)}
+                            sx={{ fontSize: "0.85rem" }}
+                          >
+                            Cancel
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    )}
+
                     <div className="w-full md:w-1/2">
                       <Image
                         src={item.image}
@@ -466,7 +549,7 @@ export default function MainDashboard() {
             </div>
           )}
 
-          {activePopup && user && (
+          {/* {activePopup && user && (
             <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-[9999]">
               <form
                 className="bg-white w-full max-w-md p-7 rounded-lg shadow-2xl relative"
@@ -577,7 +660,7 @@ export default function MainDashboard() {
                 </p>
               )}
             </div>
-          )}
+          )} */}
         </div>
       )}
 
@@ -644,20 +727,20 @@ export default function MainDashboard() {
               </div>
             </div>
 
-            <div className="flex justify-center space-x-4 mt-4">
-              <button
+            <Box mt={3} display="flex" justifyContent="center" gap={2}>
+              <IconButton
                 onClick={prevSlideFeedback}
-                className="bg-white shadow-md p-2 pl-3 pr-3 hover:bg-gray-50"
+                sx={{ bgcolor: "white", boxShadow: 2 }}
               >
-                &lt;
-              </button>
-              <button
+                <ArrowBack />
+              </IconButton>
+              <IconButton
                 onClick={nextSlideFeedback}
-                className="bg-white shadow-md p-2 pl-3 pr-3 hover:bg-gray-50"
+                sx={{ bgcolor: "white", boxShadow: 2 }}
               >
-                &gt;
-              </button>
-            </div>
+                <ArrowForward />
+              </IconButton>
+            </Box>
           </div>
         </section>
       )}

@@ -30,6 +30,7 @@ import {
 
 export default function ContactPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [Submitting, setSubmitting] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -50,13 +51,18 @@ export default function ContactPage() {
     setMounted(true);
   }, []);
 
-   if (!mounted) {
-     // SSR ke dauraan kuch render mat karo
-     return null;
-   }
+  if (!mounted) {
+    // SSR ke dauraan kuch render mat karo
+    return null;
+  }
 
   const handleAddConatcData = (e) => {
     e.preventDefault();
+
+    if (!user) {
+      setActivePopup(true);
+      return;
+    }
 
     const contactData = {
       firstName,
@@ -79,7 +85,7 @@ export default function ContactPage() {
 
         if (error) {
           // Agar backend array bheje
-          if ((msg)) {
+          if (msg) {
             const fieldErrors = {};
             msg.forEach((m) => {
               if (m.toLowerCase().includes("first name"))
@@ -118,8 +124,14 @@ export default function ContactPage() {
 
   const handleAddFeedbackData = (e) => {
     e.preventDefault();
-    setIsSubmitting(true);
-    setErrorMessage(""); 
+
+    if (!user) {
+      setActivePopup(true);
+      return;
+    }
+
+    setSubmitting(true);
+    setError("");
 
     dispatch(createFeedback({ feedBackMessage }))
       .then((result) => {
@@ -129,23 +141,22 @@ export default function ContactPage() {
 
         if (error) {
           setError(msg || "Something went wrong. Please try again.");
-          setIsSubmitting(false);
+          setSubmitting(false);
           return;
         }
 
         toast.success("Feedback submitted successfully!", {
           position: "bottom-right",
         });
-        setFeedBackMessage("");
-        setIsSubmitting(false);
+        setError("");
+        setSubmitting(false);
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
-        setErrorMessage("An unexpected error occurred.");
-        setIsSubmitting(false);
+        setError("An unexpected error occurred.");
+        setSubmitting(false);
       });
   };
-
 
   return (
     <>
@@ -276,7 +287,7 @@ export default function ContactPage() {
                 </Box>
                 {errormessage.general && (
                   <Typography color="error" variant="body2" sx={{ mt: 1 }}>
-                    {errors.general}
+                    {error.general}
                   </Typography>
                 )}
               </Grid>
@@ -314,12 +325,9 @@ export default function ContactPage() {
                       bgcolor: "primary.main",
                       "&:hover": { bgcolor: "primary.dark" },
                     }}
-                    disabled={isSubmitting}
-                    onClick={() => {
-                      if (!user) setActivePopup(true);
-                    }}
+                    disabled={Submitting}
                   >
-                    {isSubmitting ? (
+                    {Submitting ? (
                       <CircularProgress size={24} sx={{ color: "white" }} />
                     ) : (
                       "Submit Feedback"
@@ -347,7 +355,7 @@ export default function ContactPage() {
         </motion.div>
 
         {/* Popup (Login Required) */}
-        <Dialog open={activePopup} onClose={() => setActivePopup(false)}>
+        <Dialog open={activePopup} onClose={() => setActivePopup(null)}>
           <DialogTitle>You need to log in</DialogTitle>
           <DialogContent>
             <Typography>You need to log in to contact our team.</Typography>
