@@ -372,7 +372,11 @@ export default function ShopPage() {
                       </p>
                       <div className="flex justify-between items-center mb-2">
                         <h3 className="mb-1">{item.SalesCategory}</h3>
-                        <p className="text-green-600 text-sm mb-1">
+                        <p
+                          className={`text-sm mb-1 ${
+                            item.inStock ? "text-green-600" : "text-red-700"
+                          }`}
+                        >
                           {item.inStock ? "In Stock" : "Out of Stock"}
                         </p>
                       </div>

@@ -13,8 +13,6 @@ import {
   TextField,
   Grid,
   Button,
-  Snackbar,
-  Alert,
   CircularProgress,
 } from "@mui/material";
 
@@ -51,11 +49,6 @@ export default function PlaceOrderComp() {
   }, []);
 
   useEffect(() => {
-    // if (errorMsg) {
-    //   const timer = setTimeout(() => setErrorMsg(""), 3000);
-    //   return () => clearTimeout(timer);
-    // }
-
     dispatch(getAllReview(productId))
       .then((result) => {
         console.log("API Response:", result.payload);
@@ -243,27 +236,31 @@ export default function PlaceOrderComp() {
                 helperText={errorMsg?.phone}
               />
 
-              {/* Error / Success Message */}
-              <Snackbar
-                open={Boolean(SuccessMsg)}
-                autoHideDuration={3000}
-                onClose={() => setSuccessMsg(null)}
-                anchorOrigin={{ vertical: "top", horizontal: "center" }}
-              >
-                <Alert
-                  onClose={() => setSuccessMsg(null)}
-                  severity={
-                    SuccessMsg?.toLowerCase().includes("success") ||
-                    SuccessMsg?.toLowerCase().includes("placed")
-                      ? "success"
-                      : "error"
-                  }
-                  variant="filled"
-                  sx={{ width: "100%" }}
+              {SuccessMsg && (
+                <div
+                  className={`fixed top-16 left-1/2 transform -translate-x-1/2 
+              w-[90%] max-w-md sm:max-w-lg md:max-w-xl2 
+              px-4 sm:px-6 py-3 sm:py-4 
+              rounded-lg shadow-lg text-white text-sm sm:text-base font-medium 
+              transition-all duration-500 z-50 
+              ${
+                SuccessMsg.toLowerCase().includes("success") ||
+                SuccessMsg.toLowerCase().includes("placed")
+                  ? "bg-green-600"
+                  : "bg-red-600"
+              }`}
                 >
-                  {SuccessMsg}
-                </Alert>
-              </Snackbar>
+                  <div className="flex items-center justify-between gap-3">
+                    <span className="flex-1 break-words">{SuccessMsg}</span>
+                    <button
+                      onClick={() => setSuccessMsg(null)}
+                      className="ml-2 text-white hover:text-gray-200 focus:outline-none text-lg"
+                    >
+                      ✕
+                    </button>
+                  </div>
+                </div>
+              )}
 
               {/* Submit Button */}
               <Button
