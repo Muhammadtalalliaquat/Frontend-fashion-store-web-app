@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { useDispatch } from "react-redux";
 import {
@@ -22,7 +22,6 @@ import { motion } from "framer-motion";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { Card } from "@mui/material";
 
-
 export default function Products() {
   const dispatch = useDispatch();
   const [products, setProducts] = useState([]);
@@ -35,9 +34,10 @@ export default function Products() {
   const [wishListPopup, setWishListPopup] = useState(null);
   const [wishlistIds, setWishlistIds] = useState([]);
   const [error, setError] = useState("");
-  const [sortedProducts, setSortedProducts] = useState([]);
+  // const [sortedProducts, setSortedProducts] = useState([]);
   const [sortOrder, setSortOrder] = useState("desc");
   const [user, setUser] = useState(null);
+  const [mounted, setMounted] = useState(false);
   const router = useRouter();
 
   // const [loadingMsg, setLoadingMsg] = useState(true);
@@ -48,6 +48,8 @@ export default function Products() {
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
+
+    setMounted(true);
 
     dispatch(fetchAllProductShow())
       .then((result) => {
@@ -63,15 +65,15 @@ export default function Products() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
 
-  useEffect(() => {
-    const filtered = products.filter(
-      (product) =>
-        (category === "all" || product.category === category) &&
-        product.name.toLowerCase().includes(searchTerm.toLowerCase())
-    );
+  // useEffect(() => {
+  //   const filtered = products.filter(
+  //     (product) =>
+  //       (category === "all" || product.category === category) &&
+  //       product.name.toLowerCase().includes(searchTerm.toLowerCase())
+  //   );
 
-    setSortedProducts(filtered);
-  }, [products, category, searchTerm]);
+  //   setSortedProducts(filtered);
+  // }, [products, category, searchTerm]);
 
   useEffect(() => {
     if (error) {
@@ -79,6 +81,29 @@ export default function Products() {
       return () => clearTimeout(timer);
     }
   }, [error]);
+
+  const filtered = useMemo(() => {
+    let result = products.filter(
+      (product) =>
+        (category === "all" || product.category === category) &&
+        product.name.toLowerCase().includes(searchTerm.toLowerCase())
+    );
+
+    if (sortOrder === "asc") {
+      result = [...result].sort((a, b) => a.price - b.price);
+    } else if (sortOrder === "desc") {
+      result = [...result].sort((a, b) => b.price - a.price);
+    }
+
+    return result;
+  }, [products, category, searchTerm, sortOrder]);
+
+
+  if (!mounted) {
+    return null;
+  }
+
+
 
   const handleQuantityChange = (id, value) => {
     const num = Math.max(1, Number(value));
@@ -157,10 +182,10 @@ export default function Products() {
   };
 
   const toggleSortByPrice = () => {
-    const sorted = [...sortedProducts].sort((a, b) => {
-      return sortOrder === "desc" ? a.price - b.price : b.price - a.price;
-    });
-    setSortedProducts(sorted);
+    // const sorted = [...sortedProducts].sort((a, b) => {
+    //   return sortOrder === "desc" ? a.price - b.price : b.price - a.price;
+    // });
+    // setSortedProducts(sorted);
     setSortOrder(sortOrder === "desc" ? "asc" : "desc");
   };
 
@@ -211,9 +236,11 @@ export default function Products() {
   return (
     <>
       <Navbar />
+
+      {/* {loading && <FashionStoreLoader product={products} />} */}
+
       <section className="px-6 py-10 bg-gray-100 min-h-screen">
         <div className="max-w-7xl mx-auto">
-         
           <Card
             elevation={2}
             className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6"
@@ -284,11 +311,9 @@ export default function Products() {
 
           {loading ? (
             <FashionStoreLoader product={products} />
-          ) : sortedProducts.length === 0 ? (
-            <p className="text-center text-gray-500">No products found.</p>
-          ) : (
+          ) : filtered.length > 0 ? (
             <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-              {sortedProducts.map((product, index) => (
+              {filtered.map((product, index) => (
                 <div
                   key={product._id + index}
                   className="group relative bg-white rounded-xl shadow-md p-4 hover:bg-gray-50 transition-all duration-300 flex flex-col items-center text-center"
@@ -576,6 +601,8 @@ export default function Products() {
                 </div>
               ))}
             </div>
+          ) : (
+            <p className="text-center text-gray-500">No products found.</p>
           )}
         </div>
 

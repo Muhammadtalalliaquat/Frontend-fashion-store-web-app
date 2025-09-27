@@ -1,9 +1,9 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useDispatch } from "react-redux";
+// import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
-import { getHeroProducts } from "../store/features/productSlice";
+// import { getHeroProducts } from "../store/features/productSlice";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination } from "swiper/modules";
 import Image from "next/image";
@@ -12,23 +12,30 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
 
-export default function CategoryCarousel() {
-  const [products, setProducts] = useState([]);
+export default function CategoryCarousel({ bannerData }) {
+  // const [products, setProducts] = useState([]);
   const [loading, setLoading] = useState(true);
-
-  const dispatch = useDispatch();
   const router = useRouter();
+  // const dispatch = useDispatch();
+
+  // useEffect(() => {
+  //   dispatch(getHeroProducts())
+  //     .then((result) => {
+  //       setProducts(result.payload.data);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Fetch Error:", err);
+  //       setLoading(false);
+  //     });
+  // }, [dispatch]);
+
   useEffect(() => {
-    dispatch(getHeroProducts())
-      .then((result) => {
-        setProducts(result.payload.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch Error:", err);
-        setLoading(false);
-      });
-  }, [dispatch]);
+    if (bannerData) {
+      // console.log("Banner data is here:", bannerData);
+      setLoading(false);
+    }
+  }, [bannerData]);
 
   return (
     <section className="w-full bg-gradient-to-br from-indigo-800 via-black to-indigo-900 text-white py-8 px-4 md:px-12 lg:px-24 relative overflow-hidden">
@@ -37,7 +44,7 @@ export default function CategoryCarousel() {
         <div className="absolute w-48 h-48 bg-purple-500 opacity-20 rounded-full top-1/2 left-1/2 animate-pulse"></div>
       </div>
 
-      {!loading && (
+      {!loading && bannerData?.length > 0 && (
         <Swiper
           spaceBetween={40}
           slidesPerView={1}
@@ -46,7 +53,7 @@ export default function CategoryCarousel() {
           modules={[Navigation, Pagination]}
           className="relative z-10"
         >
-          {products.map((item, index) => (
+          {bannerData.map((item, index) => (
             <SwiperSlide key={index}>
               <div className="flex flex-col lg:flex-row items-center justify-between gap-12 mt-2 sm:mt-2 bg-white/5 backdrop-blur-sm shadow-2xl rounded-xl p-8 sm:p-20">
                 <div className="flex-1 text-center lg:text-left space-y-5">

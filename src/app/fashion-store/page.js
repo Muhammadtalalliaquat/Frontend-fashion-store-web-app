@@ -3,7 +3,10 @@
 import Navbar from "../../components/navbar";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
-import { getAllProducts } from "../../store/features/productSlice";
+import {
+  getAllProducts,
+  getHeroProducts,
+} from "../../store/features/productSlice";
 import {
   getDiscountOffer,
   removeDicountProduct,
@@ -42,6 +45,7 @@ import { ArrowBack, ArrowForward } from "@mui/icons-material";
 export default function MainDashboard() {
   const [quantities, setQuantities] = useState({});
   const [products, setProducts] = useState([]);
+  const [banner, setBanner] = useState([]);
   const [discount, setDiscount] = useState([]);
   const [feddBack, setFeedBack] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -62,10 +66,24 @@ export default function MainDashboard() {
   const [openOrderId, setOpenOrderId] = useState(null);
   const router = useRouter();
   const dispatch = useDispatch();
+  const [mounted, setMounted] = useState(false);
+
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
+
+    setMounted(true);
+
+    dispatch(getHeroProducts())
+      .then((result) => {
+        setBanner(result.payload.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.error("Fetch Error:", err);
+        setLoading(false);
+      });
 
     dispatch(getAllProducts())
       .then((result) => {
@@ -104,6 +122,11 @@ export default function MainDashboard() {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
+
+
+  if (!mounted) {
+    return null;
+  }
 
   const toggleDropdown = (orderId) => {
     setOpenOrderId((prev) => (prev === orderId ? null : orderId));
@@ -226,9 +249,9 @@ export default function MainDashboard() {
   return (
     <>
       <Navbar />
-      <ScrollTo />
-      <CategoryCarousel />
       {loading && <FashionStoreLoader />}
+      <ScrollTo />
+      {!loading && <CategoryCarousel bannerData={banner} />}
 
       {!loading && (
         <>
@@ -664,7 +687,7 @@ export default function MainDashboard() {
         </div>
       )}
 
-      <FashionStoreSalesChart />
+      {!loading && <FashionStoreSalesChart />}
 
       {!loading && (
         <section className="bg-gray-50 px-4 py-16">

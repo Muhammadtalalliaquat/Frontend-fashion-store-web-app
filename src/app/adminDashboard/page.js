@@ -5,7 +5,8 @@ import withAdminCheck from "../../HOC/withAuth";
 import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { getAllContact } from "../../store/features/contactSlice";
-import { FaSpinner } from "react-icons/fa";
+// import { FaSpinner } from "react-icons/fa";
+import FashionStoreLoader from "../../components/storeLoader";
 
 function AdminDashboard() {
   const dispatch = useDispatch();
@@ -33,9 +34,10 @@ function AdminDashboard() {
       <Navbar />
 
       {loading ? (
-        <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75 z-50">
-          <FaSpinner className="animate-spin text-5xl text-blue-500" />
-        </div>
+        // <div className="flex justify-center items-center fixed inset-0 bg-white bg-opacity-75 z-50">
+        //   <FaSpinner className="animate-spin text-5xl text-blue-500" />
+        // </div>
+        <FashionStoreLoader dashboard={true} />
       ) : contact.length > 0 ? (
         <div className="min-h-screen bg-gray-50 p-6">
           {/* Header */}

@@ -6,6 +6,7 @@ import { useDispatch } from "react-redux";
 import { getAllChartOrders } from "../store/features/orderSlice";
 import { getAllMultiplesChartOrders } from "../store/features/multipleorderSlice";
 import { getDiscountChartOfferOrder } from "../store/features/discountOrderSlice";
+import { Card, CardContent, Typography, Box, Divider } from "@mui/material";
 
 const Chart = dynamic(() => import("react-apexcharts"), { ssr: false });
 
@@ -97,33 +98,68 @@ export default function DiscountOrderChart() {
   );
 
   return (
-    <div className="w-full bg-blue-50 px-4 sm:px-6 lg:px-8 py-6">
-      <div className="max-w-6xl mx-auto rounded-2xl p-4 sm:p-6 md:p-8">
-        <h2 className="text-center text-lg sm:text-xl font-bold text-gray-800 dark:text-white mb-4">
-          Most Ordered Product Chart
-        </h2>
-        <div className="w-full overflow-x-auto">
-          <div className="min-w-[600px] sm:min-w-full">
-            <Chart
-              options={chartOptions}
-              series={[
-                {
-                  name: "Total Orders",
-                  data: seriesData,
-                },
-              ]}
-              type="bar"
-              height={350}
-              // width={490}
-            />
-          </div>
-        </div>
-        <div className="mt-4 text-center">
-          <span className="text-sm sm:text-base font-medium text-gray-700 dark:text-gray-200">
+    <Box
+      sx={{ px: { xs: 2, sm: 4, md: 6 }, py: 4, bgcolor: "background.default" }}
+    >
+      <Card
+        sx={{
+          width: {
+            xs: "100%",
+            sm: "90%",
+            md: "80%",
+            lg: "70%",
+          },
+          // maxWidth: "70%",
+          // borderRadius: 3,
+          // boxShadow: 4,
+          mx: "auto",
+        }}
+      >
+        <CardContent>
+          <Typography
+            variant="h6"
+            align="center"
+            fontWeight="bold"
+            color="text.primary"
+            gutterBottom
+          >
+            Most Ordered Product Chart
+          </Typography>
+
+          <Divider sx={{ mb: 2 }} />
+
+          <Box sx={{ width: {
+            xs: "100%",
+            sm: "90%",
+            md: "95%",
+            lg: "85%",
+          }, overflowX: "auto", mx: "auto" }}>
+            <Box sx={{ minWidth: 600 }}>
+              <Chart
+                options={chartOptions}
+                series={[
+                  {
+                    name: "Total Orders",
+                    data: seriesData,
+                  },
+                ]}
+                type="bar"
+                height={350}
+              />
+            </Box>
+          </Box>
+
+          <Typography
+            variant="body2"
+            align="center"
+            sx={{ mt: 2 }}
+            fontWeight={500}
+            color="text.secondary"
+          >
             Product Categories
-          </span>
-        </div>
-      </div>
-    </div>
+          </Typography>
+        </CardContent>
+      </Card>
+    </Box>
   );
 }
