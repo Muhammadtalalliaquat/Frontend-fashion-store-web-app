@@ -98,12 +98,9 @@ export default function Products() {
     return result;
   }, [products, category, searchTerm, sortOrder]);
 
-
   if (!mounted) {
     return null;
   }
-
-
 
   const handleQuantityChange = (id, value) => {
     const num = Math.max(1, Number(value));
@@ -426,8 +423,35 @@ export default function Products() {
                     )}
 
                     {error && (
+                      <div
+                        className={`fixed top-16 left-1/2 transform -translate-x-1/2 
+              w-[90%] max-w-md sm:max-w-lg md:max-w-xl2 
+              px-4 sm:px-6 py-3 sm:py-4 
+               shadow-md text-white text-sm sm:text-base font-medium 
+              transition-all duration-500 z-50 
+              ${
+                error.toLowerCase().includes("success") ||
+                error.toLowerCase().includes("placed")
+                  ? "bg-green-600"
+                  : "bg-gray-600"
+              }`}
+                      >
+                        <div className="flex items-center justify-between gap-3">
+                          <span className="flex-1 break-words">{error}</span>
+                          <button
+                            onClick={() => setError(null)}
+                            className="ml-2 text-white hover:text-gray-200 focus:outline-none text-lg"
+                          >
+                            ✕
+                          </button>
+                        </div>
+                      </div>
+                    )}
+
+                    {/* {error && (
                       <p
-                        className={`fixed top-[110px] left-1/2 transform -translate-x-1/2 z-50
+                        className={`
+                          fixed top-[110px] left-1/2 transform -translate-x-1/2 z-50
                         ${
                           error.toLowerCase().includes("success") ||
                           error.toLowerCase().includes("already in wishlist")
@@ -445,7 +469,7 @@ export default function Products() {
                       >
                         {error}
                       </p>
-                    )}
+                    )} */}
 
                     <div className="w-full h-44 sm:mb-2">
                       {/* <Image

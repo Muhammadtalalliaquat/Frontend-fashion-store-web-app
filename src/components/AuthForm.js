@@ -1,12 +1,21 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { registerUser, loginUser } from "./authAction";
 import { useRouter } from "next/navigation";
 import { ApiRoutes } from "@/constant/constant";
-// import styles from "./main.module.css";
+import {
+  Box,
+  Paper,
+  Typography,
+  TextField,
+  Button,
+  CircularProgress,
+  Divider,
+} from "@mui/material";
 import axios from "axios";
+// import styles from "./main.module.css";
 // import { signInWithPopup } from "firebase/auth";
 // import { auth, provider } from "../firebase/firebaseconfig";
 // import { signIn, signOut, useSession } from "next-auth/react";
@@ -25,6 +34,13 @@ export default function AuthForm() {
   const [password, setPassword] = useState("");
   const [message, setMessage] = useState("");
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+      setMounted(true);
+    }, []);
+  
+    if (!mounted) return null;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -109,73 +125,257 @@ export default function AuthForm() {
   // };
 
   return (
-    // <div className="min-h-screen bg-gradient-to-br from-blue-100 to-purple-200">
-    //   <div className="flex items-center justify-center pt-35 bg-cover bg-center bg-no-repeat">
-    //     <div className="bg-white bg-opacity-90 backdrop-blur-lg shadow-lg rounded-2xl p-8 max-w-sm w-full">
-    //       <h2 className="text-2xl font-bold text-gray-800 text-center">
-    //         {isLogin ? "Login" : "Register"}
-    //       </h2>
-    //       <div className="w-16 h-1 bg-blue-500 mx-auto mt-2 rounded bg-gradient-to-r from-blue-500 to-purple-500 text-white"></div>
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        px: 2,
+        bgcolor: "blue.50",
+      }}
+    >
+      <Paper
+        elevation={8}
+        sx={{
+          display: "flex",
+          flexDirection: { xs: "column", md: "row" },
+          width: "100%",
+          maxWidth: 900,
+          overflow: "hidden",
+          borderRadius: 3,
+        }}
+      >
+        {/* Left Banner */}
+        <Box
+          sx={{
+            flex: 1,
+            bgcolor: "linear-gradient(to bottom right, #2563eb, #1e3a8a)",
+            color: "white",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "center",
+            p: { xs: 4, md: 6 },
+            background: "linear-gradient(to bottom right, #2563eb, #1e3a8a)",
+          }}
+        >
+          <Typography variant="h4" fontWeight="bold" mb={2}>
+            Fashionly
+          </Typography>
+          <Typography
+            variant="body1"
+            textAlign="center"
+            sx={{ maxWidth: 300, opacity: 0.9 }}
+          >
+            Discover the trendiest fashion collections and make every product
+            shine.
+          </Typography>
+        </Box>
 
-    //       <form onSubmit={handleSubmit} className="mt-6 space-y-4">
+        {/* Right Form */}
+        <Box
+          sx={{
+            flex: 1,
+            bgcolor: "white",
+            p: { xs: 4, md: 6 },
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+          }}
+        >
+          <Typography
+            variant="h5"
+            fontWeight="bold"
+            color="text.primary"
+            mb={1}
+          >
+            {isLogin ? "Hello Again!" : "Welcome!"}
+          </Typography>
+          <Typography variant="body2" color="text.secondary" mb={3}>
+            {isLogin ? "Welcome back" : "Create your account"}
+          </Typography>
+
+          <form onSubmit={handleSubmit}>
+            {!isLogin && (
+              <TextField
+                label="Your Name"
+                value={userName}
+                onChange={(e) => setUserName(e.target.value)}
+                fullWidth
+                margin="normal"
+                required
+              />
+            )}
+            <TextField
+              label="Email Address"
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              fullWidth
+              margin="normal"
+              required
+            />
+            <TextField
+              label="Password"
+              type="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              fullWidth
+              margin="normal"
+              required
+            />
+
+            <Button
+              type="submit"
+              fullWidth
+              variant="contained"
+              size="large"
+              sx={{ mt: 3, py: 1.5, fontWeight: 600 }}
+              disabled={isSubmitting}
+            >
+              {isSubmitting ? (
+                <CircularProgress size={24} color="inherit" />
+              ) : isLogin ? (
+                "Login"
+              ) : (
+                "Register"
+              )}
+            </Button>
+          </form>
+
+          {message && (
+            <Typography
+              variant="body2"
+              align="center"
+              sx={{ mt: 2, color: "orange" }}
+            >
+              {message}
+            </Typography>
+          )}
+          {authError && (
+            <Typography
+              variant="body2"
+              align="center"
+              sx={{ mt: 2, color: "error.main" }}
+            >
+              {authError}
+            </Typography>
+          )}
+
+          {isLogin && (
+            <Button
+              variant="text"
+              size="small"
+              sx={{ mt: 2 }}
+              onClick={requestPasswordReset}
+            >
+              Forgot Password?
+            </Button>
+          )}
+
+          <Divider sx={{ my: 3 }} />
+
+          <Typography variant="body2" textAlign="center">
+            {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
+            <Button
+              variant="text"
+              onClick={() => setIsLogin(!isLogin)}
+              sx={{ fontWeight: 600 }}
+            >
+              {isLogin ? "Register here" : "Login here"}
+            </Button>
+          </Typography>
+        </Box>
+      </Paper>
+    </Box>
+
+    // <div className="min-h-screen flex items-center justify-center bg-blue-100 px-4">
+    //   <div className="bg-white shadow-2xl flex flex-col md:flex-row w-full max-w-[900px] overflow-hidden">
+    //     <div className="w-full md:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800 text-white flex flex-col justify-center items-center p-8 md:p-10">
+    //       <h2 className="text-3xl font-extrabold mb-4">Fashionly</h2>
+    //       <p className="text-lg mb-6 text-center px-4">
+    //         Discover the trendiest fashion collections and make every product
+    //         shine.
+    //       </p>
+    //     </div>
+
+    //     <div className="w-full md:w-1/2 bg-white p-8 md:p-10 flex flex-col justify-center">
+    //       <h3 className="text-2xl font-bold text-gray-700 mb-2">
+    //         {isLogin ? "Hello Again!" : "Welcome!"}
+    //       </h3>
+    //       <p className="text-gray-500 mb-6">
+    //         {isLogin ? "Welcome Back" : "Create your account"}
+    //       </p>
+
+    //       <form onSubmit={handleSubmit} className="space-y-4">
     //         {!isLogin && (
-    //           <div>
-    //             <label
-    //               className="block text-sm font-semibold text-gray-700 mb-2"
-    //               // className="text-sm font-semibold text-gray-600"
-    //             >
-    //               Your Name
-    //             </label>
-    //             <input
-    //               type="text"
-    //               value={userName}
-    //               onChange={(e) => setUserName(e.target.value)}
-    //               placeholder="Enter your name"
-    //               // className="w-full mt-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300"
-    //               className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-    //               required
-    //             />
-    //           </div>
+    //           <input
+    //             type="text"
+    //             value={userName}
+    //             onChange={(e) => setUserName(e.target.value)}
+    //             placeholder="Your Name"
+    //             className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+    //             required
+    //           />
     //         )}
 
-    //         <div>
-    //           <label className="block text-sm font-semibold text-gray-700 mb-2">
-    //             Email Address
-    //           </label>
-    //           <input
-    //             type="email"
-    //             value={email}
-    //             onChange={(e) => setEmail(e.target.value)}
-    //             placeholder="Enter your email"
-    //             // className="w-full mt-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300"
-    //             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-    //             required
-    //           />
-    //         </div>
-
-    //         <div>
-    //           <label className="block text-sm font-semibold text-gray-700 mb-2">
-    //             Password
-    //           </label>
-    //           <input
-    //             type="password"
-    //             value={password}
-    //             onChange={(e) => setPassword(e.target.value)}
-    //             placeholder="Enter your password"
-    //             // className="w-full mt-1 p-3 border border-gray-300 rounded-lg shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-300"
-    //             className="w-full px-4 py-3 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-    //             required
-    //           />
-    //         </div>
-
+    //         <input
+    //           type="email"
+    //           value={email}
+    //           onChange={(e) => setEmail(e.target.value)}
+    //           placeholder="Email Address"
+    //           className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+    //           required
+    //         />
+    //         <input
+    //           type="password"
+    //           value={password}
+    //           onChange={(e) => setPassword(e.target.value)}
+    //           placeholder="Password"
+    //           className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
+    //           required
+    //         />
     //         <button
     //           type="submit"
-    //           // className="w-full py-3 mt-4 bg-blue-600 text-white font-semibold rounded-lg shadow-md hover:bg-blue-700 transition-all"
-    //           className="w-full bg-gradient-to-r from-blue-500 to-purple-500 text-white py-3 rounded-lg font-semibold hover:opacity-90 transition disabled:opacity-60"
+    //           disabled={isSubmitting}
+    //           className="w-full bg-blue-500 text-white py-3 font-semibold hover:bg-blue-600 transition flex items-center justify-center"
     //         >
-    //           {isLogin ? "Login" : "Register"}
+    //           {isSubmitting ? (
+    //             <div className="animate-spin h-5 w-5 border-t-2  border-white rounded-full"></div>
+    //           ) : isLogin ? (
+    //             "Login"
+    //           ) : (
+    //             "Register"
+    //           )}
+    //           {/* {isLogin ? "Login" : "Register"} */}
     //         </button>
     //       </form>
+
+    //       {/* <button
+    //         onClick={handleGoogleSignIn}
+    //         type="button"
+    //         className="w-full flex justify-center items-center gap-2 border border-gray-300 py-3 mt-4 hover:bg-gray-100 transition"
+    //       >
+    //         <Image
+    //           src="https://www.svgrepo.com/show/475656/google-color.svg"
+    //           alt="Google"
+    //           width={20}
+    //           height={20}
+    //         />
+    //         Continue with Google
+    //       </button> */}
+
+    //       {isLogin && (
+    //         <div className="mt-2 text-center">
+    //           <button
+    //             onClick={requestPasswordReset}
+    //             className="mt-4 text-blue-500 text-sm hover:underline"
+    //           >
+    //             Forgot Password?
+    //           </button>
+    //         </div>
+    //       )}
 
     //       <div className="mt-4 text-center text-sm text-gray-600">
     //         {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
@@ -186,137 +386,19 @@ export default function AuthForm() {
     //         >
     //           {isLogin ? "Register here" : "Login here"}
     //         </button>
+    //         {message && (
+    //           <p className="text-orange-500 text-sm text-center mt-2">
+    //             {message}
+    //           </p>
+    //         )}
+    //         {authError && (
+    //           <p className="text-red-500 text-sm text-center mt-2">
+    //             {authError}
+    //           </p>
+    //         )}
     //       </div>
-
-    //       {isLogin && (
-    //         <div className="mt-2 text-center">
-    //           <button
-    //             onClick={requestPasswordReset}
-    //             className="text-blue-500 text-sm font-semibold hover:underline"
-    //           >
-    //             Forgot Password?
-    //           </button>
-    //         </div>
-    //       )}
-
-    //       {message && (
-    //         <p className="text-green-500 text-sm text-center mt-2">{message}</p>
-    //       )}
-    //       {authError && (
-    //         <p className="text-red-500 text-sm text-center mt-2">{authError}</p>
-    //       )}
     //     </div>
     //   </div>
     // </div>
-    <div className="min-h-screen flex items-center justify-center bg-blue-100 px-4">
-      <div className="bg-white shadow-2xl flex flex-col md:flex-row w-full max-w-[900px] overflow-hidden">
-        <div className="w-full md:w-1/2 bg-gradient-to-br from-blue-600 to-blue-800 text-white flex flex-col justify-center items-center p-8 md:p-10">
-          <h2 className="text-3xl font-extrabold mb-4">Fashionly</h2>
-          <p className="text-lg mb-6 text-center px-4">
-            Discover the trendiest fashion collections and make every product
-            shine.
-          </p>
-        </div>
-
-        <div className="w-full md:w-1/2 bg-white p-8 md:p-10 flex flex-col justify-center">
-          <h3 className="text-2xl font-bold text-gray-700 mb-2">
-            {isLogin ? "Hello Again!" : "Welcome!"}
-          </h3>
-          <p className="text-gray-500 mb-6">
-            {isLogin ? "Welcome Back" : "Create your account"}
-          </p>
-
-          <form onSubmit={handleSubmit} className="space-y-4">
-            {!isLogin && (
-              <input
-                type="text"
-                value={userName}
-                onChange={(e) => setUserName(e.target.value)}
-                placeholder="Your Name"
-                className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-                required
-              />
-            )}
-
-            <input
-              type="email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder="Email Address"
-              className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-              required
-            />
-            <input
-              type="password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              className="w-full px-4 py-3 border border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500 transition"
-              required
-            />
-            <button
-              type="submit"
-              disabled={isSubmitting}
-              className="w-full bg-blue-500 text-white py-3 font-semibold hover:bg-blue-600 transition flex items-center justify-center"
-            >
-              {isSubmitting ? (
-                <div className="animate-spin h-5 w-5 border-t-2  border-white rounded-full"></div>
-              ) : isLogin ? (
-                "Login"
-              ) : (
-                "Register"
-              )}
-              {/* {isLogin ? "Login" : "Register"} */}
-            </button>
-          </form>
-
-          {/* <button
-            onClick={handleGoogleSignIn}
-            type="button"
-            className="w-full flex justify-center items-center gap-2 border border-gray-300 py-3 mt-4 hover:bg-gray-100 transition"
-          >
-            <Image
-              src="https://www.svgrepo.com/show/475656/google-color.svg"
-              alt="Google"
-              width={20}
-              height={20}
-            />
-            Continue with Google
-          </button> */}
-
-          {isLogin && (
-            <div className="mt-2 text-center">
-              <button
-                onClick={requestPasswordReset}
-                className="mt-4 text-blue-500 text-sm hover:underline"
-              >
-                Forgot Password?
-              </button>
-            </div>
-          )}
-
-          <div className="mt-4 text-center text-sm text-gray-600">
-            {isLogin ? "Don't have an account?" : "Already have an account?"}{" "}
-            <button
-              type="button"
-              onClick={() => setIsLogin(!isLogin)}
-              className="text-blue-500 font-semibold hover:underline"
-            >
-              {isLogin ? "Register here" : "Login here"}
-            </button>
-            {message && (
-              <p className="text-orange-500 text-sm text-center mt-2">
-                {message}
-              </p>
-            )}
-            {authError && (
-              <p className="text-red-500 text-sm text-center mt-2">
-                {authError}
-              </p>
-            )}
-          </div>
-        </div>
-      </div>
-    </div>
   );
 }

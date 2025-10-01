@@ -124,7 +124,7 @@ function Navbar() {
                   startIcon={<AddCircleOutlineIcon />}
                   sx={{
                     textTransform: "capitalize",
-                    borderRadius: "20px",
+                    borderRadius: "0px",
                     borderColor: "#1976d2",
                     color: "#1976d2",
                     "&:hover": { backgroundColor: "#1976d2", color: "#fff" },

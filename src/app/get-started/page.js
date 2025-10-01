@@ -1,56 +1,173 @@
 "use client";
 
-import Image from "next/image";
+// import Image from "next/image";
 // import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
 import Link from "next/link";
+import {
+  Box,
+  Grid,
+  Typography,
+  Button,
+  Card,
+  CardMedia,
+  Container,
+} from "@mui/material";
 // import FashionStoreLoader from "@/compoments/storeLOader";
 
 export default function GetStarted() {
-  return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-100 px-6">
-      <div className="max-w-6xl w-full grid grid-cols-1 md:grid-cols-2 gap-10 items-center mt-10">
-        {/* Left Side: Text Content */}
-        <div className="space-y-6">
-          <h1 className="text-5xl font-extrabold text-gray-900">
-            Elevate Your Style with{" "}
-            <span className="text-blue-600">Trendy Fashion</span>
-          </h1>
-          <p className="text-lg text-gray-600">
-            Discover the latest fashion trends and shop for high-quality
-            products. Upgrade your wardrobe today!
-          </p>
-          <div className="flex gap-4">
-            <Link
-              href="/shop"
-              className="px-6 py-3 bg-blue-600 text-white font-semibold rounded-lg shadow-lg hover:bg-blue-700 transition"
-            >
-              Shop Now
-            </Link>
-            <Link
-              href="/login"
-              className="px-6 py-3 bg-gray-200 text-gray-900 font-semibold rounded-lg shadow-lg hover:bg-gray-300 transition"
-            >
-              Join Us
-            </Link>
-          </div>
-        </div>
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
-        {/* Right Side: Glassmorphic Image Card */}
-        <div className="relative">
-          <div className="relative w-full max-w-md mx-auto">
-            <div className="absolute inset-0 bg-white bg-opacity-30 backdrop-blur-xl rounded-2xl shadow-lg border border-white/30"></div>
-            <Image
-              src="/product_image.jpg"
-              alt="Fashion Model"
-              width={500}
-              height={500}
-              className="relative w-full h-auto rounded-2xl"
-              priority
-            />
-          </div>
-        </div>
-      </div>
-    </div>
+  if (!mounted) return null;
+
+  return (
+    <Box
+      sx={{
+        minHeight: "100vh",
+        display: "flex",
+        alignItems: "center",
+        bgcolor: "grey.100",
+        px: { xs: 2, sm: 4, md: 6 },
+      }}
+    >
+      <Container maxWidth="lg">
+        <Grid
+          container
+          spacing={6}
+          alignItems="center"
+          justifyContent="center"
+          sx={{ mt: 4 }}
+        >
+          {/* Left Side - Text */}
+          <Grid item xs={12} md={6}>
+            <Box sx={{ textAlign: { xs: "center", md: "left" } }}>
+              <Typography
+                variant="h2"
+                fontWeight="bold"
+                color="text.primary"
+                gutterBottom
+                sx={{
+                  fontSize: { xs: "2rem", sm: "3rem", md: "3.5rem" },
+                  lineHeight: 1.2,
+                }}
+              >
+                Elevate Your Style with{" "}
+                <Typography
+                  component="span"
+                  variant="inherit"
+                  sx={{ color: "primary.main" }}
+                >
+                  Trendy Fashion
+                </Typography>
+              </Typography>
+
+              <Typography
+                variant="body1"
+                color="text.secondary"
+                sx={{ fontSize: "1.125rem", mb: 4 , textAlign: "center"}}
+              >
+                Discover the latest fashion trends and shop for high-quality
+                products. Upgrade your wardrobe today!
+              </Typography>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: 2,
+                  flexDirection: { xs: "column", sm: "row" },
+                  justifyContent: { xs: "center", md: "flex-center" },
+                  width: "100%",
+                }}
+              >
+                <Button
+                  component={Link}
+                  href="/shop"
+                  variant="contained"
+                  size="large"
+                  sx={{
+                    px: { xs: 2, sm: 4 },
+                    py: 1.5,
+                    borderRadius: 2,
+                    boxShadow: 3,
+                    fontWeight: 600,
+                  }}
+                >
+                  Shop Now
+                </Button>
+
+                <Button
+                  component={Link}
+                  href="/login"
+                  variant="outlined"
+                  size="large"
+                  sx={{
+                    px: { xs: 2, sm: 4 },
+                    py: 1.5,
+                    borderRadius: 2,
+                    fontWeight: 600,
+                    bgcolor: "grey.200",
+                    color: "text.primary",
+                    "&:hover": {
+                      bgcolor: "grey.300",
+                    },
+                  }}
+                >
+                  Join Us
+                </Button>
+              </Box>
+            </Box>
+          </Grid>
+
+          {/* Right Side - Glassmorphic Image Card */}
+          <Grid item xs={12} md={6}>
+            <Box
+              sx={{
+                position: "relative",
+                maxWidth: 600,
+                mx: "auto",
+                borderRadius: 4,
+                overflow: "hidden",
+              }}
+            >
+              {/* Glassmorphic overlay */}
+              <Box
+                sx={{
+                  position: "absolute",
+                  inset: 0,
+                  bgcolor: "rgba(255,255,255,0.3)",
+                  backdropFilter: "blur(20px)",
+                  borderRadius: 4,
+                  border: "1px solid rgba(255,255,255,0.3)",
+                  zIndex: 1,
+                }}
+              />
+              <Card
+                elevation={8}
+                sx={{
+                  borderRadius: 4,
+                  position: "relative",
+                  zIndex: 2,
+                }}
+              >
+                <CardMedia
+                  component="img"
+                  image="/product_image.jpg"
+                  alt="Fashion Model"
+                  sx={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: 4,
+                  }}
+                />
+              </Card>
+            </Box>
+          </Grid>
+        </Grid>
+      </Container>
+    </Box>
     // <div
     //   className="min-h-screen w-full bg-cover bg-center flex items-center justify-center px-4"
     //   style={{ backgroundImage: 'url("/product-photos.jpg")' }}
