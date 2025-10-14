@@ -9,10 +9,19 @@ import { getAllDiscountOffer } from "../../store/features/discountSlice";
 import { addCartItem } from "../../store/features/productCartSlice";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import FashionStoreLoader from "../../components/storeLoader";
+import ScrollTo from "../../components/scrolltotop";
 import { useRouter } from "next/navigation";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import "animate.css";
+import {
+  Box,
+  TextField,
+  Button,
+  Typography,
+  Paper,
+  Stack,
+} from "@mui/material";
 
 export default function ShopPage() {
   const [loading, setLoading] = useState(true);
@@ -24,12 +33,15 @@ export default function ShopPage() {
   const [quantities, setQuantities] = useState({});
   const [activePopupCart, setActivePopupCart] = useState(null);
   const [activePopup, setActivePopup] = useState(null);
+  const [mounted, setMounted] = useState(false);
   const [user, setUser] = useState(null);
   const router = useRouter();
 
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
+
+    setMounted(true);
 
     dispatch(getAllDiscountOffer())
       .then((result) => {
@@ -49,6 +61,10 @@ export default function ShopPage() {
       (category === "all" || product.SalesCategory === category) &&
       product.name.toLowerCase().includes(searchTerm.toLowerCase())
   );
+
+  if (!mounted) {
+    return null;
+  }
 
   const handleQuantityChange = (id, value) => {
     const num = Math.max(1, Number(value));
@@ -90,16 +106,16 @@ export default function ShopPage() {
   return (
     <>
       <Navbar />
+      <ScrollTo />
 
       {loading && <FashionStoreLoader product={discount} />}
 
-      <div className="container mx-auto p-4 mt-10 mb-30">
+      <div className="container mx-auto p-4 mt-6 mb-20">
         {/* <div className="bg-blue-500 text-white p-8 text-center mb-8 rounded-xl shadow-md animate__animated animate__fadeInDown">
           <h1 className="text-3xl font-bold mb-2">Popular Gift Collections</h1>
           <p className="text-lg">Select your favorite product now on sale</p>
         </div> */}
-        <div className="relative mb-12 px-6 py-8 text-center rounded-3xl overflow-hidden shadow-xl bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-600 animate__animated animate__fadeInDown">
-          {/* Subtle background shapes */}
+        {/* <div className="relative mb-12 px-6 py-8 text-center rounded-3xl overflow-hidden shadow-xl bg-gradient-to-r from-blue-700 via-indigo-600 to-purple-600 animate__animated animate__fadeInDown">     
           <div className="absolute inset-0 opacity-20 bg-[url('/patterns/mesh.svg')] bg-cover bg-center"></div>
           <div className="relative z-10">
             <h1 className="text-2xl md:text-4xl font-extrabold mb-4 text-white tracking-tight drop-shadow-md">
@@ -110,10 +126,143 @@ export default function ShopPage() {
               sale 🎁
             </p>
           </div>
-        </div>
+        </div> */}
+        <Box
+          sx={{
+            position: "relative",
+            mb: 6,
+            px: { xs: 3, sm: 6 },
+            py: { xs: 2, sm: 4 },
+            textAlign: "center",
+            borderRadius: 4,
+            overflow: "hidden",
+            boxShadow: 6,
+            background: "linear-gradient(90deg, #1e3a8a, #4338ca, #7e22ce)",
+            animation: "fadeInDown 1s ease",
+            "@keyframes fadeInDown": {
+              from: { opacity: 0, transform: "translateY(-20px)" },
+              to: { opacity: 1, transform: "translateY(0)" },
+            },
+          }}
+        >
+          {/* Subtle background texture */}
+          <Box
+            sx={{
+              position: "absolute",
+              inset: 0,
+              opacity: 0.15,
+              backgroundImage: "url('/patterns/mesh.svg')",
+              backgroundSize: "cover",
+              backgroundPosition: "center",
+            }}
+          />
+
+          {/* Content */}
+          <Box sx={{ position: "relative", zIndex: 10 }}>
+            <Typography
+              variant="h3"
+              sx={{
+                color: "#fff",
+                fontWeight: 800,
+                mb: 2,
+                textShadow: "0 2px 10px rgba(0,0,0,0.3)",
+                fontSize: { xs: "1.3rem", md: "2.5rem" },
+              }}
+            >
+              Popular Gift Collections
+            </Typography>
+
+            <Typography
+              variant="h6"
+              sx={{
+                color: "rgba(255,255,255,0.9)",
+                maxWidth: "700px",
+                mx: "auto",
+                fontWeight: 500,
+                fontSize: { xs: "0.8rem", md: "1.3rem" },
+              }}
+            >
+              Discover hand-picked items and grab your favorite product now on
+              sale 🎁
+            </Typography>
+          </Box>
+        </Box>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-          <div className="md:col-span-1">
+          <Box sx={{ gridColumn: { md: "span 1" } }}>
+            <Paper
+              elevation={2}
+              sx={{
+                p: 3,
+                bgcolor: "grey.50",
+                borderRadius: 3,
+                display: "flex",
+                flexDirection: "column",
+                gap: 2,
+              }}
+            >
+              <Typography
+                variant="h6"
+                fontWeight={700}
+                color="text.primary"
+                sx={{ mb: 1 }}
+              >
+                Filters
+              </Typography>
+
+              <TextField
+                fullWidth
+                placeholder="Search products..."
+                variant="outlined"
+                size="small"
+                onChange={(e) => setSearchTerm(e.target.value)}
+                sx={{
+                  "& .MuiOutlinedInput-root": {
+                    borderRadius: 2,
+                    "& fieldset": { borderColor: "#ccc" },
+                    "&:hover fieldset": { borderColor: "black" },
+                    "&.Mui-focused fieldset": { borderColor: "black" },
+                  },
+                }}
+              />
+
+              <Stack spacing={1.5}>
+                {[
+                  { label: "All", value: "all" },
+                  { label: "Men Watches", value: "Watch" },
+                  { label: "Women Watches", value: "Women watch" },
+                  { label: "Jewellery", value: "Jewellery" },
+                ].map((item) => (
+                  <Button
+                    key={item.value}
+                    variant={category === item.value ? "contained" : "outlined"}
+                    onClick={() => setCategory(item.value)}
+                    sx={{
+                      textTransform: "none",
+                      borderRadius: 2,
+                      fontWeight: 600,
+                      bgcolor:
+                        category === item.value ? "primary.light" : "grey.100",
+                      color: category === item.value ? "#fff" : "text.primary",
+                      borderColor:
+                        category === item.value ? "transparent" : "grey.300",
+                      transition: "all 0.3s ease",
+                      "&:hover": {
+                        bgcolor:
+                          category === item.value ? "primary.main" : "grey.200",
+                        color:
+                          category === item.value ? "#fff" : "text.primary",
+                      },
+                    }}
+                    fullWidth
+                  >
+                    {item.label}
+                  </Button>
+                ))}
+              </Stack>
+            </Paper>
+          </Box>
+          {/* <div className="md:col-span-1">
             <div className=" p-4 space-y-3 bg-gray-100">
               <h2 className="text-xl font-semibold mb-2">Filters</h2>
               <input
@@ -163,7 +312,7 @@ export default function ShopPage() {
                 Jewellery
               </button>
             </div>
-          </div>
+          </div> */}
 
           {!loading &&
             (filteredProducts.length > 0 ? (

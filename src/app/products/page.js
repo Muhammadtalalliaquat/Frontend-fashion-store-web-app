@@ -7,8 +7,8 @@ import {
   fetchAllProductShow,
   // getProductsFetchSizeShow,
 } from "../../store/features/productSlice";
-import { Listbox } from "@headlessui/react";
-import { ChevronDownIcon } from "@heroicons/react/20/solid";
+// import { Listbox } from "@headlessui/react";
+// import { ChevronDownIcon } from "@heroicons/react/20/solid";
 import { LiaShoppingCartSolid } from "react-icons/lia";
 import { addCartItem } from "../../store/features/productCartSlice";
 import { addWishListItem } from "../../store/features/wishListSlice";
@@ -20,7 +20,14 @@ import Link from "next/link";
 import { TiArrowSortedUp } from "react-icons/ti";
 import { motion } from "framer-motion";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
-import { Card } from "@mui/material";
+import ScrollTo from "../../components/scrolltotop";
+import { Card , Box,
+  Button,
+  TextField,
+  MenuItem,
+  Select,
+  InputLabel,
+  FormControl } from "@mui/material";
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -233,10 +240,11 @@ export default function Products() {
   return (
     <>
       <Navbar />
+      <ScrollTo />
 
       {/* {loading && <FashionStoreLoader product={products} />} */}
 
-      <section className="px-6 py-10 bg-gray-100 min-h-screen">
+      <section className="px-6 py-10 bg-gray-100 min-h-screen pb-40">
         <div className="max-w-7xl mx-auto">
           <Card
             elevation={2}
@@ -253,7 +261,93 @@ export default function Products() {
             </span>
           </Card>
 
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: { xs: "column", sm: "row" },
+              alignItems: "center",
+              justifyContent: "space-between",
+              gap: 2,
+              mb: 4,
+              flexWrap: "wrap",
+            }}
+          >
+            {/* Sort by Price Button */}
+            <Button
+              onClick={toggleSortByPrice}
+              variant="outlined"
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: 1,
+                borderRadius: 4,
+                fontWeight: 600,
+                px: 3,
+                py: 1.5,
+                textTransform: "none",
+                transition: "all 0.3s ease",
+                color: "text.primary",
+                borderColor: "transparent",
+                "&:hover": {
+                  // bgcolor: "grey.800",
+                  borderColor: "black",
+                  color: "grey.900",
+                  // color: "#ffffffff",
+                },
+              }}
+            >
+              Sort by Price
+              <motion.div
+                animate={{ rotate: sortOrder === "asc" ? 180 : 0 }}
+                transition={{ duration: 0.3 }}
+              >
+                <TiArrowSortedUp size={20} />
+              </motion.div>
+            </Button>
+
+            {/* Search Field */}
+            <TextField
+              variant="outlined"
+              placeholder="Search products..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              fullWidth
+              sx={{
+                width: { xs: "100%", sm: "50%" },
+                "& .MuiOutlinedInput-root": {
+                  borderRadius: 3,
+                },
+              }}
+            />
+
+            {/* Category Dropdown */}
+            <FormControl
+              fullWidth
+              sx={{
+                width: { xs: "100%", sm: "30%" },
+              }}
+            >
+              <InputLabel>Category</InputLabel>
+              <Select
+                value={category}
+                label="Category"
+                onChange={(e) => setCategory(e.target.value)}
+                sx={{
+                  borderRadius: 3,
+                  boxShadow: 2,
+                  bgcolor: "#fff",
+                }}
+              >
+                {categories.map((item, idx) => (
+                  <MenuItem key={idx} value={item.value}>
+                    {item.name}
+                  </MenuItem>
+                ))}
+              </Select>
+            </FormControl>
+          </Box>
+
+          {/* <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-6">
             <button
               onClick={toggleSortByPrice}
               className="flex flex-col sm:flex-row items-center gap-1 sm:gap-2
@@ -265,7 +359,7 @@ export default function Products() {
             >
               <span className="flex items-center gap-1">
                 Sort by Price:
-                {/* {sortOrder === "desc" ? "High" : "Low"} */}
+               
                 <motion.div
                   animate={{ rotate: sortOrder === "asc" ? 180 : 0 }}
                   transition={{ duration: 0.3 }}
@@ -304,7 +398,7 @@ export default function Products() {
                 </Listbox.Options>
               </div>
             </Listbox>
-          </div>
+          </div> */}
 
           {loading ? (
             <FashionStoreLoader product={products} />
