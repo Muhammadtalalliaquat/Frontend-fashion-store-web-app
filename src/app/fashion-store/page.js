@@ -37,10 +37,14 @@ import {
   IconButton,
   DialogContent,
   DialogActions,
+  Typography,
+  Paper,
   // Link,
 } from "@mui/material";
+// import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
-
+import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 export default function MainDashboard() {
   const [quantities, setQuantities] = useState({});
@@ -68,7 +72,6 @@ export default function MainDashboard() {
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
 
-
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     setUser(storedUser);
@@ -78,11 +81,11 @@ export default function MainDashboard() {
     dispatch(getHeroProducts())
       .then((result) => {
         setBanner(result.payload.data);
-        setLoading(false);
+        // setLoading(false);
       })
       .catch((err) => {
         console.error("Fetch Error:", err);
-        setLoading(false);
+        // setLoading(false);
       });
 
     dispatch(getAllProducts())
@@ -101,12 +104,12 @@ export default function MainDashboard() {
       .then((result) => {
         console.log("API Response:", result.payload);
         setDiscount(result.payload.data);
-        setLoading(false);
+        // setLoading(false);
       })
       .catch((err) => {
         console.error("Fetch Error:", err, error);
         setError("Failed to load products.");
-        setLoading(true);
+        // setLoading(true);
       });
 
     dispatch(getAllFeedback())
@@ -122,7 +125,6 @@ export default function MainDashboard() {
       });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dispatch]);
-
 
   if (!mounted) {
     return null;
@@ -249,18 +251,103 @@ export default function MainDashboard() {
   return (
     <>
       <Navbar />
+      {!loading && <CategoryCarousel bannerData={banner} />}
       {loading && <FashionStoreLoader />}
       <ScrollTo />
-      {!loading && <CategoryCarousel bannerData={banner} />}
 
       {!loading && (
         <>
           <div className="p-6 bg-gray-50">
-            <div className="mx-auto mb-6 mt-2">
-              <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-900 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">
-                Our Products
-              </h2>
-            </div>
+            <Box sx={{ bgcolor: "grey.50" }}>
+              <Box
+                display="flex"
+                alignItems="center"
+                justifyContent="space-between"
+                flexWrap="wrap"
+                gap={2}
+                width="100%"
+                mt={4}
+                mb={4}
+              >
+                {/* Left Side - Heading */}
+                <Box display="flex" alignItems="center" gap={1}>
+                  {/* <ShoppingBagIcon
+                    sx={{
+                      color: "#8E24AA",
+                      fontSize: { xs: 28, sm: 36 },
+                    }}
+                  /> */}
+                  <Typography
+                    variant="h5"
+                    sx={{
+                      fontWeight: 800,
+                      letterSpacing: "0.5px",
+                      fontSize: { xs: "1.5rem", sm: "2rem", md: "2.3rem" },
+                      // background: "linear-gradient(90deg, #8E24AA, #1565C0)",
+                      // WebkitBackgroundClip: "text",
+                      // WebkitTextFillColor: "transparent",
+                      // whiteSpace: "nowrap",
+                      color: "primary.dark",
+                    }}
+                  >
+                    Our Products
+                  </Typography>
+                </Box>
+
+                {/* Right Side - Link */}
+                <Link
+                  href="/products"
+                  style={{
+                    textDecoration: "none",
+                    display: "flex",
+                    alignItems: "center",
+                    color: "#1565C0",
+                    transition: "all 0.3s ease",
+                  }}
+                >
+                  <Box
+                    display="flex"
+                    alignItems="center"
+                    sx={{
+                      transition: "all 0.3s ease",
+                      "&:hover": { transform: "translateX(5px)" },
+                    }}
+                  >
+                    <Typography
+                      variant="body1"
+                      sx={{
+                        fontWeight: 600,
+                        color: "#1565C0",
+                        fontSize: { xs: "0.95rem", sm: "1rem" },
+                      }}
+                    >
+                      See all products
+                    </Typography>
+                    <IconButton
+                      size="small"
+                      sx={{
+                        color: "#1565C0",
+                        ml: 0.3,
+                        "&:hover": { background: "transparent" },
+                      }}
+                    >
+                      <ArrowForwardIosIcon fontSize="small" />
+                    </IconButton>
+                  </Box>
+                </Link>
+              </Box>
+
+              {/* Divider line */}
+              {/* <Divider
+                sx={{
+                  width: "100%",
+                  borderBottomWidth: 8,
+                  borderColor: "rgba(142,36,170,0.2)",
+                  borderRadius: 2,
+                  mb: 3,
+                }}
+              /> */}
+            </Box>
 
             {products.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
@@ -358,11 +445,51 @@ export default function MainDashboard() {
       {/* Sales Discount Offers Section */}
       {!loading && (
         <div className="w-full bg-white py-8 relative overflow-hidden">
-          <div className="w-full max-w-screen-sm mx-auto mb-8 px-4">
+          {/* <div className="w-full max-w-screen-sm mx-auto mb-8 px-4">
             <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-900 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">
               🏷️ Sales Discount Offers
             </h2>
-          </div>
+          </div> */}
+          <Box
+            sx={{
+              width: "100%",
+              maxWidth: 600,
+              mx: "auto",
+              mb: 6,
+              px: 2,
+              textAlign: "center",
+            }}
+          >
+            <Paper
+              // elevation={3}
+              sx={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: 1,
+                px: { xs: 2, sm: 4 },
+                py: 1.5,
+                borderRadius: 2,
+                // bgcolor: { xs: "primary.light", sm: "transparent" },
+                boxShadow: { xs: 2, sm: "none" },
+              }}
+            >
+              <LocalOfferIcon
+                sx={{ color: "primary.main", fontSize: { xs: 24, sm: 30 } }}
+              />
+              <Typography
+                variant="h4"
+                sx={{
+                  fontWeight: 700,
+                  letterSpacing: "0.5px",
+                  fontSize: { xs: "1.3rem", sm: "2rem", md: "2.3rem" },
+                  color: "primary.dark",
+                }}
+              >
+                Sales Discount Offers
+              </Typography>
+            </Paper>
+          </Box>
 
           <div className="relative">
             <div
