@@ -482,13 +482,13 @@ export default function DiscountProductComp() {
         </div>
 
         <div className="border border-gray-200 shadow-sm rounded p-6 bg-gray-50">
-          <div className="flex items-center mb-4">
+          <div className="flex flex-col sm:flex-row sm:items-center gap-6 mb-6">
             <Image
               src={image}
               alt={name}
-              width={80}
-              height={80}
-              className="rounded mr-4"
+              width={180}
+              height={180}
+              className="object-cover w-[280px] h-[280px] sm:w-[200px] sm:h-[200px] flex items-center justify-center border rounded-lg bg-gray-50 overflow-hidden"
             />
             <div>
               <h3 className="text-sm font-semibold">{name}</h3>

@@ -72,59 +72,96 @@ export default function MainDashboard() {
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
 
+  const maxVisible = 1;
+  const feddBackmaxVisible = 1;
+
   useEffect(() => {
-    const storedUser = JSON.parse(localStorage.getItem("user"));
-    setUser(storedUser);
+    const fetchData = async () => {
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      setUser(storedUser);
+      setMounted(true);
+      setLoading(true);
 
-    setMounted(true);
+      try {
+        // Run all API calls in parallel for speed ⚡
+        const [heroRes, productsRes, discountRes, feedbackRes] =
+          await Promise.all([
+            dispatch(getHeroProducts()).unwrap(),
+            dispatch(getAllProducts()).unwrap(),
+            dispatch(getDiscountOffer()).unwrap(),
+            dispatch(getAllFeedback()).unwrap(),
+          ]);
 
-    dispatch(getHeroProducts())
-      .then((result) => {
-        setBanner(result.payload.data);
-        // setLoading(false);
-      })
-      .catch((err) => {
+        setBanner(heroRes.data);
+        setProducts(productsRes.data);
+        setDiscount(discountRes.data);
+        setFeedBack(feedbackRes.data);
+      } catch (err) {
         console.error("Fetch Error:", err);
-        // setLoading(false);
-      });
-
-    dispatch(getAllProducts())
-      .then((result) => {
-        console.log("API Response:", result.payload);
-        setProducts(result.payload.data);
+        setError("Failed to load data.");
+      } finally {
         setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch Error:", err, error);
-        setError("Failed to load products.");
-        setLoading(true);
-      });
+      }
+    };
 
-    dispatch(getDiscountOffer())
-      .then((result) => {
-        console.log("API Response:", result.payload);
-        setDiscount(result.payload.data);
-        // setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch Error:", err, error);
-        setError("Failed to load products.");
-        // setLoading(true);
-      });
-
-    dispatch(getAllFeedback())
-      .then((result) => {
-        console.log("API Response:", result.payload);
-        setFeedBack(result.payload.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.error("Fetch Error:", err, error);
-        setError("Failed to load feedbacks.");
-        setLoading(true);
-      });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+    // call immediately when page mounts
+    fetchData();
   }, [dispatch]);
+
+
+  // useEffect(() => {
+  //   const storedUser = JSON.parse(localStorage.getItem("user"));
+  //   setUser(storedUser);
+
+  //   setMounted(true);
+
+  //   dispatch(getHeroProducts())
+  //     .then((result) => {
+  //       setBanner(result.payload.data);
+  //       setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Fetch Error:", err);
+  //       setLoading(false);
+  //     });
+
+  //   dispatch(getAllProducts())
+  //     .then((result) => {
+  //       console.log("API Response:", result.payload);
+  //       setProducts(result.payload.data);
+  //       // setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Fetch Error:", err, error);
+  //       setError("Failed to load products.");
+  //       // setLoading(true);
+  //     });
+
+  //   dispatch(getDiscountOffer())
+  //     .then((result) => {
+  //       console.log("API Response:", result.payload);
+  //       setDiscount(result.payload.data);
+  //       // setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Fetch Error:", err, error);
+  //       setError("Failed to load products.");
+  //       // setLoading(true);
+  //     });
+
+  //   dispatch(getAllFeedback())
+  //     .then((result) => {
+  //       console.log("API Response:", result.payload);
+  //       setFeedBack(result.payload.data);
+  //       // setLoading(false);
+  //     })
+  //     .catch((err) => {
+  //       console.error("Fetch Error:", err, error);
+  //       setError("Failed to load feedbacks.");
+  //       // setLoading(true);
+  //     });
+  //   // eslint-disable-next-line react-hooks/exhaustive-deps
+  // }, [dispatch]);
 
   if (!mounted) {
     return null;
@@ -138,9 +175,6 @@ export default function MainDashboard() {
     const num = Math.max(1, Number(value));
     setQuantities((prev) => ({ ...prev, [id]: num }));
   };
-
-  const maxVisible = 1;
-  const feddBackmaxVisible = 1;
 
   const nextSlide = () => {
     setCurrent((prev) => (prev + maxVisible < discount.length ? prev + 1 : 0));
@@ -258,87 +292,94 @@ export default function MainDashboard() {
       {!loading && (
         <>
           <div className="p-6 bg-gray-50">
-            <Box sx={{ bgcolor: "grey.50" }}>
-              <Box
-                display="flex"
-                alignItems="center"
-                justifyContent="space-between"
-                flexWrap="wrap"
-                gap={2}
-                width="100%"
-                mt={4}
-                mb={4}
-              >
-                {/* Left Side - Heading */}
-                <Box display="flex" alignItems="center" gap={1}>
-                  {/* <ShoppingBagIcon
+            {/* <Box sx={{ bgcolor: "grey.50" }}> */}
+            <Box
+              display="flex"
+              alignItems="center"
+              justifyContent="space-between"
+              flexWrap="wrap"
+              gap={2}
+              bgcolor={"#f0f0f0ff"}
+              width="100%"
+              mt={4}
+              mb={2}
+              p={2}
+            >
+              {/* Left Side - Heading */}
+              <Box display="flex" alignItems="center" gap={1}>
+                {/* <ShoppingBagIcon
                     sx={{
                       color: "#8E24AA",
                       fontSize: { xs: 28, sm: 36 },
                     }}
                   /> */}
-                  <Typography
-                    variant="h5"
-                    sx={{
-                      fontWeight: 800,
-                      letterSpacing: "0.5px",
-                      fontSize: { xs: "1.5rem", sm: "2rem", md: "2.3rem" },
-                      // background: "linear-gradient(90deg, #8E24AA, #1565C0)",
-                      // WebkitBackgroundClip: "text",
-                      // WebkitTextFillColor: "transparent",
-                      // whiteSpace: "nowrap",
-                      color: "primary.dark",
-                    }}
-                  >
-                    Our Products
-                  </Typography>
-                </Box>
-
-                {/* Right Side - Link */}
-                <Link
-                  href="/products"
-                  style={{
-                    textDecoration: "none",
-                    display: "flex",
-                    alignItems: "center",
-                    color: "#1565C0",
-                    transition: "all 0.3s ease",
+                <Typography
+                  variant="h5"
+                  sx={{
+                    fontWeight: 800,
+                    letterSpacing: "0.5px",
+                    fontSize: {
+                      xs: "1.3rem",
+                      sm: "1.8rem",
+                      md: "2rem",
+                    },
+                    // background: "linear-gradient(90deg, #8E24AA, #1565C0)",
+                    // WebkitBackgroundClip: "text",
+                    // WebkitTextFillColor: "transparent",
+                    // whiteSpace: "nowrap",
+                    color: "primary.dark",
                   }}
                 >
-                  <Box
-                    display="flex"
-                    alignItems="center"
-                    sx={{
-                      transition: "all 0.3s ease",
-                      "&:hover": { transform: "translateX(5px)" },
-                    }}
-                  >
-                    <Typography
-                      variant="body1"
-                      sx={{
-                        fontWeight: 600,
-                        color: "#1565C0",
-                        fontSize: { xs: "0.95rem", sm: "1rem" },
-                      }}
-                    >
-                      See all products
-                    </Typography>
-                    <IconButton
-                      size="small"
-                      sx={{
-                        color: "#1565C0",
-                        ml: 0.3,
-                        "&:hover": { background: "transparent" },
-                      }}
-                    >
-                      <ArrowForwardIosIcon fontSize="small" />
-                    </IconButton>
-                  </Box>
-                </Link>
+                  Our Products
+                </Typography>
               </Box>
 
-              {/* Divider line */}
-              {/* <Divider
+              {/* Right Side - Link */}
+              <Link
+                href="/products"
+                style={{
+                  textDecoration: "none",
+                  display: "flex",
+                  alignItems: "center",
+                  color: "#1565C0",
+                  transition: "all 0.3s ease",
+                }}
+              >
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  sx={{
+                    transition: "all 0.3s ease",
+                    "&:hover": { transform: "translateX(5px)" },
+                  }}
+                >
+                  <Typography
+                    variant="body1"
+                    sx={{
+                      fontWeight: 600,
+                      color: "#1565C0",
+                      fontSize: { xs: "0.8rem", sm: "1rem" },
+                    }}
+                  >
+                    See all products
+                  </Typography>
+                  <IconButton
+                    size="small"
+                    sx={{
+                      color: "#1565C0",
+                      ml: 0.1,
+                      fontSize: { xs: "0.8rem", sm: "1rem" },
+                      "&:hover": { background: "transparent" },
+                    }}
+                  >
+                    <ArrowForwardIosIcon fontSize="" />
+                  </IconButton>
+                </Box>
+              </Link>
+            </Box>
+
+            {/* Divider line */}
+            {/* <Divider
                 sx={{
                   width: "100%",
                   borderBottomWidth: 8,
@@ -347,7 +388,7 @@ export default function MainDashboard() {
                   mb: 3,
                 }}
               /> */}
-            </Box>
+            {/* </Box> */}
 
             {products.length > 0 ? (
               <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">

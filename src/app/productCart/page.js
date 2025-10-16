@@ -53,12 +53,16 @@ export default function ProductCartPage() {
   const [city, setCity] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
+  const [mounted, setMounted] = useState(false);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errormessage, setErrorMessage] = useState("");
 
   const router = useRouter();
 
   useEffect(() => {
+    setMounted(true);
+
     dispatch(getAllCart())
       .then((result) => {
         console.log("API Response:", result.payload);
@@ -83,6 +87,10 @@ export default function ProductCartPage() {
     //   return () => clearTimeout(timer);
     // }
   }, []);
+
+  if (!mounted) {
+    return null;
+  }
 
   const selectedCartItems = selectedItems;
 
@@ -353,7 +361,7 @@ export default function ProductCartPage() {
                         className={`h-4 w-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500
                         ${
                           item.productId.stock <= 0 ||
-                          item.productId.inStockstock <= 0
+                          item.productId.inStock <= 0
                             ? "cursor-not-allowed opacity-50"
                             : "bg-gray-100"
                         }`}
@@ -388,7 +396,7 @@ export default function ProductCartPage() {
                             item.productId?.price) * item.quantity}
                         </p>
                         {(item.productId.stock <= 0 ||
-                          item.productId.inStockstock <= 0) && (
+                          item.productId.inStock <= 0) && (
                           <span className="text-red-500 text-xs font-semibold">
                             Out of Stock
                           </span>

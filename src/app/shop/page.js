@@ -35,6 +35,9 @@ export default function ShopPage() {
   const [activePopup, setActivePopup] = useState(null);
   const [mounted, setMounted] = useState(false);
   const [user, setUser] = useState(null);
+  const [showFullId, setShowFullId] = useState(null);
+
+
   const router = useRouter();
 
   useEffect(() => {
@@ -356,31 +359,117 @@ export default function ShopPage() {
                         )}
 
                         {activePopupCart === item._id && user && (
-                          <div className="absolute top-14 right-2 sm:right-4 bg-white shadow-xl rounded-2xl p-4 z-40 w-11/12 sm:w-52 flex flex-col items-center border border-gray-200 transition-all duration-300">
-                            <label className="text-sm mb-1">Quantity</label>
-                            <input
+                          <Paper
+                            elevation={8}
+                            sx={{
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, 50%)",
+                              width: { xs: "85%", sm: 220 },
+                              p: 3,
+                              borderRadius: 3,
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                              bgcolor: "background.paper",
+                              boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
+                              border: "1px solid",
+                              borderColor: "grey.200",
+                              transition: "all 0.3s ease",
+                              zIndex: 40,
+                            }}
+                          >
+                            <Typography
+                              variant="body2"
+                              sx={{
+                                mb: 1,
+                                fontWeight: 600,
+                                color: "text.primary",
+                              }}
+                            >
+                              Quantity
+                            </Typography>
+
+                            <TextField
                               type="number"
-                              min="1"
-                              max={item.inStock}
+                              size="small"
+                              inputProps={{
+                                min: 1,
+                                max: item.inStock,
+                                style: { textAlign: "center" },
+                              }}
                               value={quantities[item._id] || 1}
                               onChange={(e) =>
                                 handleQuantityChange(item._id, e.target.value)
                               }
-                              className="mb-2 w-16 text-center border border-gray-300 rounded px-2 py-1"
+                              sx={{
+                                width: 80,
+                                mb: 2,
+                                "& .MuiOutlinedInput-root": {
+                                  borderRadius: 2,
+                                },
+                              }}
                             />
-                            <button
-                              className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm w-full"
+
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              fullWidth
+                              sx={{
+                                textTransform: "none",
+                                fontWeight: 600,
+                                borderRadius: 2,
+                                py: 0.6,
+                                mb: 1,
+                                transition: "all 0.3s ease",
+                                "&:hover": {
+                                  transform: "translateY(-2px)",
+                                  boxShadow: "0 4px 10px rgba(0,0,0,0.15)",
+                                },
+                              }}
                               onClick={() => handleAddToCart(item._id)}
                             >
                               Add to Cart
-                            </button>
-                            <button
+                            </Button>
+
+                            <Button
                               onClick={() => setActivePopupCart(null)}
-                              className="text-xs text-gray-500 mt-1 hover:underline"
+                              sx={{
+                                fontSize: "0.75rem",
+                                color: "text.secondary",
+                                "&:hover": { textDecoration: "underline" },
+                              }}
                             >
                               Cancel
-                            </button>
-                          </div>
+                            </Button>
+                          </Paper>
+
+                          // <div className="absolute top-14 right-2 sm:right-4 bg-white shadow-xl rounded-2xl p-4 z-40 w-11/12 sm:w-52 flex flex-col items-center border border-gray-200 transition-all duration-300">
+                          //   <label className="text-sm mb-1">Quantity</label>
+                          //   <input
+                          //     type="number"
+                          //     min="1"
+                          //     max={item.inStock}
+                          //     value={quantities[item._id] || 1}
+                          //     onChange={(e) =>
+                          //       handleQuantityChange(item._id, e.target.value)
+                          //     }
+                          //     className="mb-2 w-16 text-center border border-gray-300 rounded px-2 py-1"
+                          //   />
+                          //   <button
+                          //     className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm w-full"
+                          //     onClick={() => handleAddToCart(item._id)}
+                          //   >
+                          //     Add to Cart
+                          //   </button>
+                          //   <button
+                          //     onClick={() => setActivePopupCart(null)}
+                          //     className="text-xs text-gray-500 mt-1 hover:underline"
+                          //   >
+                          //     Cancel
+                          //   </button>
+                          // </div>
                         )}
 
                         {/* <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex flex-col gap-2 items-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 z-20"> */}
@@ -412,20 +501,58 @@ export default function ShopPage() {
                         )}
 
                         {activePopup === item._id && user && (
-                          <div className="absolute top-14 right-2 sm:right-4 bg-white shadow-xl rounded-2xl p-4 z-40 w-11/12 sm:w-52 flex flex-col items-center border border-gray-200 transition-all duration-300">
-                            <label className="text-sm mb-1">Quantity</label>
-                            <input
+                          <Paper
+                            elevation={6}
+                            sx={{
+                              position: "absolute",
+                              top: "50%",
+                              left: "50%",
+                              transform: "translate(-50%, 50%)",
+                              width: { xs: "85%", sm: 220 },
+                              p: 3,
+                              borderRadius: 3,
+                              display: "flex",
+                              flexDirection: "column",
+                              alignItems: "center",
+                              bgcolor: "background.paper",
+                              boxShadow: "0 8px 24px rgba(0,0,0,0.1)",
+                              border: "1px solid",
+                              borderColor: "grey.200",
+                              transition: "all 0.3s ease",
+                              zIndex: 40,
+                            }}
+                          >
+                            <Typography
+                              variant="body2"
+                              sx={{ mb: 1, fontWeight: 500 }}
+                            >
+                              Quantity
+                            </Typography>
+
+                            <TextField
                               type="number"
-                              min="1"
-                              max={item.inStock}
+                              size="small"
+                              inputProps={{
+                                min: 1,
+                                max: item.stock,
+                                style: { textAlign: "center" },
+                              }}
                               value={quantities[item._id] || 1}
                               onChange={(e) =>
                                 handleQuantityChange(item._id, e.target.value)
                               }
-                              className="mb-2 w-16 text-center border border-gray-300 rounded px-2 py-1"
+                              sx={{ width: 70, mb: 2 }}
                             />
-                            <button
-                              className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm w-full"
+
+                            <Button
+                              variant="contained"
+                              color="primary"
+                              fullWidth
+                              sx={{
+                                textTransform: "none",
+                                borderRadius: 1,
+                                py: 0.6,
+                              }}
                               onClick={() => {
                                 const quantity = quantities[item._id] || 1;
                                 const queryString = new URLSearchParams({
@@ -444,14 +571,59 @@ export default function ShopPage() {
                               }}
                             >
                               Confirm
-                            </button>
-                            <button
+                            </Button>
+
+                            <Button
                               onClick={() => setActivePopup(null)}
-                              className="text-xs text-gray-500 mt-1 hover:underline"
+                              sx={{
+                                fontSize: "0.75rem",
+                                color: "text.secondary",
+                                "&:hover": { textDecoration: "underline" },
+                              }}
                             >
                               Cancel
-                            </button>
-                          </div>
+                            </Button>
+                          </Paper>
+                          // <div className="absolute top-14 right-2 sm:right-4 bg-white shadow-xl rounded-2xl p-4 z-40 w-11/12 sm:w-52 flex flex-col items-center border border-gray-200 transition-all duration-300">
+                          //   <label className="text-sm mb-1">Quantity</label>
+                          //   <input
+                          //     type="number"
+                          //     min="1"
+                          //     max={item.inStock}
+                          //     value={quantities[item._id] || 1}
+                          //     onChange={(e) =>
+                          //       handleQuantityChange(item._id, e.target.value)
+                          //     }
+                          //     className="mb-2 w-16 text-center border border-gray-300 rounded px-2 py-1"
+                          //   />
+                          //   <button
+                          //     className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm w-full"
+                          //     onClick={() => {
+                          //       const quantity = quantities[item._id] || 1;
+                          //       const queryString = new URLSearchParams({
+                          //         productId: item._id,
+                          //         name: item.name,
+                          //         price: item.discountPrice.toString(),
+                          //         category: item.SalesCategory,
+                          //         stock: item.inStock.toString(),
+                          //         description: item.offerTitle,
+                          //         image: item.image,
+                          //         quantity: quantity.toString(),
+                          //       }).toString();
+                          //       router.push(
+                          //         `/discountProductInfo?${queryString}`
+                          //       );
+                          //     }}
+                          //   >
+                          //     Confirm
+                          //   </button>
+                          //   <button
+                          //     onClick={() => setActivePopup(null)}
+                          //     className="text-xs text-gray-500 mt-1 hover:underline"
+                          //   >
+                          //     Cancel
+                          //   </button>
+                          // </div>
                         )}
                         {/* </div> */}
                       </div>
@@ -501,7 +673,6 @@ export default function ShopPage() {
                         </p>
                         <button
                           onClick={() => setActivePopupCart(item._id)}
-                          // className="opacity-0 group-hover:opacity-100 transition-opacity duration-300 bg-blue-100 hover:bg-blue-200 p-2 rounded-full shadow-md cursor-pointer"
                           className="opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-opacity duration-300 bg-blue-100 hover:bg-blue-200 p-2 rounded-full shadow-md cursor-pointer"
                         >
                           <LiaShoppingCartSolid
@@ -529,10 +700,59 @@ export default function ShopPage() {
                           {item.inStock ? "In Stock" : "Out of Stock"}
                         </p>
                       </div>
-                      <p className="text-sm text-gray-600 mb-2">
-                        {item.offerTitle}
-                      </p>
-                      <button
+
+                      <abbr
+                        onClick={() =>
+                          setShowFullId(
+                            showFullId === item._id ? null : item._id
+                          )
+                        }
+                        title={item.offerTitle}
+                        className="no-underline cursor-pointer"
+                      >
+                        <p
+                          className={`text-sm text-gray-600 mb-2 transition-all duration-200 ${
+                            showFullId === item._id
+                              ? "whitespace-normal"
+                              : "truncate w-48 sm:w-60"
+                          }`}
+                        >
+                          {item.offerTitle}
+                        </p>
+                      </abbr>
+
+                      <Button
+                        variant="contained"
+                        fullWidth
+                        disabled={item.inStock <= 0}
+                        onClick={() => setActivePopup(item._id)}
+                        title={
+                          item.inStock <= 0
+                            ? "Not available in stock"
+                            : "Order Now"
+                        }
+                        sx={{
+                          py: 1,
+                          borderRadius: "9999px",
+                          fontWeight: "bold",
+                          fontSize: "0.9rem",
+                          textTransform: "none",
+                          bgcolor:
+                            item.inStock > 0 ? "primary.main" : "grey.400",
+                          color: item.inStock > 0 ? "#fff" : "grey.200",
+                          cursor: item.inStock > 0 ? "pointer" : "not-allowed",
+                          transition: "all 0.3s ease",
+                          "&:hover": item.inStock > 0 && {
+                            bgcolor: "primary.dark",
+                            transform: "translateY(-2px)",
+                            boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+                          },
+                        }}
+                      >
+                        {item.inStock > 0 ? "Buy Now" : "Out of Stock"}
+                      </Button>
+
+                      {/* <button
                         type="button"
                         onClick={() => setActivePopup(item._id)}
                         disabled={item.inStock <= 0}
@@ -549,32 +769,6 @@ export default function ShopPage() {
                           }`}
                       >
                         {item.inStock > 0 ? "Buy Now" : "Out of Stock"}
-                      </button>
-
-                      {/* <button
-                        // className="bg-blue-500 font-bold text-white w-full py-2 rounded-full hover:bg-blue-600"
-                        className="bg-blue-500 font-bold text-white w-full py-1.5 text-sm rounded-lg hover:bg-blue-600 sm:py-2 sm:text-base"
-                        onClick={() => setActivePopup(item._id)}
-                      >
-                        Buy it now
-                      </button> */}
-
-                      {/* <button
-                        className="bg-blue-600/80 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm backdrop-blur-md w-36"
-                        onClick={() => {
-                          const queryString = new URLSearchParams({
-                            productId: item._id,
-                            name: item.name,
-                            price: item.discountPrice.toString(),
-                            category: item.SalesCategory,
-                            stock: item.inStock.toString(),
-                            description: item.offerTitle,
-                            image: item.image,
-                          }).toString();
-                          router.push(`/productDetails?${queryString}`);
-                        }}
-                      >
-                        View Details
                       </button> */}
                     </motion.div>
                   </div>

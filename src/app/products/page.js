@@ -21,13 +21,18 @@ import { TiArrowSortedUp } from "react-icons/ti";
 import { motion } from "framer-motion";
 import { AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import ScrollTo from "../../components/scrolltotop";
-import { Card , Box,
+import {
+  Card,
+  Box,
   Button,
   TextField,
   MenuItem,
   Select,
   InputLabel,
-  FormControl } from "@mui/material";
+  FormControl,
+  Paper,
+  Typography,
+} from "@mui/material";
 
 export default function Products() {
   const dispatch = useDispatch();
@@ -413,7 +418,7 @@ export default function Products() {
                   <div className="relative group w-full max-w-sm pb-3 rounded-xl overflow-hidden shadow-lg border border-gray-200 p-2 sm:pb-4 pb-24 bg-cover bg-center bg-no-repeat">
                     <button
                       onClick={() => setActivePopupCart(product._id)}
-                      className="absolute top-3 right-3 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 z-30 bg-blue-100 hover:bg-blue-200 p-2 rounded-full shadow-md cursor-pointer"
+                      className="absolute top-3 right-3 opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 z-20 bg-blue-100 hover:bg-blue-200 p-2 rounded-full shadow-md cursor-pointer"
                     >
                       <LiaShoppingCartSolid
                         size={24}
@@ -448,34 +453,99 @@ export default function Products() {
                     )}
 
                     {activePopupCart === product._id && user && (
-                      <div className="absolute top-14 right-3 bg-white shadow-lg rounded-lg p-4 z-40 w-40 flex flex-col items-center">
-                        <label className="text-sm mb-1">Quantity</label>
-                        <input
+                      // <div className="absolute top-14 right-3 bg-white shadow-lg rounded-lg p-4 z-40 w-40 flex flex-col items-center">
+                      //   <label className="text-sm mb-1">Quantity</label>
+                      //   <input
+                      //     type="number"
+                      //     min="1"
+                      //     max={product.stock}
+                      //     value={quantities[product._id] || 1}
+                      //     onChange={(e) =>
+                      //       handleQuantityChange(product._id, e.target.value)
+                      //     }
+                      //     className="mb-2 w-16 text-center border border-gray-300 rounded px-2 py-1"
+                      //   />
+                      //   <button
+                      //     className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm w-full"
+                      //     onClick={() => handleAddToCart(product._id)}
+                      //   >
+                      //     Add to Cart
+                      //   </button>
+                      //   <button
+                      //     onClick={() => setActivePopupCart(null)}
+                      //     className="text-xs text-gray-500 mt-1 hover:underline"
+                      //   >
+                      //     Cancel
+                      //   </button>
+                      // </div>
+                      <Paper
+                        elevation={6}
+                        sx={{
+                          position: "absolute",
+                          top: "50%",
+                          left: "50%",
+                          transform: "translate(-50%, -50%)",
+                          width: 180,
+                          zIndex: 40,
+                          p: 2,
+                          borderRadius: 2,
+                          display: "flex",
+                          flexDirection: "column",
+                          alignItems: "center",
+                          bgcolor: "background.paper",
+                          boxShadow: 6,
+                        }}
+                      >
+                        <Typography
+                          variant="body2"
+                          sx={{ mb: 1, fontWeight: 500 }}
+                        >
+                          Quantity
+                        </Typography>
+
+                        <TextField
                           type="number"
-                          min="1"
-                          max={product.stock}
+                          size="small"
+                          inputProps={{
+                            min: 1,
+                            max: product.stock,
+                            style: { textAlign: "center" },
+                          }}
                           value={quantities[product._id] || 1}
                           onChange={(e) =>
                             handleQuantityChange(product._id, e.target.value)
                           }
-                          className="mb-2 w-16 text-center border border-gray-300 rounded px-2 py-1"
+                          sx={{ width: 70, mb: 2 }}
                         />
-                        <button
-                          className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm w-full"
+
+                        <Button
+                          variant="contained"
+                          color="primary"
+                          fullWidth
+                          sx={{
+                            textTransform: "none",
+                            borderRadius: 1,
+                            py: 0.6,
+                          }}
                           onClick={() => handleAddToCart(product._id)}
                         >
                           Add to Cart
-                        </button>
-                        <button
+                        </Button>
+
+                        <Button
                           onClick={() => setActivePopupCart(null)}
-                          className="text-xs text-gray-500 mt-1 hover:underline"
+                          sx={{
+                            fontSize: "0.75rem",
+                            color: "text.secondary",
+                            "&:hover": { textDecoration: "underline" },
+                          }}
                         >
                           Cancel
-                        </button>
-                      </div>
+                        </Button>
+                      </Paper>
                     )}
 
-                    <div className="absolute top-2 left-4 z-30">
+                    <div className="absolute top-2 left-4 z-20">
                       <button
                         onClick={() => handleWishlistToggle(product._id)}
                         className={`bg-white ${
@@ -519,16 +589,16 @@ export default function Products() {
                     {error && (
                       <div
                         className={`fixed top-16 left-1/2 transform -translate-x-1/2 
-              w-[90%] max-w-md sm:max-w-lg md:max-w-xl2 
-              px-4 sm:px-6 py-3 sm:py-4 
-               shadow-md text-white text-sm sm:text-base font-medium 
-              transition-all duration-500 z-50 
-              ${
-                error.toLowerCase().includes("success") ||
-                error.toLowerCase().includes("placed")
-                  ? "bg-green-600"
-                  : "bg-gray-600"
-              }`}
+                        w-[90%] max-w-md sm:max-w-lg md:max-w-xl2 
+                          px-4 sm:px-6 py-3 sm:py-4 
+                          shadow-md text-white text-sm sm:text-base font-medium 
+                           transition-all duration-500 z-50 
+                           ${
+                             error.toLowerCase().includes("success") ||
+                             error.toLowerCase().includes("placed")
+                               ? "bg-green-600"
+                               : "bg-gray-600"
+                           }`}
                       >
                         <div className="flex items-center justify-between gap-3">
                           <span className="flex-1 break-words">{error}</span>
@@ -542,38 +612,7 @@ export default function Products() {
                       </div>
                     )}
 
-                    {/* {error && (
-                      <p
-                        className={`
-                          fixed top-[110px] left-1/2 transform -translate-x-1/2 z-50
-                        ${
-                          error.toLowerCase().includes("success") ||
-                          error.toLowerCase().includes("already in wishlist")
-                            ? "bg-blue-500"
-                            : "bg-red-400"
-                        }
-                        text-white px-4 py-2 max-w-xs w-[90%] text-center rounded shadow-md
-                        transition-all duration-500 ease-in-out
-                        ${
-                          error
-                            ? "opacity-100 translate-y-0"
-                            : "opacity-0 -translate-y-2"
-                        }
-                      `}
-                      >
-                        {error}
-                      </p>
-                    )} */}
-
                     <div className="w-full h-44 sm:mb-2">
-                      {/* <Image
-                        src={product.image}
-                        alt="Product"
-                        width={300}
-                        height={176}
-                        className="w-full h-full object-contain rounded-lg"
-                        priority
-                      /> */}
                       {product.images?.length > 0 && (
                         <Image
                           src={product.images[0]}
@@ -622,7 +661,71 @@ export default function Products() {
                     )}
 
                     <div className="absolute bottom-3 left-1/2 transform -translate-x-1/2 flex flex-col gap-2 items-center opacity-100 sm:opacity-0 sm:group-hover:opacity-100 transition-all duration-300 z-20">
-                      <button
+                      <Button
+                        variant="contained"
+                        onClick={() => {
+                          const queryString = new URLSearchParams({
+                            productId: product._id,
+                            name: product.name,
+                            price: product.price.toString(),
+                            category: product.category,
+                            stock: product.stock.toString(),
+                            description: product.description,
+                            image: JSON.stringify(product.images || []),
+                            // image: product.images,
+                          }).toString();
+                          router.push(`/productDetails?${queryString}`);
+                        }}
+                        sx={{
+                          width: 150,
+                          textTransform: "none",
+                          fontWeight: 600,
+                          fontSize: "0.9rem",
+                          bgcolor: "primary.main",
+                          color: "#fff",
+                          backdropFilter: "blur(6px)",
+                          transition: "all 0.3s ease",
+                          "&:hover": {
+                            bgcolor: "primary.dark",
+                            transform: "translateY(-2px)",
+                            boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+                          },
+                        }}
+                      >
+                        View Details
+                      </Button>
+
+                      <Button
+                        variant="contained"
+                        onClick={() => setActivePopup(product._id)}
+                        disabled={product.stock <= 0}
+                        title={
+                          product.stock <= 0
+                            ? "Not available in stock"
+                            : "Buy Now"
+                        }
+                        sx={{
+                          width: 150,
+                          textTransform: "none",
+                          fontWeight: 600,
+                          fontSize: "0.9rem",
+                          bgcolor:
+                            product.stock > 0 ? "success.main" : "grey.400",
+                          color: product.stock > 0 ? "#fff" : "grey.200",
+                          cursor: product.stock > 0 ? "pointer" : "not-allowed",
+                          backdropFilter: "blur(6px)",
+                          transition: "all 0.3s ease",
+                          "&:hover": product.stock > 0 && {
+                            bgcolor: "success.dark",
+                            transform: "translateY(-2px)",
+                            boxShadow: "0 4px 10px rgba(0,0,0,0.2)",
+                          },
+                        }}
+                      >
+                        {product.stock > 0 ? "Buy Now" : "Out of Stock"}
+                      </Button>
+
+                      {/* <button
                         className="bg-blue-600/80 hover:bg-blue-700 text-white px-4 py-2 rounded-md text-sm backdrop-blur-md w-36"
                         onClick={() => {
                           const queryString = new URLSearchParams({
@@ -658,37 +761,57 @@ export default function Products() {
                         }`}
                       >
                         {product.stock > 0 ? "Buy Now" : "Out of Stock"}
-                      </button>
-
-                      {/* <button
-                        onClick={() => setActivePopup(product._id)}
-                        disabled={product.stock <= 0}
-                        className={`bg-green-600/80 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm backdrop-blur-md w-36 
-                    ${
-                      product.stock > 0
-                        ? "bg-green-600 text-white hover:bg-green-700"
-                        : "bg-gray-400 text-gray-200 cursor-not-allowed"
-                    }`}
-                        // className="bg-green-600/80 hover:bg-green-700 text-white px-4 py-2 rounded-md text-sm backdrop-blur-md w-36"
-                      >
-                        Buy Now
                       </button> */}
 
                       {activePopup === product._id && user && (
-                        <div className="absolute bottom-14 bg-white shadow-lg rounded-lg p-4 z-30 w-40 flex flex-col items-center">
-                          <label className="text-sm mb-1">Quantity</label>
-                          <input
+                        <Paper
+                          elevation={6}
+                          sx={{
+                            position: "absolute",
+                            bottom: 56,
+                            width: 180,
+                            zIndex: 30,
+                            p: 2,
+                            borderRadius: 2,
+                            display: "flex",
+                            flexDirection: "column",
+                            alignItems: "center",
+                            bgcolor: "background.paper",
+                            boxShadow: 6,
+                            zIndex: 40,
+                          }}
+                        >
+                          <Typography
+                            variant="body2"
+                            sx={{ mb: 1, fontWeight: 500 }}
+                          >
+                            Quantity
+                          </Typography>
+
+                          <TextField
                             type="number"
-                            min="1"
-                            max={product.stock}
+                            size="small"
+                            inputProps={{
+                              min: 1,
+                              max: product.stock,
+                              style: { textAlign: "center" },
+                            }}
                             value={quantities[product._id] || 1}
                             onChange={(e) =>
                               handleQuantityChange(product._id, e.target.value)
                             }
-                            className="mb-2 w-16 text-center border border-gray-300 rounded px-2 py-1"
+                            sx={{ width: 70, mb: 2 }}
                           />
-                          <button
-                            className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm w-full"
+
+                          <Button
+                            variant="contained"
+                            color="primary"
+                            fullWidth
+                            sx={{
+                              textTransform: "none",
+                              borderRadius: 1,
+                              py: 0.6,
+                            }}
                             onClick={() => {
                               const quantity = quantities[product._id] || 1;
                               const queryString = new URLSearchParams({
@@ -705,14 +828,58 @@ export default function Products() {
                             }}
                           >
                             Confirm
-                          </button>
-                          <button
+                          </Button>
+
+                          <Button
                             onClick={() => setActivePopup(null)}
-                            className="text-xs text-gray-500 mt-1 hover:underline"
+                            sx={{
+                              fontSize: "0.75rem",
+                              color: "text.secondary",
+                              "&:hover": { textDecoration: "underline" },
+                            }}
                           >
                             Cancel
-                          </button>
-                        </div>
+                          </Button>
+                        </Paper>
+
+                        // <div className="absolute bottom-14 bg-white shadow-lg rounded-lg p-4 z-30 w-40 flex flex-col items-center">
+                        //   <label className="text-sm mb-1">Quantity</label>
+                        //   <input
+                        //     type="number"
+                        //     min="1"
+                        //     max={product.stock}
+                        //     value={quantities[product._id] || 1}
+                        //     onChange={(e) =>
+                        //       handleQuantityChange(product._id, e.target.value)
+                        //     }
+                        //     className="mb-2 w-16 text-center border border-gray-300 rounded px-2 py-1"
+                        //   />
+                        //   <button
+                        //     className="bg-blue-600 text-white px-3 py-1 rounded-md text-sm w-full"
+                        //     onClick={() => {
+                        //       const quantity = quantities[product._id] || 1;
+                        //       const queryString = new URLSearchParams({
+                        //         productId: product._id,
+                        //         name: product.name,
+                        //         price: product.price.toString(),
+                        //         category: product.category,
+                        //         stock: product.stock.toString(),
+                        //         description: product.description,
+                        //         image: JSON.stringify(product.images || []),
+                        //         quantity: quantity.toString(),
+                        //       }).toString();
+                        //       router.push(`/placeOrder?${queryString}`);
+                        //     }}
+                        //   >
+                        //     Confirm
+                        //   </button>
+                        //   <button
+                        //     onClick={() => setActivePopup(null)}
+                        //     className="text-xs text-gray-500 mt-1 hover:underline"
+                        //   >
+                        //     Cancel
+                        //   </button>
+                        // </div>
                       )}
                     </div>
                   </div>
