@@ -299,20 +299,23 @@ export default function ProductCartPage() {
                     key={item._id}
                     className="relative flex flex-row sm:flex-row items-center sm:items-start justify-between bg-white p-4 rounded-lg shadow-md mb-4"
                   >
-                    <div className="absolute top-2 right-2">
+                    <div className="absolute top-3 right-3">
                       <button
                         onClick={() =>
                           setIsMenuOpen(
                             isMenuOpen === item._id ? null : item._id
                           )
                         }
-                        className="text-gray-500 hover:text-gray-700"
+                        className="p-2 rounded-full  hover:bg-gray-100 transition-all duration-300"
                       >
-                        <EllipsisVerticalIcon className="w-6 h-6" />
+                        <EllipsisVerticalIcon className="w-5 h-5 text-gray-700" />
                       </button>
 
                       {isMenuOpen === item._id && (
-                        <div className="absolute right-0 mt-2 w-32 bg-white shadow-md rounded-lg p-2 z-10">
+                        <div
+                          className="absolute right-0 mt-3 w-36 bg-white rounded-lg shadow-lg border border-gray-100 
+                           animate-[fadeIn_0.2s_ease-in-out] z-20 overflow-hidden"
+                        >
                           <button
                             onClick={() =>
                               handleAddToCartEdit(
@@ -320,17 +323,19 @@ export default function ProductCartPage() {
                                 item.quantity
                               )
                             }
-                            className="flex items-center gap-1 w-full text-sm font-semibold text-gray-700 px-3 py-1 rounded-lg hover:bg-blue-100 transition"
+                            className="flex items-center gap-2 w-full px-4 py-2 text-sm font-medium text-gray-700 
+                               hover:bg-blue-50 hover:text-blue-700 transition-colors duration-200"
                           >
                             <PencilSquareIcon className="w-4 h-4" />
                             Edit
                           </button>
+
+                          <div className="h-px bg-gray-100"></div>
+
                           <button
-                            onClick={() => {
-                              handleRemoveItem(item.productId._id);
-                            }}
-                            // onClick={(e) => handleRemoveItem(item.productId, e)}
-                            className="flex items-center gap-1 w-full text-sm font-semibold text-red-500 px-3 py-1 rounded-lg hover:bg-red-100 transition"
+                            onClick={() => handleRemoveItem(item.productId._id)}
+                            className="flex items-center gap-2 w-full px-4 py-2 text-sm font-medium text-red-500 
+                                 hover:bg-red-50 transition-colors duration-200"
                           >
                             <TrashIcon className="w-4 h-4" />
                             Delete
