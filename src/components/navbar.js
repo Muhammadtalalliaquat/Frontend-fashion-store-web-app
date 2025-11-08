@@ -80,7 +80,7 @@ function Navbar() {
             flexWrap: "wrap",
             px: { xs: 1, sm: 2, md: 4 },
             py: { xs: 1, sm: 1.5 },
-            gap: { xs: 1, sm: 2, md: 4, lg: 30 },
+            gap: { xs: 1, sm: 2, md: 4, lg: 55 },
             // gap: { xs: 1, sm: 2, md: 30 },
           }}
         >
