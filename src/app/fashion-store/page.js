@@ -38,13 +38,11 @@ import {
   DialogContent,
   DialogActions,
   Typography,
-  Paper,
-  // Link,
 } from "@mui/material";
 // import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
 import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
-import LocalOfferIcon from "@mui/icons-material/LocalOffer";
+// import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 export default function MainDashboard() {
   const [quantities, setQuantities] = useState({});
@@ -53,9 +51,9 @@ export default function MainDashboard() {
   const [discount, setDiscount] = useState([]);
   const [feddBack, setFeedBack] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [current, setCurrent] = useState(0);
   const [error, setError] = useState(null);
   const [user, setUser] = useState(null);
+  // const [current, setCurrent] = useState(0);
   // const [firstName, setFirstName] = useState("");
   // const [lastName, setLastName] = useState("");
   // const [posterCode, setPostercode] = useState(0);
@@ -71,8 +69,13 @@ export default function MainDashboard() {
   const router = useRouter();
   const dispatch = useDispatch();
   const [mounted, setMounted] = useState(false);
+  const [activeProduct, setActiveProduct] = useState(null);
 
-  const maxVisible = 1;
+  const handleToggleOverlay = (id) => {
+    setActiveProduct((prev) => (prev === id ? null : id));
+  };
+
+  // const maxVisible = 1;
   const feddBackmaxVisible = 1;
 
   useEffect(() => {
@@ -107,7 +110,6 @@ export default function MainDashboard() {
     // call immediately when page mounts
     fetchData();
   }, [dispatch]);
-
 
   // useEffect(() => {
   //   const storedUser = JSON.parse(localStorage.getItem("user"));
@@ -176,15 +178,15 @@ export default function MainDashboard() {
     setQuantities((prev) => ({ ...prev, [id]: num }));
   };
 
-  const nextSlide = () => {
-    setCurrent((prev) => (prev + maxVisible < discount.length ? prev + 1 : 0));
-  };
+  // const nextSlide = () => {
+  //   setCurrent((prev) => (prev + maxVisible < discount.length ? prev + 1 : 0));
+  // };
 
-  const prevSlide = () => {
-    setCurrent((prev) =>
-      prev - 1 < 0 ? discount.length - maxVisible : prev - 1
-    );
-  };
+  // const prevSlide = () => {
+  //   setCurrent((prev) =>
+  //     prev - 1 < 0 ? discount.length - maxVisible : prev - 1
+  //   );
+  // };
 
   const nextSlideFeedback = () => {
     setCurrentFeedback((prev) =>
@@ -291,8 +293,7 @@ export default function MainDashboard() {
 
       {!loading && (
         <>
-          <div className="p-6 bg-gray-50">
-            {/* <Box sx={{ bgcolor: "grey.50" }}> */}
+          <div className="p-6 container mx-auto">
             <Box
               display="flex"
               alignItems="center"
@@ -305,14 +306,7 @@ export default function MainDashboard() {
               mb={2}
               p={2}
             >
-              {/* Left Side - Heading */}
               <Box display="flex" alignItems="center" gap={1}>
-                {/* <ShoppingBagIcon
-                    sx={{
-                      color: "#8E24AA",
-                      fontSize: { xs: 28, sm: 36 },
-                    }}
-                  /> */}
                 <Typography
                   variant="h5"
                   sx={{
@@ -323,10 +317,6 @@ export default function MainDashboard() {
                       sm: "1.8rem",
                       md: "2rem",
                     },
-                    // background: "linear-gradient(90deg, #8E24AA, #1565C0)",
-                    // WebkitBackgroundClip: "text",
-                    // WebkitTextFillColor: "transparent",
-                    // whiteSpace: "nowrap",
                     color: "primary.dark",
                   }}
                 >
@@ -378,20 +368,8 @@ export default function MainDashboard() {
               </Link>
             </Box>
 
-            {/* Divider line */}
-            {/* <Divider
-                sx={{
-                  width: "100%",
-                  borderBottomWidth: 8,
-                  borderColor: "rgba(142,36,170,0.2)",
-                  borderRadius: 2,
-                  mb: 3,
-                }}
-              /> */}
-            {/* </Box> */}
-
             {products.length > 0 ? (
-              <div className="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+              <div className=" grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
                 {products.map((product) => (
                   <Link
                     key={product._id}
@@ -412,7 +390,7 @@ export default function MainDashboard() {
                   >
                     <div
                       // key={product._id}
-                      className="bg-white shadow-lg  p-5 flex flex-col items-center text-center transition-transform duration-300 hover:scale-98 hover:shadow-xl border border-gray-200 group relative"
+                      className="bg-white shadow-lg p-5 flex flex-col items-center text-center transition-transform duration-300 hover:scale-98 hover:shadow-xl border border-gray-200 group relative"
                     >
                       <span
                         className={`absolute top-3 left-3 text-xs font-bold px-3 py-1 rounded-full text-white z-10 shadow-md ${
@@ -485,62 +463,218 @@ export default function MainDashboard() {
 
       {/* Sales Discount Offers Section */}
       {!loading && (
-        <div className="w-full bg-white py-8 relative overflow-hidden">
-          {/* <div className="w-full max-w-screen-sm mx-auto mb-8 px-4">
-            <h2 className="text-lg sm:text-2xl md:text-3xl font-semibold text-blue-900 text-center bg-blue-50 sm:bg-transparent shadow-sm sm:shadow-none px-4 py-2 tracking-wide rounded-md">
-              🏷️ Sales Discount Offers
-            </h2>
-          </div> */}
-          <Box
-            sx={{
-              width: "100%",
-              maxWidth: 600,
-              mx: "auto",
-              mb: 6,
-              px: 2,
-              textAlign: "center",
-            }}
-          >
-            <Paper
-              // elevation={3}
-              sx={{
-                display: "inline-flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: 1,
-                px: { xs: 2, sm: 4 },
-                py: 1.5,
-                borderRadius: 2,
-                // bgcolor: { xs: "primary.light", sm: "transparent" },
-                boxShadow: { xs: 2, sm: "none" },
-              }}
-            >
-              <LocalOfferIcon
-                sx={{ color: "primary.main", fontSize: { xs: 24, sm: 30 } }}
-              />
-              <Typography
-                variant="h4"
-                sx={{
-                  fontWeight: 700,
-                  letterSpacing: "0.5px",
-                  fontSize: { xs: "1.3rem", sm: "2rem", md: "2.3rem" },
-                  color: "primary.dark",
-                }}
-              >
-                Sales Discount Offers
-              </Typography>
-            </Paper>
-          </Box>
+        <div className="w-full py-8 relative overflow-hidden">
+          <div className="w-full py-12">
+            <div className="container mx-auto mx-auto px-6">
+              <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-20 text-center">
+                ✨ Exclusive Discount Products
+              </h2>
 
-          <div className="relative">
+              <div className="flex flex-col gap-8">
+                {[0, 1].map((row) => (
+                  <div key={row} className="flex flex-col md:flex-row gap-6 ">
+                    {discount.slice(row * 2, row * 2 + 2).map((item, i) => (
+                      <div
+                        key={i}
+                        className={`relative group overflow-hidden shadow-lg hover:shadow-2xl border border-gray-400 transition-all duration-500 ${
+                          (row + i) % 2 === 0 ? "md:flex-[1.5]" : "md:flex-1"
+                        }`}
+                        onClick={() => handleToggleOverlay(item._id)}
+                      >
+                        {user?.isAdmin && (
+                          <div className="absolute z-10 top-4 left-4">
+                            <button
+                              className="p-2 rounded-full hover:bg-gray-100 transition"
+                              onClick={() => toggleDropdown(item._id)}
+                            >
+                              <EllipsisVerticalIcon className="w-6 h-6 text-gray-500" />
+                            </button>
+                            {openOrderId === item._id && (
+                              <div className="absolute left-0 mt-2 w-36 bg-white shadow-md rounded-lg p-2">
+                                <Link
+                                  href={`/admin-update-product/${item._id}`}
+                                >
+                                  <button className="flex items-center w-full text-sm text-gray-700 px-3 py-2 hover:bg-gray-100 rounded">
+                                    <PencilSquareIcon className="w-4 h-4 mr-2" />
+                                    Edit
+                                  </button>
+                                </Link>
+                                <button
+                                  onClick={() =>
+                                    handleDeleteDiscountOffer(item._id)
+                                  }
+                                  className="flex items-center w-full text-sm text-red-600 px-3 py-2 hover:bg-red-50 rounded"
+                                >
+                                  <TrashIcon className="w-4 h-4 mr-2" />
+                                  Delete
+                                </button>
+                              </div>
+                            )}
+                          </div>
+                        )}
+
+                        {activePopup === item._id && user && (
+                          <Dialog
+                            open={true}
+                            onClose={() => setActivePopup(null)}
+                            fullWidth
+                            maxWidth="xs"
+                          >
+                            <DialogTitle>Select Quantity</DialogTitle>
+                            <DialogContent>
+                              <Box
+                                display="flex"
+                                flexDirection="column"
+                                alignItems="center"
+                                mt={1}
+                              >
+                                <TextField
+                                  type="number"
+                                  label="Quantity"
+                                  size="small"
+                                  inputProps={{
+                                    min: 1,
+                                    max: item.inStock,
+                                  }}
+                                  value={quantities[item._id] || 1}
+                                  onChange={(e) =>
+                                    handleQuantityChange(
+                                      item._id,
+                                      e.target.value
+                                    )
+                                  }
+                                  sx={{ width: "100px", mb: 2 }}
+                                />
+                              </Box>
+                            </DialogContent>
+                            <DialogActions
+                              sx={{
+                                flexDirection: "column",
+                                gap: 1,
+                                px: 3,
+                                pb: 2,
+                              }}
+                            >
+                              <Button
+                                variant="contained"
+                                fullWidth
+                                onClick={() => {
+                                  const quantity = quantities[item._id] || 1;
+                                  const queryString = new URLSearchParams({
+                                    productId: item._id,
+                                    name: item.name,
+                                    price: item.discountPrice.toString(),
+                                    category: item.SalesCategory,
+                                    stock: item.inStock.toString(),
+                                    description: item.offerTitle,
+                                    image: item.image,
+                                    quantity: quantity.toString(),
+                                  }).toString();
+                                  router.push(
+                                    `/discountProductInfo?${queryString}`
+                                  );
+                                }}
+                              >
+                                Confirm
+                              </Button>
+                              <Button
+                                variant="text"
+                                color="inherit"
+                                onClick={() => setActivePopup(null)}
+                                sx={{ fontSize: "0.85rem" }}
+                              >
+                                Cancel
+                              </Button>
+                            </DialogActions>
+                          </Dialog>
+                        )}
+                        <div className="relative h-72 md:h-96 overflow-hidden">
+                          <Image
+                            src={item.image}
+                            alt={item.name}
+                            width={400}
+                            height={400}
+                            className=" object-cover w-full h-72 md:h-full"
+                            priority
+                          />
+                          <div className="absolute top-3 right-3 bg-gradient-to-r from-yellow-400 to-yellow-600 text-white text-sm font-semibold px-3 py-1 rounded-full shadow">
+                            -
+                            {Math.round(
+                              ((item.price - item.discountPrice) / item.price) *
+                                100
+                            )}
+                            %
+                          </div>
+                        </div>
+
+                        <div
+                          className={`
+                                     absolute inset-0 bg-black/70 text-center flex flex-col justify-center items-center px-4 transition-all duration-500${
+                                       activeProduct === item._id
+                                         ? "opacity-100 visible"
+                                         : "opacity-0 invisible"
+                                     }
+                                     md:opacity-0 md:group-hover:opacity-100 md:visible
+                             `}
+                        >
+                          <h3 className="text-lg sm:text-xl md:text-2xl font-bold text-white mb-1">
+                            {item.name}
+                          </h3>
+
+                          <p className="hidden md:block text-gray-200 text-sm mb-2 line-clamp-2">
+                            {item.description}
+                          </p>
+
+                          <div className="flex items-center justify-center gap-2 md:gap-3 mb-2">
+                            <span className="text-gray-300 line-through text-sm md:text-base">
+                              ${item.price}
+                            </span>
+                            <span className="text-xl md:text-3xl font-bold text-yellow-400">
+                              ${item.discountPrice}
+                            </span>
+                          </div>
+
+                          <div className="hidden md:block bg-white/20 p-3 rounded-lg w-full max-w-xs mb-2">
+                            <h4 className="text-yellow-300 font-semibold">
+                              {item.offerTitle}
+                            </h4>
+                            <p className="text-gray-100 text-sm">
+                              {item.offerDescription}
+                            </p>
+                          </div>
+
+                          {/* Buy button */}
+                          <button
+                            onClick={() => setActivePopup(item._id)}
+                            className="
+                             mt-2 md:mt-4 
+                             bg-gradient-to-r from-yellow-400 to-yellow-600 
+                             text-gray-900 font-semibold 
+                             py-1.5 md:py-2 px-4 md:px-6 
+                             rounded-full shadow-md 
+                             text-sm md:text-base 
+                             hover:scale-105 transition-transform
+                             "
+                          >
+                            Buy Now
+                          </button>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+
+          {/* <div className="relative">
             <div
               className="flex transition-transform duration-500 ease-in-out"
-              style={{ transform: `translateX(-${current * 100}%)` }}
+              // style={{ transform: `translateX(-${current * 100}%)` }}
             >
               {discount.map((item, i) => (
                 <div key={i} className="min-w-full px-4 flex-shrink-10">
                   <div className="relative bg-gray-50  border border-gray-200 p-6 shadow-lg mx-auto max-w-5xl flex flex-col md:flex-row items-center md:items-start gap-8 overflow-hidden">
-                    {/* Admin actions */}
                     {user?.isAdmin && (
                       <div className="absolute top-4 right-4">
                         <button
@@ -712,7 +846,7 @@ export default function MainDashboard() {
             >
               ›
             </button>
-          </div>
+          </div> */}
 
           {activePopup && !user && (
             <div className="fixed inset-0 backdrop-blur-sm bg-black/30 flex items-center justify-center z-[9999]">

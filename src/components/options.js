@@ -89,7 +89,11 @@ export default function OptionsMenu() {
         variant="outlined"
         color="primary"
         onClick={handleClick}
-        sx={{ textTransform: "capitalize", borderRadius: "0px" }}
+        sx={{
+          textTransform: "capitalize",
+          borderRadius: "6px",
+          fontSize: { sm: "small" },
+        }}
       >
         Menu
       </Button>

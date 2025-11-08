@@ -249,8 +249,8 @@ export default function Products() {
 
       {/* {loading && <FashionStoreLoader product={products} />} */}
 
-      <section className="px-6 py-10 bg-gray-100 min-h-screen pb-40">
-        <div className="max-w-7xl mx-auto">
+      <section className="px-6 py-8 bg-gray-100 min-h-screen pb-40">
+        <div className="container mx-auto p-4 mb-20">
           <Card
             elevation={2}
             className="flex flex-col sm:flex-row justify-between items-start sm:items-center bg-white p-6 rounded-2xl shadow-sm border border-gray-100 mb-6"

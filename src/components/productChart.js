@@ -107,7 +107,7 @@ export default function DiscountOrderChart() {
             xs: "100%",
             sm: "90%",
             md: "80%",
-            lg: "70%",
+            lg: "74%",
           },
           // maxWidth: "70%",
           // borderRadius: 3,

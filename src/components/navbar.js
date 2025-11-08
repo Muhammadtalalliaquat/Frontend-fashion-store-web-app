@@ -75,27 +75,37 @@ function Navbar() {
         <Toolbar
           sx={{
             display: "flex",
-            justifyContent: "space-between",
             alignItems: "center",
+            justifyContent: "space-around",
+            flexWrap: "wrap",
+            px: { xs: 1, sm: 2, md: 4 },
+            py: { xs: 1, sm: 1.5 },
+            gap: { xs: 1, sm: 2, md: 4, lg: 30 },
+            // gap: { xs: 1, sm: 2, md: 30 },
           }}
         >
+          {/* Logo */}
           <Typography
             variant="h6"
             sx={{
               fontWeight: "bold",
               cursor: "pointer",
               color: "#1976d2",
+              fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem" },
+              textAlign: "center",
             }}
-            onClick={() => router.push("/fashion-store")}
+            onClick={() => window.location.reload()}
           >
             Fashion Store
           </Typography>
 
+          {/* Desktop Menu */}
           <Box
             sx={{
               display: { xs: "none", sm: "flex" },
-              gap: 2,
+              gap: { xs: 1, sm: 2, md: 3 },
               alignItems: "center",
+              flexWrap: "wrap",
             }}
           >
             {menuItems
@@ -108,6 +118,7 @@ function Navbar() {
                   startIcon={item.icon}
                   sx={{
                     color: "#000",
+                    fontSize: { xs: "0.75rem", sm: "0.85rem", md: "0.9rem" },
                     textTransform: "capitalize",
                     "&:hover": { color: "#1976d2" },
                   }}
@@ -116,6 +127,7 @@ function Navbar() {
                 </Button>
               ))}
 
+            {/* Add Product (Admin Only) */}
             {user?.isAdmin && pathname !== "/admin-add-product" && (
               <Tooltip title="Add Product">
                 <Button
@@ -123,8 +135,9 @@ function Navbar() {
                   variant="outlined"
                   startIcon={<AddCircleOutlineIcon />}
                   sx={{
+                    fontSize: { xs: "0.75rem", sm: "0.85rem" },
                     textTransform: "capitalize",
-                    borderRadius: "0px",
+                    borderRadius: "6px",
                     borderColor: "#1976d2",
                     color: "#1976d2",
                     "&:hover": { backgroundColor: "#1976d2", color: "#fff" },
@@ -138,11 +151,15 @@ function Navbar() {
             <OptionsMenu isMenuOpen={true} isScrolled={isScrolled} />
           </Box>
 
+          {/* Mobile Menu Icon */}
           <IconButton
             color="inherit"
             edge="end"
             onClick={toggleDrawer}
-            sx={{ display: { xs: "block", sm: "none" } }}
+            sx={{
+              display: { xs: "flex", sm: "none" },
+              color: "#1976d2",
+            }}
           >
             {mobileOpen ? <CloseIcon /> : <MenuIcon />}
           </IconButton>
@@ -177,7 +194,6 @@ function Navbar() {
                 </ListItem>
               ))}
 
-            {/* ✅ Admin Add Product (Mobile) */}
             {user?.isAdmin && pathname !== "/admin-add-product" && (
               <ListItem disablePadding>
                 <ListItemButton
@@ -194,7 +210,6 @@ function Navbar() {
               </ListItem>
             )}
 
-            {/* ✅ Mobile OptionsMenu */}
             <Box sx={{ p: 2 }}>
               <OptionsMenu isMenuOpen={true} isScrolled={isScrolled} />
             </Box>
@@ -206,21 +221,6 @@ function Navbar() {
 }
 
 export default Navbar;
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 // "use client";
 
