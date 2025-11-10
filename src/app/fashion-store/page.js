@@ -37,11 +37,10 @@ import {
   IconButton,
   DialogContent,
   DialogActions,
-  Typography,
 } from "@mui/material";
-// import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
-import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import { ArrowBack, ArrowForward } from "@mui/icons-material";
+// import ShoppingBagIcon from "@mui/icons-material/ShoppingBag";
+// import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 // import LocalOfferIcon from "@mui/icons-material/LocalOffer";
 
 export default function MainDashboard() {
@@ -293,80 +292,35 @@ export default function MainDashboard() {
 
       {!loading && (
         <>
-          <div className="p-6 container mx-auto">
-            <Box
-              display="flex"
-              alignItems="center"
-              justifyContent="space-between"
-              flexWrap="wrap"
-              gap={2}
-              bgcolor={"#f0f0f0ff"}
-              width="100%"
-              mt={4}
-              mb={2}
-              p={2}
-            >
-              <Box display="flex" alignItems="center" gap={1}>
-                <Typography
-                  variant="h5"
-                  sx={{
-                    fontWeight: 800,
-                    letterSpacing: "0.5px",
-                    fontSize: {
-                      xs: "1.3rem",
-                      sm: "1.8rem",
-                      md: "2rem",
-                    },
-                    color: "primary.dark",
-                  }}
+          <div className="p-4 lg:p-4 sm:p-0 container mx-auto">
+            <div className="flex flex-wrap items-center justify-between gap-2 bg-gray-100 w-full mt-7 mb-2 p-4 md:p-6">
+              {/* Left Side - Heading */}
+              <div className="flex items-center gap-2">
+                <h2
+                  className="font-extrabold tracking-wide text-blue-900
+                   text-[1.3rem] sm:text-[1.8rem] md:text-[2rem]"
                 >
                   Our Products
-                </Typography>
-              </Box>
+                </h2>
+              </div>
 
               {/* Right Side - Link */}
               <Link
                 href="/products"
-                style={{
-                  textDecoration: "none",
-                  display: "flex",
-                  alignItems: "center",
-                  color: "#1565C0",
-                  transition: "all 0.3s ease",
-                }}
+                className="flex items-center text-blue-700 transition-transform duration-300 hover:translate-x-1"
               >
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  sx={{
-                    transition: "all 0.3s ease",
-                    "&:hover": { transform: "translateX(5px)" },
-                  }}
+                <span className="font-semibold text-[0.8rem] sm:text-base">
+                  See all products
+                </span>
+                <svg
+                  className="ml-1 w-4 h-4 sm:w-5 sm:h-5"
+                  fill="currentColor"
+                  viewBox="0 0 24 24"
                 >
-                  <Typography
-                    variant="body1"
-                    sx={{
-                      fontWeight: 600,
-                      color: "#1565C0",
-                      fontSize: { xs: "0.8rem", sm: "1rem" },
-                    }}
-                  >
-                    See all products
-                  </Typography>
-                  <IconButton
-                    size="small"
-                    sx={{
-                      color: "#1565C0",
-                      ml: 0.1,
-                      fontSize: { xs: "0.8rem", sm: "1rem" },
-                      "&:hover": { background: "transparent" },
-                    }}
-                  >
-                    <ArrowForwardIosIcon fontSize="" />
-                  </IconButton>
-                </Box>
+                  <path d="M13.172 12l-4.95-4.95 1.414-1.414L16 12l-6.364 6.364-1.414-1.414z" />
+                </svg>
               </Link>
-            </Box>
+            </div>
 
             {products.length > 0 ? (
               <div className=" grid grid-cols-2 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
@@ -465,8 +419,13 @@ export default function MainDashboard() {
       {!loading && (
         <div className="w-full py-8 relative overflow-hidden">
           <div className="w-full py-12">
-            <div className="container mx-auto mx-auto px-6">
-              <h2 className="text-2xl md:text-4xl font-bold text-gray-900 mb-20 text-center">
+            <div className="container mx-auto mx-auto px-3 sm:px-4 md:px-0 lg:px-4">
+              <h2
+                className="text-3xl md:text-5xl font-extrabold text-center mb-10 
+                
+               text-blue-900
+               animate-gradient-x drop-shadow-lg"
+              >
                 ✨ Exclusive Discount Products
               </h2>
 
@@ -994,7 +953,7 @@ export default function MainDashboard() {
       {!loading && (
         <section className="bg-gray-50 px-4 py-16">
           <div className="max-w-6xl mx-auto text-center mb-12">
-            <h2 className="text-2xl sm:text-2xl md:text-3xl font-semibold text-blue-900">
+            <h2 className="text-2xl sm:text-2xl md:text-3xl font-extrabold text-blue-900">
               About Our Store
             </h2>
             <p className="text-gray-600 mt-4 max-w-2xl mx-auto text-base md:text-lg">
@@ -1005,7 +964,7 @@ export default function MainDashboard() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 max-w-6xl mx-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 container mx-auto px-0 sm:px-4 md:px-0 lg:px-4">
             {siteDetails.map((item, idx) => (
               <div
                 key={idx}
@@ -1022,7 +981,7 @@ export default function MainDashboard() {
             ))}
           </div>
           <div className="my-12 flex flex-col items-center justify-center mt-20">
-            <h2 className="text-2xl sm:text-2xl md:text-3xl font-semibold text-center text-blue-900 mb-8">
+            <h2 className="text-2xl sm:text-2xl md:text-3xl font-extrabold text-center text-blue-900 mb-8">
               Feedback Corner
             </h2>
 

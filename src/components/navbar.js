@@ -70,17 +70,26 @@ function Navbar() {
         sx={{
           backgroundColor: "#fff",
           color: "#000",
+          // paddingLeft: "10%",
+          // paddingRight: "10%",
+          paddingLeft: { xs: "0%", sm: "0%", md: "3%", lg: "9%" },
+          paddingRight: { xs: "0%", sm: "0%", md: "3%", lg: "9%" },
         }}
       >
         <Toolbar
           sx={{
             display: "flex",
             alignItems: "center",
-            justifyContent: "space-around",
+            justifyContent: {
+              xs: "space-around",
+              sm: "space-around",
+              md: "space-between",
+              lg: "space-between",
+            },
             flexWrap: "wrap",
             px: { xs: 1, sm: 2, md: 4 },
             py: { xs: 1, sm: 1.5 },
-            gap: { xs: 1, sm: 2, md: 4, lg: 55 },
+            // gap: { xs: 1, sm: 2, md: 4, lg: 65 },
             // gap: { xs: 1, sm: 2, md: 30 },
           }}
         >
