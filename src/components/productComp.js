@@ -241,10 +241,10 @@ export default function ProductDetails() {
               </h2>
               <button
                 onClick={() => router.push("/fashion-store")}
-                className="flex items-center gap-1 text-sm font-medium text-gray-700 bg-white shadow rounded-full p-1 transition-transform duration-300 ease-in-out hover:-translate-x-1 hover:shadow-md"
+                className="flex items-center gap-2 px-4 py-2 bg-white/90 backdrop-blur-sm border border-gray-200 rounded-full shadow-sm text-gray-700 font-medium text-sm cursor-pointer transition-all duration-300 hover:-translate-x-1  hover:bg-white hover:text-gray-900 active:scale-95"
                 aria-label="Go Back"
               >
-                <IoIosArrowBack className="text-lg" />
+                <IoIosArrowBack className="text-lg transition-transform duration-300 group-hover:-translate-x-1" />
                 <span className="hidden sm:inline">Back</span>
               </button>
             </div>
@@ -260,7 +260,7 @@ export default function ProductDetails() {
               )}
 
               <div
-                className={`absolute right-0 mt-2 w-32 bg-white shadow-md rounded-lg p-2 transition-all duration-300 ease-in-out transform ${
+                className={`absolute right-0 mt-2 w-32 z-20 bg-white shadow-md rounded-lg p-2 transition-all duration-300 ease-in-out transform ${
                   isMenuOpen
                     ? "opacity-100 scale-100"
                     : "opacity-0 scale-95 pointer-events-none"
@@ -407,7 +407,7 @@ export default function ProductDetails() {
                 <div className="mt-6 flex flex-col sm:flex-row gap-4">
                   <button
                     onClick={handleAddToCart}
-                    className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 text-white px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base rounded-lg shadow-md hover:bg-indigo-700 transition"
+                    className="flex-1 flex items-center justify-center gap-2 bg-indigo-600 text-white cursor-pointer px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base rounded-lg shadow-md hover:bg-indigo-700 transition"
                   >
                     <ShoppingCartIcon className="w-4 h-4 sm:w-5 sm:h-5" />
                     Add to Cart
@@ -416,7 +416,7 @@ export default function ProductDetails() {
                   <button
                     onClick={handleAddOrder}
                     disabled={stock <= 0}
-                    className={`flex-1 flex items-center justify-center gap-2 px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base rounded-lg shadow-md transition 
+                    className={`flex-1 flex items-center justify-center gap-2 cursor-pointer px-4 py-2 sm:px-6 sm:py-3 text-sm sm:text-base rounded-lg shadow-md transition 
                     ${
                       stock > 0
                         ? "bg-pink-600 text-white hover:bg-pink-700"

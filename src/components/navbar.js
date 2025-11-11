@@ -7,7 +7,6 @@ import Link from "next/link";
 import {
   AppBar,
   Toolbar,
-  Typography,
   Button,
   IconButton,
   Drawer,
@@ -94,7 +93,7 @@ function Navbar() {
           }}
         >
           {/* Logo */}
-          <Typography
+          {/* <Typography
             variant="h6"
             sx={{
               fontWeight: "bold",
@@ -102,11 +101,18 @@ function Navbar() {
               color: "#1976d2",
               fontSize: { xs: "1rem", sm: "1.2rem", md: "1.4rem" },
               textAlign: "center",
+              // fontSize: "extra-large"
             }}
             onClick={() => window.location.reload()}
           >
             Fashion Store
-          </Typography>
+          </Typography> */}
+          <h1
+            className="parisienne-regular cursor-pointer text-blue-800 text-center text-xl sm:text-2xl md:text-2xl"
+            onClick={() => window.location.reload()}
+          >
+            Fashion Store
+          </h1>
 
           {/* Desktop Menu */}
           <Box

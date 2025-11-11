@@ -449,25 +449,51 @@ export default function MainDashboard() {
                               <EllipsisVerticalIcon className="w-6 h-6 text-gray-500" />
                             </button>
                             {openOrderId === item._id && (
-                              <div className="absolute left-0 mt-2 w-36 bg-white shadow-md rounded-lg p-2">
+                              <div
+                                className={`absolute left-0 mt-2 w-32 z-20 bg-white shadow-md rounded-lg p-2 transition-all duration-300 ease-in-out transform ${
+                                  openOrderId === item._id
+                                    ? "opacity-100 scale-100"
+                                    : "opacity-0 scale-95 pointer-events-none"
+                                }`}
+                              >
                                 <Link
                                   href={`/admin-update-product/${item._id}`}
                                 >
-                                  <button className="flex items-center w-full text-sm text-gray-700 px-3 py-2 hover:bg-gray-100 rounded">
-                                    <PencilSquareIcon className="w-4 h-4 mr-2" />
+                                  <button className="flex items-center gap-1 w-full text-sm font-semibold text-grey-400 px-3 py-1 rounded-lg hover:bg-blue-200 transition">
+                                    <PencilSquareIcon className="w-4 h-4 text-gray-500" />
                                     Edit
                                   </button>
                                 </Link>
+
                                 <button
                                   onClick={() =>
                                     handleDeleteDiscountOffer(item._id)
                                   }
-                                  className="flex items-center w-full text-sm text-red-600 px-3 py-2 hover:bg-red-50 rounded"
+                                  className="flex items-center gap-1 w-full text-sm font-semibold text-red-300 px-3 py-1 rounded-lg hover:bg-red-100 transition"
                                 >
-                                  <TrashIcon className="w-4 h-4 mr-2" />
+                                  <TrashIcon className="w-4 h-4 text-gray-350" />
                                   Delete
                                 </button>
                               </div>
+                              // <div className="absolute left-0 mt-2 w-36 bg-white shadow-md rounded-lg p-2">
+                              //   <Link
+                              //     href={`/admin-update-product/${item._id}`}
+                              //   >
+                              //     <button className="flex items-center w-full text-sm text-gray-700 px-3 py-2 hover:bg-gray-100 rounded">
+                              //       <PencilSquareIcon className="w-4 h-4 mr-2" />
+                              //       Edit
+                              //     </button>
+                              //   </Link>
+                              //   <button
+                              //     onClick={() =>
+                              //       handleDeleteDiscountOffer(item._id)
+                              //     }
+                              //     className="flex items-center w-full text-sm text-red-600 px-3 py-2 hover:bg-red-50 rounded"
+                              //   >
+                              //     <TrashIcon className="w-4 h-4 mr-2" />
+                              //     Delete
+                              //   </button>
+                              // </div>
                             )}
                           </div>
                         )}
